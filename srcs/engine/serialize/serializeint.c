@@ -1,17 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   serializeint.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 16:29:40 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/04 15:05:29 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/04 17:32:33 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	update(t_doom *doom)
+void		serializeint(int fd, char *name, int nb)
 {
+	char *tmp[3];
+
+	tmp[0] = ft_itoa(nb);
+	tmp[1] = ft_strjoin(name, ": ");
+	tmp[2] = ft_strjoin(tmp[1], tmp[0]);
+	ft_putendl_fd(tmp[2], fd);
+	ft_strdel(&tmp[0]);
+	ft_strdel(&tmp[1]);
+	ft_strdel(&tmp[2]);
 }

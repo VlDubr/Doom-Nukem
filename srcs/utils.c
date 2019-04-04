@@ -1,17 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 16:29:40 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/04 13:50:55 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/04 13:51:17 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	update(t_doom *doom)
+void	free2dstring(char **str)
 {
+	int	y;
+
+	if (str)
+	{
+		y = 0;
+		while (str[y] != NULL)
+		{
+			free(str[y]);
+			str[y] = NULL;
+			y++;
+		}
+		free(str);
+		str = NULL;
+	}
 }

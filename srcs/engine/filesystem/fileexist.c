@@ -1,17 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   fileexist.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 16:29:40 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/04 15:50:31 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/04 15:53:48 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "filesystem.h"
 
-void	update(t_doom *doom)
+int		fileexist(char *path)
 {
+	int fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd > -1)
+	{
+		close(fd);
+		return (1);
+	}
+	return (0);
 }

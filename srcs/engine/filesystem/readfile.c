@@ -1,17 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   readfile.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 16:29:40 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/04 16:03:48 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/04 16:08:43 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#include "filesystem.h"
 
-void	update(t_doom *doom)
+char	*readfile(char *path)
 {
+	char	*str;
+	char	*del;
+	char	buff[BUFF_SIZE + 1];
+	int		fd;
+	int		r;
+
+	fd = open(path, O_RDONLY);
+	str = ft_strnew(0);
+	while ((r = read(fd, buff, BUFF_SIZE)) > 0)
+	{
+		buff[r] = '\0';
+		del = str;
+		str = ft_strjoin(str, buff);
+		ft_strdel(&del);
+	}
+	return (str);
 }

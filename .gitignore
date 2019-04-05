@@ -1,4 +1,5 @@
 /lib/ft_graphics
 /lib/libft/obj
+/lib/libft/*.a
 /build
 /obj

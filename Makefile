@@ -46,7 +46,6 @@ debugmacos: $(OBJ)
 
 debuglinux: $(OBJ)
 	$(MAKE) -C $(LIBFTFOLDER)
-	$(MAKE) -C $(MLXUTILSFOLDER)
 	$(MAKE) -C $(GRAPHICSFOLDER)
 	mkdir $(BUILDFOLDER)
 	mkdir $(BUILDFOLDER)config

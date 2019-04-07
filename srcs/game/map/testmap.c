@@ -16,9 +16,6 @@ t_map		testmap(void)
 {
 	t_map	r;
 
-	r.startplayer.pos = setfvector(10, 0, 10);
-	r.startplayer.rotate = setfvector(0, 0, 0); //degrtorad(90)
-
 	r.wallcount = 11;
 	r.walls = (t_fvector2d*)malloc(sizeof(t_fvector2d) * r.wallcount);
 	r.walls[0] = setfvector2d(0, 0);
@@ -113,6 +110,9 @@ t_map		testmap(void)
 	r.sectors[2].walls[3].sp = 9;
 	r.sectors[2].walls[3].ep = 7;
 	r.sectors[2].walls[3].nextsector = -1;
+
+	r.startplayer.pos = setfvector(10, r.sectors[0].floor + 5, 10);
+	r.startplayer.rotate = setfvector(0, 0, 0);
 
 	return (r);
 }

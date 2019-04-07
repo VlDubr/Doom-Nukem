@@ -36,7 +36,7 @@ static void		serializeinput(char *path, t_input input)
 {
 	int fd;
 
-	fd = open(path, O_CREAT, CREATEFLAG);
+	fd = open(path, O_CREAT | O_WRONLY, CREATEFLAG);
 	if (fd > -1)
 	{
 		serializeint(fd, "MoveForward", input.input[MOVEF]);

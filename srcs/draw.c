@@ -99,11 +99,20 @@ int		clip(t_player *player, t_fvector p[4])
 
 	if (p[0].z <= 0 && p[1].z <= 0)
 		return (0);
-	if (p[0].z <= 0 || p[1].z <= 0)
+	if (p[0].z < 0 || p[1].z < 0)
 	{
 		dist.x = distance(p[0]);
 		dist.y = distance(p[1]);
-		return (0);
+
+		if (dist.x < 0)
+		{
+			p[0] = inspectplane(setfvector(0, 0, 0.1f), setfvector(0, 0, 1), p[0], p[1]);
+			p[3] = inspectplane(setfvector(0, 0, 0.1f), setfvector(0, 0, 1), p[3], p[4]);
+		}
+
+		//if (dist.y < 0)
+		//	p[1] = inspectplane(setfvector(0, 0, 0.1f), setfvector(0, 0, 1), p[1], p[0]);
+		//return (0);
 	}
 	return (1);
 }
@@ -125,10 +134,10 @@ void	drawsector(t_window *win, t_player *player, t_map map, size_t secid)
 	{
 		wall = map.sectors[secid].walls[y];
 
-		p[0] = setfvector(map.walls[wall.sp].x, 0, map.walls[wall.sp].y);
-		p[1] = setfvector(map.walls[wall.ep].x, 0, map.walls[wall.ep].y);
-		p[2] = addfvector(p[0], 0, map.sectors[secid].height, 0);
-		p[3] = addfvector(p[1], 0, map.sectors[secid].height, 0);
+		p[0] = setfvector(map.walls[wall.sp].x, map.sectors[secid].floor, map.walls[wall.sp].y);
+		p[1] = setfvector(map.walls[wall.ep].x, map.sectors[secid].floor, map.walls[wall.ep].y);
+		p[2] = addfvector(p[0], 0, map.sectors[secid].floor + map.sectors[secid].height, 0);
+		p[3] = addfvector(p[1], 0, map.sectors[secid].floor + map.sectors[secid].height, 0);
 
 		p[0] = multipmatrix(p[0], cammat);
 		p[1] = multipmatrix(p[1], cammat);
@@ -161,7 +170,6 @@ void	drawsector(t_window *win, t_player *player, t_map map, size_t secid)
 				SDL_SetRenderDrawColor(win->renderer, 255, 255, 255, 255);
 			else
 				SDL_SetRenderDrawColor(win->renderer, 255, 0, 0, 255);
-			drawwall(win->renderer, p[0], p[1], p[2], p[3]);
 			SDL_RenderDrawLine(win->renderer, p[0].x, p[0].y, p[1].x, p[1].y);
 			SDL_RenderDrawLine(win->renderer, p[0].x, p[0].y, p[2].x, p[2].y);
 			SDL_RenderDrawLine(win->renderer, p[2].x, p[2].y, p[3].x, p[3].y);

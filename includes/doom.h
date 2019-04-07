@@ -14,6 +14,7 @@
 # define DOOM_H
 # include "../lib/libft/includes/libft.h"
 # include "../lib/ft_graphics/includes/vector.h"
+# include "../lib/ft_graphics/includes/rect.h"
 # include "../lib/ft_graphics/includes/rotate.h"
 # include "../lib/ft_graphics/includes/mat.h"
 # include "../lib/ft_graphics/includes/utils.h"
@@ -43,6 +44,15 @@ typedef struct	s_mouse
 	float		sensivety;
 }				t_mouse;
 
+typedef enum	e_key
+{
+	MOVEF = 0,
+	MOVEB,
+	MOVEL,
+	MOVER
+}				t_key;
+
+
 typedef struct	s_input
 {
 	t_mouse		mouse;
@@ -54,6 +64,7 @@ typedef struct	s_player
 	t_fvector	pos;
 	t_fvector	rotate;
 	t_fvector	velosity;
+	t_fvector	lookdir;
 
 	float		maxhealth;
 	float		health;
@@ -80,7 +91,7 @@ typedef struct	s_sector
 	t_wall	*walls;
 	size_t	wallcount;
 	int		floor;
-	int		ceiling;
+	int		height;
 }				t_sector;
 
 typedef struct	s_map
@@ -102,7 +113,8 @@ typedef struct	s_doom
 	t_map		thismap;
 }				t_doom;
 
-void		drawwall(t_fvector startx, t_fvector endx, t_rgb color);
+void		drawwall(SDL_Renderer *r, t_fvector p1, t_fvector p2,
+t_fvector p3, t_fvector p4);
 t_map		testmap(void);
 
 void		destrotwindow(t_doom *doom);

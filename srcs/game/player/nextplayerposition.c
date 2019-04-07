@@ -16,7 +16,7 @@ t_fvector2d		nextplayerposition(t_player player)
 {
 	t_fvector2d	new;
 
-	new.x = cos(player.rotate.x);
-	new.y = sin(player.rotate.y);
+	new.x = sin(player.rotate.x);
+	new.y = cos(player.rotate.y);
 	return (new);
 }

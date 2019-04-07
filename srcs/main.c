@@ -37,6 +37,9 @@ int				main(int agrc, char **argv)
 
 	doom = initdoom();
 	doom->thismap = testmap();
+	doom->player = defaultplayerdata();
+	doom->player.pos = doom->thismap.startplayer.pos;
+	doom->player.rotate = doom->thismap.startplayer.rotate;
 	while (doom->win->state)
 	{
 		updateevent(doom);

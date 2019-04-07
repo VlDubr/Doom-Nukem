@@ -14,4 +14,8 @@
 
 void	update(t_doom *doom)
 {
+	// if (doom->player.pos.y < doom->thismap.sectors[0].floor)
+	// 	doom->player.pos.y = doom->thismap.sectors[0].floor;
+	// else
+	// 	doom->player.pos.y -= 0.5;
 }

@@ -6,7 +6,8 @@ SRCS = main.c \
 		game/map/testmap.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
-		engine/input/loadinput.c
+		engine/input/loadinput.c \
+		engine/draw/drawwall.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/
@@ -69,6 +70,7 @@ $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	gcc -g -I $(INCLUDES) -o $@ -c $<
 
 folder:
+	mkdir -p $(OBJDIR)engine/draw
 	mkdir -p $(OBJDIR)engine/core
 	mkdir -p $(OBJDIR)engine/filesystem
 	mkdir -p $(OBJDIR)engine/input

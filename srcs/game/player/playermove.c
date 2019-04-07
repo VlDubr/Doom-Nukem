@@ -14,7 +14,7 @@
 
 void	playerjump(t_player *player)
 {
-	player->velosity.z = flerp(0, player->maxheightjump,
+	player->pos.y = flerp(0, player->maxheightjump,
 	(1 / player->maxstamina) * player->stamina);
 }
 

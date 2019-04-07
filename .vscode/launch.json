@@ -5,17 +5,37 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "(lldb) Launch",
+			"name": "Build & Debug(MacOS)",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/build/doom",
-			"preLaunchTask": "Debug",
+			"preLaunchTask": "Build debug(MacOS)",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": true,
 			"MIMode": "lldb"
+		},
+		{
+			"name": "Build & Debug(Linux)",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/doom",
+			"preLaunchTask": "Build debug(Linux)",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": true,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			]
 		}
 	]
 }

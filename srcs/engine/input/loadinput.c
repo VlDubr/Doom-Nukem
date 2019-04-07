@@ -39,10 +39,10 @@ static void		serializeinput(char *path, t_input input)
 	fd = open(path, O_CREAT, CREATEFLAG);
 	if (fd > -1)
 	{
-		serializeint(fd, "MoveForward", input.input[0]);
-		serializeint(fd, "MoveBackward", input.input[1]);
-		serializeint(fd, "MoveLeft", input.input[2]);
-		serializeint(fd, "MoveRight", input.input[3]);
+		serializeint(fd, "MoveForward", input.input[MOVEF]);
+		serializeint(fd, "MoveBackward", input.input[MOVEB]);
+		serializeint(fd, "MoveLeft", input.input[MOVEL]);
+		serializeint(fd, "MoveRight", input.input[MOVER]);
 		close(fd);
 	}
 }

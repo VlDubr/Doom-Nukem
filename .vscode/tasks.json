@@ -4,9 +4,14 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Debug",
+			"label": "Build debug(MacOS)",
 			"type": "shell",
 			"command": "make re_d_macos"
+		},
+		{
+			"label": "Build debug(Linux)",
+			"type": "shell",
+			"command": "make re_d_linux"
 		}
 	]
 }

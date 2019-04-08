@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 19:00:13 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/08 16:45:35 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int				main(int agrc, char **argv)
 	doom->player = defaultplayerdata();
 	doom->player.pos = doom->thismap.startplayer.pos;
 	doom->player.rotate = doom->thismap.startplayer.rotate;
+	doom->zbuffer = NULL;
 	while (doom->win->state)
 	{
 		updateevent(doom);

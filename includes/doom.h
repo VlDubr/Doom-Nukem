@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 18:59:54 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/08 17:53:47 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,32 @@ typedef struct	s_map
 	t_player	startplayer;
 }				t_map;
 
+typedef struct	s_drawwawll
+{
+	t_fvector	p[4];
+}				t_drawwall;
+
 typedef struct	s_doom
 {
 	char		*path;
 	t_window	*win;
+	t_list		*zbuffer;
 	SDL_Event	event;
 	t_input		input;
 	t_player	player;
 	t_map		thismap;
 }				t_doom;
 
-void		drawwall(SDL_Renderer *r, t_fvector p1, t_fvector p2,
-t_fvector p3, t_fvector p4);
+typedef struct	s_button
+{
+	t_irect		rect;
+	SDL_Surface	*surf;
+	void		(*clickevent)(void);
+}				t_button;
+t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
+int			clickbutton(t_button button, t_mouse mouse);
+
+void		drawwall(SDL_Renderer *r, t_drawwall w);
 t_map		testmap(void);
 
 void		destrotwindow(t_doom *doom);

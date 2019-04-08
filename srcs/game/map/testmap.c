@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:38:06 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 19:01:11 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/08 17:07:00 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_map		testmap(void)
 	r.sectors[1].wallcount = 5;
 	r.sectors[1].walls = (t_wall*)malloc(sizeof(t_wall)
 	* r.sectors[1].wallcount);
-	r.sectors[1].floor = 1;
+	r.sectors[1].floor = 5;
 	r.sectors[1].height = 10;
 
 	r.sectors[1].walls[0].sp = 2;
@@ -111,8 +111,8 @@ t_map		testmap(void)
 	r.sectors[2].walls[3].ep = 7;
 	r.sectors[2].walls[3].nextsector = -1;
 
-	r.startplayer.pos = setfvector(10, r.sectors[0].floor + 5, 10);
-	r.startplayer.rotate = setfvector(0, 0, 0);
+	r.startplayer.pos = setfvector(75.698616, 10.000000, 34.310966);
+	r.startplayer.rotate = setfvector(0, -1.550000, 0);
 
 	return (r);
 }

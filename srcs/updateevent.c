@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:58 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 16:49:52 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/08 13:51:22 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ void	updateevent(t_doom *doom)
 
 			if (key == SDLK_SPACE)
 				playerjump(&doom->player);
+			if (key == SDLK_p)
+				printf("pos: x%f y%f z%f\nrotation: x%f y%f z%f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z,
+				doom->player.rotate.x, doom->player.rotate.y, doom->player.rotate.z);
 		}
 	}
 }

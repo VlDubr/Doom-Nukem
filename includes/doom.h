@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/08 17:53:47 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 17:57:04 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef struct	s_window
 {
 	SDL_Window		*window;
 	t_ivector2d		size;
-	SDL_Surface		*surf;
+	SDL_Texture		*texture;
+	uint32_t		*pixels;
 	SDL_Renderer	*renderer;
 	int				state;
 }				t_window;
@@ -56,7 +57,11 @@ typedef enum	e_key
 typedef struct	s_input
 {
 	t_mouse		mouse;
-	int			input[4];
+	int			moveforward;
+	int			movebackward;
+	int			moveleft;
+	int			moveright;
+	int			jump;
 }				t_input;
 
 typedef struct	s_player
@@ -65,6 +70,7 @@ typedef struct	s_player
 	t_fvector	rotate;
 	t_fvector	velosity;
 	t_fvector	lookdir;
+	size_t		startsector;
 
 	float		maxhealth;
 	float		health;
@@ -82,6 +88,7 @@ typedef struct	s_wall
 {
 	int			sp;
 	int			ep;
+	t_fvector	view[4];
 	int			texture;
 	int			nextsector;
 }				t_wall;
@@ -103,11 +110,6 @@ typedef struct	s_map
 	t_player	startplayer;
 }				t_map;
 
-typedef struct	s_drawwawll
-{
-	t_fvector	p[4];
-}				t_drawwall;
-
 typedef struct	s_doom
 {
 	char		*path;
@@ -128,7 +130,8 @@ typedef struct	s_button
 t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
 int			clickbutton(t_button button, t_mouse mouse);
 
-void		drawwall(SDL_Renderer *r, t_drawwall w);
+void		drawwall(uint32_t *p, t_wall w, t_rgb color);
+void		drawwallv2(t_window *win, t_wall w);
 t_map		testmap(void);
 
 void		destrotwindow(t_doom *doom);
@@ -142,9 +145,6 @@ t_player	defaultplayerdata(void);
 t_fvector2d	nextplayerposition(t_player player);
 void		playermove(t_player *player, t_fvector2d dir);
 void		playerjump(t_player *player);
-
-int			deserializeint(char *str, char *name, int *nb);
-void		serializeint(int fd, char *name, int nb);
 
 void		loadinput(char *path, t_input *input);
 

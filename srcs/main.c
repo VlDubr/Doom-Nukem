@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/08 16:45:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 15:03:41 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ t_doom			*initdoom(void)
 	d->path = SDL_GetBasePath();
 	loadinput(d->path, &d->input);
 	d->win = createwindow(setivector2d(800, 600), "DOOM", SDL_WINDOW_RESIZABLE);
+	d->win->texture = SDL_CreateTexture(d->win->renderer,
+	SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 800, 600);
+	d->win->pixels = (uint32_t*)malloc(sizeof(uint32_t) * (800 * 600));
 	return (d);
 }
 
@@ -38,6 +41,7 @@ int				main(int agrc, char **argv)
 	doom = initdoom();
 	doom->thismap = testmap();
 	doom->player = defaultplayerdata();
+	doom->player.startsector = doom->thismap.startplayer.startsector;
 	doom->player.pos = doom->thismap.startplayer.pos;
 	doom->player.rotate = doom->thismap.startplayer.rotate;
 	doom->zbuffer = NULL;

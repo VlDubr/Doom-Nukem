@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:38:06 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/08 17:07:00 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 13:05:02 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,9 @@ t_map		testmap(void)
 	r.sectors[2].walls[3].ep = 7;
 	r.sectors[2].walls[3].nextsector = -1;
 
-	r.startplayer.pos = setfvector(75.698616, 10.000000, 34.310966);
-	r.startplayer.rotate = setfvector(0, -1.550000, 0);
+	r.startplayer.startsector = 1;
+	r.startplayer.pos = setfvector(64.028748, r.sectors[r.startplayer.startsector].floor + 5, 39.596561);
+	r.startplayer.rotate = setfvector(0, -1.749999, 0);
 
 	return (r);
 }

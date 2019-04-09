@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
+/*   physic.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 18:01:45 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/09 18:03:07 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/09 18:51:14 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+#ifndef PHYSIC_H
+# define PHYSIC_H
+# include "doom.h"
 
-void	update(t_doom *doom)
+typedef struct	s_line
 {
-	size_t	count;
+	t_fvector2d a1;
+	t_fvector2d a2;
+	t_fvector2d b1;
+	t_fvector2d b2;
+}				t_line;
+t_line			setline(t_fvector2d a1, t_fvector2d a2,
+t_fvector2d b1, t_fvector2d b2);
 
-	count = -1;
-	while (++count < doom->thismap.sectorcount)
-		calcsectorwall(doom, doom->thismap, count);
-}
+int				collideline(t_line line, t_fvector2d *crossing);
+
+#endif

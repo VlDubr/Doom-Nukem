@@ -6,13 +6,14 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 18:03:07 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 18:51:14 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 18:57:28 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHYSIC_H
 # define PHYSIC_H
 # include "doom.h"
+# define SIGN(value) (value / value)
 
 typedef struct	s_line
 {

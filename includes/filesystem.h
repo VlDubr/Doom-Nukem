@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:02 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 17:25:11 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 12:38:23 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,13 @@
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 # endif
+# define SINT(fd, name) (serializeint(fd, #name, name))
+# define DSINT(str, int) (deserializeint(str, #int))
 
 int		fileexist(char *path);
 char	*readfile(char *path);
+
+int			deserializeint(char *str, char *name);
+void		serializeint(int fd, char *name, int nb);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:47:12 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/04 17:32:26 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 12:39:45 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,20 @@
 
 static t_input	deserializeinput(char *file)
 {
-	t_input	r;
+	t_input	input;
 	int		y;
 	char	**tmp;
-	char	**tmp2;
+	char	*name;
 
 	y = 0;
 	tmp = ft_strsplit(file, '\n');
-	while (tmp[y] != NULL)
-	{
-		tmp2 = ft_strsplit(tmp[y], ' ');
-		r.input[y] = ft_atoi(tmp2[1]);
-		free2dstring(tmp2);
-		y++;
-	}
+	input.moveforward = DSINT(tmp[0], input.moveforward);
+	input.movebackward = DSINT(tmp[1], input.movebackward);
+	input.moveleft = DSINT(tmp[2], input.moveleft);
+	input.moveright = DSINT(tmp[3], input.moveright);
+	input.jump = DSINT(tmp[4], input.jump);
 	free2dstring(tmp);
-	return (r);
+	return (input);
 }
 
 static void		serializeinput(char *path, t_input input)
@@ -39,10 +37,11 @@ static void		serializeinput(char *path, t_input input)
 	fd = open(path, O_CREAT | O_WRONLY, CREATEFLAG);
 	if (fd > -1)
 	{
-		serializeint(fd, "MoveForward", input.input[MOVEF]);
-		serializeint(fd, "MoveBackward", input.input[MOVEB]);
-		serializeint(fd, "MoveLeft", input.input[MOVEL]);
-		serializeint(fd, "MoveRight", input.input[MOVER]);
+		SINT(fd, input.moveforward);
+		SINT(fd, input.movebackward);
+		SINT(fd, input.moveleft);
+		SINT(fd, input.moveright);
+		SINT(fd, input.jump);
 		close(fd);
 	}
 }
@@ -51,10 +50,11 @@ static t_input	defaultinput(void)
 {
 	t_input r;
 
-	r.input[0] = SDLK_w;
-	r.input[1] = SDLK_s;
-	r.input[2] = SDLK_a;
-	r.input[3] = SDLK_d;
+	r.moveforward = SDLK_w;
+	r.movebackward = SDLK_s;
+	r.moveleft = SDLK_a;
+	r.moveright = SDLK_d;
+	r.jump = SDLK_SPACE;
 	r.mouse.sensivety = 1;
 	return (r);
 }

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:58 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/08 13:51:22 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/09 12:12:00 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	rotate(SDL_Keycode key, t_doom *doom)
 		doom->player.rotate.x += -0.05;
 	else if (key == SDLK_DOWN)
 		doom->player.rotate.x += 0.05;
-	else if (key == doom->input.input[MOVEL])
+	else if (key == doom->input.moveleft)
 		doom->player.rotate.y += -0.05;
 	else
 		doom->player.rotate.y += 0.05;
@@ -30,7 +30,7 @@ void	move(SDL_Keycode key, t_doom *doom, t_fvector new)
 {
 	printf("lookdir: x%f y%f z%f\n", new.x, new.y, new.z);
 
-	doom->player.pos = (key == doom->input.input[MOVEF]) ? addfvtofv(doom->player.pos, new) : subfvtofv(doom->player.pos, new);
+	doom->player.pos = (key == doom->input.moveforward) ? addfvtofv(doom->player.pos, new) : subfvtofv(doom->player.pos, new);
 
 	printf("pos: x%f y%f z%f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
 }
@@ -49,9 +49,9 @@ void	updateevent(t_doom *doom)
 			key == SDLK_ESCAPE ? doom->win->state = 0 : 0;
 
 			forward = multfvector(doom->player.lookdir, 2, 2, 2);
-			key == doom->input.input[MOVEF] || key == doom->input.input[MOVEB] ? move(key, doom, forward) : 0;
+			key == doom->input.moveforward || key == doom->input.movebackward ? move(key, doom, forward) : 0;
 
-			key == doom->input.input[MOVEL] || key == doom->input.input[MOVER] ||
+			key == doom->input.moveleft || key == doom->input.moveright ||
 			key == SDLK_UP || key == SDLK_DOWN ? rotate(key, doom) : 0;
 
 			if (key == SDLK_SPACE)

@@ -10,25 +10,68 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "physic.h"
+#include "physics.h"
 
-
-int	collideline(t_line line, t_fvector2d *crossing)
+t_line			setline(t_fvector2d a1, t_fvector2d a2,
+t_fvector2d b1, t_fvector2d b2)
 {
-	t_fvector2d	cut1;
-	t_fvector2d	cut2;
-	t_fvector2d	prod1;
-	t_fvector2d	prod2;
+	t_line l;
 
-	cut1 = setfvector2d(line.a2.x - line.a1.x, line.a2.y - line.a1.y);
-	cut2 = setfvector2d(line.b2.x - line.b1.x, line.b2.y - line.b1.y);
+	l.a1 = a1;
+	l.a2 = a2;
+	l.b1 = b1;
+	l.b2 = b2;
+	return (l);
+}
 
-	prod1 = cross(cut1.x * (line.b1.x - line.a1.x), cut1.y * (line.b1.y - line.a1.y));
-	prod1 = cross(cut2.x * (line.b2.x - line.a2.x), cut2.y * (line.b2.y - line.a2.y));
+float	area(t_fvector2d a, t_fvector2d b, t_fvector2d c)
+{
+	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+}
 
-	if (SIGN(prod1.x) == SIGN(prod2.x))
-		return (0);
-	if (crossing)
+int	collideline1(float a, float b, float c, float d)
+{
+	float tmp;
+
+	if (a > b)
 	{
+		tmp = a;
+		a = b;
+		b = tmp;
 	}
+	if (c > d)
+	{
+		tmp = c;
+		c = d;
+		d = tmp;
+	}
+	return (ft_fmax(a, c) <= ft_fmin(b, d));
+}
+
+int	collideline(t_line line)
+{
+	if (collideline1(line.a1.x, line.a2.x, line.b1.x, line.b2.x))
+		if (collideline1(line.a1.y, line.a2.y, line.b1.y, line.b2.y))
+			if (area(line.a1, line.a2, line.b1) * area(line.a1, line.a2, line.b2) <= 0)
+				if (area(line.b1, line.b2, line.a1) * area(line.b1, line.b2, line.a2) <= 0)
+					return (1);
+	return (0);
+}
+
+int		collide(t_fvector2d pos, t_fvector2d newpos, t_map m, size_t secid)
+{
+	t_wall		w;
+	size_t		count;
+
+	count = 0;
+	while (count < m.sectors[secid].wallcount)
+	{
+		w = m.sectors[secid].walls[count];
+		if (w.nextsector == -1)
+			if (collideline(setline(pos,
+			newpos, m.walls[w.sp], m.walls[w.ep])))
+				return (1);
+		count++;
+	}
+	return (0);
 }

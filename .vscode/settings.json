@@ -1,5 +1,6 @@
 {
 	"files.associations": {
-		"doom.h": "c"
+		"doom.h": "c",
+		"utils.h": "c"
 	}
 }

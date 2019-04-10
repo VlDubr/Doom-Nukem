@@ -12,11 +12,11 @@
 
 #include "doom.h"
 
-t_fvector2d		nextplayerposition(t_player player)
+t_fvector2d	retnewpos(float rotz)
 {
-	t_fvector2d	new;
+	t_fvector2d dir;
 
-	new.x = sin(player.rotate.x);
-	new.y = cos(player.rotate.y);
-	return (new);
+	dir.x = cos(rotz) * 5;
+	dir.y = sin(rotz) * 5;
+	return (dir);
 }

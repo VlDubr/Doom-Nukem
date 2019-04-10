@@ -26,8 +26,9 @@
 # define SINT(fd, name) (serializeint(fd, #name, name))
 # define DSINT(str, int) (deserializeint(str, #int))
 
-int		fileexist(char *path);
-char	*readfile(char *path);
+int			fileexist(char *path);
+char		*readfile(char *path);
+char		*getpath(const char *argv0);
 
 int			deserializeint(char *str, char *name);
 void		serializeint(int fd, char *name, int nb);

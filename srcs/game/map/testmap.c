@@ -111,9 +111,9 @@ t_map		testmap(void)
 	r.sectors[2].walls[3].ep = 7;
 	r.sectors[2].walls[3].nextsector = -1;
 
-	r.startplayer.startsector = 1;
-	r.startplayer.pos = setfvector(64.028748, r.sectors[r.startplayer.startsector].floor + 5, 39.596561);
-	r.startplayer.rotate = setfvector(0, -1.749999, 0);
+	r.startplayer.sector = 1;
+	r.startplayer.pos = setfvector(10, 0, 10);
+	r.startplayer.rotate = setfvector(0, 0, 0);
 
 	return (r);
 }

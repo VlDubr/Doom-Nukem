@@ -14,9 +14,4 @@
 
 void	update(t_doom *doom)
 {
-	size_t	count;
-
-	count = -1;
-	while (++count < doom->thismap.sectorcount)
-		calcsectorwall(doom, doom->thismap, count);
 }

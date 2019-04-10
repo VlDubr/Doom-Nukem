@@ -20,6 +20,7 @@
 # include "../lib/ft_graphics/includes/utils.h"
 # include "../lib/ft_graphics/includes/color.h"
 # include "filesystem.h"
+# include "physics.h"
 # include <stdlib.h>
 # ifdef __APPLE__
 #  include "../lib/SDL/include/SDL2/SDL.h"
@@ -61,6 +62,8 @@ typedef struct	s_input
 	int			movebackward;
 	int			moveleft;
 	int			moveright;
+	int			rotleft;
+	int			rotright;
 	int			jump;
 }				t_input;
 
@@ -69,8 +72,7 @@ typedef struct	s_player
 	t_fvector	pos;
 	t_fvector	rotate;
 	t_fvector	velosity;
-	t_fvector	lookdir;
-	size_t		startsector;
+	size_t		sector;
 
 	float		maxhealth;
 	float		health;
@@ -130,8 +132,8 @@ typedef struct	s_button
 t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
 int			clickbutton(t_button button, t_mouse mouse);
 
-void		drawwall(uint32_t *p, t_wall w, t_rgb color);
-void		drawwallv2(t_window *win, t_wall w);
+void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
+void		drawsector(uint32_t *p, t_player play, t_map m, size_t secid);
 t_map		testmap(void);
 
 void		destrotwindow(t_doom *doom);
@@ -142,7 +144,9 @@ void		draw(t_doom *doom);
 void		quitprogram(t_doom *doom);
 
 t_player	defaultplayerdata(void);
-t_fvector2d	nextplayerposition(t_player player);
+t_fvector2d	retnewpos(float rotz);
+void		movelr(SDL_Keycode key, t_doom *doom);
+void		movefb(SDL_Keycode key, t_doom *doom);
 void		playermove(t_player *player, t_fvector2d dir);
 void		playerjump(t_player *player);
 
@@ -151,5 +155,8 @@ void		loadinput(char *path, t_input *input);
 void		free2dstring(char **str);
 size_t		stringcount(char **str);
 void		error(const char *str);
+
+int			collide(t_fvector2d pos, t_fvector2d newpos,
+t_map m, size_t secid);
 
 #endif

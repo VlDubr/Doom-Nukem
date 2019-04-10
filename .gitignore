@@ -3,3 +3,4 @@
 /lib/libft/*.a
 /build
 /obj
+/.vscode/ipch

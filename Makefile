@@ -4,10 +4,11 @@ SRCS = main.c \
 		error.c createwindow.c utils.c \
 		game/player/playermove.c game/player/nextplayerposition.c game/player/defaultplayerdata.c \
 		game/map/testmap.c \
-		engine/filesystem/fileexist.c engine/filesystem/readfile.c \
+		engine/collide.c \
+		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c \
-		engine/draw/drawwall.c
+		engine/draw/drawwall.c engine/draw/drawline.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/

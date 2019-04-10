@@ -26,6 +26,8 @@ static t_input	deserializeinput(char *file)
 	input.moveleft = DSINT(tmp[2], input.moveleft);
 	input.moveright = DSINT(tmp[3], input.moveright);
 	input.jump = DSINT(tmp[4], input.jump);
+	input.rotleft = DSINT(tmp[5], input.rotleft);
+	input.rotright = DSINT(tmp[6], input.rotright);
 	free2dstring(tmp);
 	return (input);
 }
@@ -42,6 +44,8 @@ static void		serializeinput(char *path, t_input input)
 		SINT(fd, input.moveleft);
 		SINT(fd, input.moveright);
 		SINT(fd, input.jump);
+		SINT(fd, input.rotleft);
+		SINT(fd, input.rotright);
 		close(fd);
 	}
 }
@@ -55,6 +59,8 @@ static t_input	defaultinput(void)
 	r.moveleft = SDLK_a;
 	r.moveright = SDLK_d;
 	r.jump = SDLK_SPACE;
+	r.rotleft = SDLK_LEFT;
+	r.rotright = SDLK_RIGHT;
 	r.mouse.sensivety = 1;
 	return (r);
 }

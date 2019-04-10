@@ -18,14 +18,14 @@ static void		initsdl(Uint32 sdlflag)
 		error("Error: SDL not init...");
 }
 
-t_doom			*initdoom(void)
+t_doom			*initdoom(char *argv0)
 {
 	t_doom	*d;
 
 	initsdl(SDL_INIT_EVERYTHING);
 	if (!(d = (t_doom*)malloc(sizeof(t_doom))))
 		error("Error: Memory is not allocated");
-	d->path = SDL_GetBasePath();
+	d->path = getpath(argv0);
 	loadinput(d->path, &d->input);
 	d->win = createwindow(setivector2d(800, 600), "DOOM", SDL_WINDOW_RESIZABLE);
 	d->win->texture = SDL_CreateTexture(d->win->renderer,
@@ -38,10 +38,10 @@ int				main(int agrc, char **argv)
 {
 	t_doom	*doom;
 
-	doom = initdoom();
+	doom = initdoom(argv[0]);
 	doom->thismap = testmap();
 	doom->player = defaultplayerdata();
-	doom->player.startsector = doom->thismap.startplayer.startsector;
+	doom->player.sector = doom->thismap.startplayer.sector;
 	doom->player.pos = doom->thismap.startplayer.pos;
 	doom->player.rotate = doom->thismap.startplayer.rotate;
 	doom->zbuffer = NULL;

@@ -12,6 +12,34 @@
 
 #include "doom.h"
 
+void	movelr(SDL_Keycode key, t_doom *doom)
+{
+	t_fvector2d	pos;
+	t_fvector2d	newpos;
+	t_fvector2d	dir;
+
+	dir = retnewpos(doom->player.rotate.z + 1.57f);
+	pos = setfvector2d(doom->player.pos.x, doom->player.pos.z);
+	newpos = key == doom->input.moveright ? addfv2dtofv2d(pos, dir) : subfv2dtofv2d(pos, dir);
+	if (collide(pos, newpos, doom->thismap, doom->player.sector))
+		return ;
+	doom->player.pos = setfvector(newpos.x, 0, newpos.y);
+}
+
+void	movefb(SDL_Keycode key, t_doom *doom)
+{
+	t_fvector2d	pos;
+	t_fvector2d	newpos;
+	t_fvector2d	dir;
+
+	dir = retnewpos(doom->player.rotate.z);
+	pos = setfvector2d(doom->player.pos.x, doom->player.pos.z);
+	newpos = key == doom->input.moveforward ? addfv2dtofv2d(pos, dir) : subfv2dtofv2d(pos, dir);
+	if (collide(pos, newpos, doom->thismap, doom->player.sector))
+		return ;
+	doom->player.pos = setfvector(newpos.x, 0, newpos.y);
+}
+
 void	playerjump(t_player *player)
 {
 	player->pos.y = flerp(0, player->maxheightjump,

@@ -4,7 +4,7 @@ SRCS = main.c \
 		error.c createwindow.c utils.c \
 		game/player/playermove.c game/player/nextplayerposition.c game/player/defaultplayerdata.c \
 		game/map/testmap.c \
-		engine/collide.c \
+		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c \

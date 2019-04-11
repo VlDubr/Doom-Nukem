@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 17:57:04 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/11 18:37:55 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,17 +97,17 @@ typedef struct	s_wall
 
 typedef struct	s_sector
 {
-	t_wall	*walls;
-	size_t	wallcount;
-	int		floor;
-	int		height;
+	size_t			start;
+	size_t			count;
+	int				floor;
+	int				height;
 }				t_sector;
 
 typedef struct	s_map
 {
 	t_sector	*sectors;
 	size_t		sectorcount;
-	t_fvector2d	*walls;
+	t_fvector	*walls;
 	size_t		wallcount;
 	t_player	startplayer;
 }				t_map;
@@ -133,7 +133,7 @@ t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
 int			clickbutton(t_button button, t_mouse mouse);
 
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
-void		drawsector(uint32_t *p, t_player play, t_map m, size_t secid);
+void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 t_map		testmap(void);
 
 void		destrotwindow(t_doom *doom);
@@ -152,11 +152,13 @@ void		playerjump(t_player *player);
 
 void		loadinput(char *path, t_input *input);
 
+int			inside(t_fvector2d i, t_fvector *p, size_t size);
+
 void		free2dstring(char **str);
 size_t		stringcount(char **str);
 void		error(const char *str);
 
-int			collide(t_fvector2d pos, t_fvector2d newpos,
-t_map m, size_t secid);
+int		collide(t_fvector2d pos, t_fvector2d newpos, t_fvector *w,
+size_t count);
 
 #endif

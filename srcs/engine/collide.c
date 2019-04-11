@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 18:40:19 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 18:58:19 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/11 18:37:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,23 @@ int	collideline(t_line line)
 	return (0);
 }
 
-int		collide(t_fvector2d pos, t_fvector2d newpos, t_map m, size_t secid)
+int		collide(t_fvector2d pos, t_fvector2d newpos, t_fvector *w, size_t count)
 {
-	t_wall		w;
-	size_t		count;
+	t_fvector2d	p1;
+	t_fvector2d	p2;
+	size_t		c;
 
-	count = 0;
-	while (count < m.sectors[secid].wallcount)
+	c = 0;
+	while (c < count)
 	{
-		w = m.sectors[secid].walls[count];
-		if (w.nextsector == -1)
+		p1 = setfvector2d(w[c].x, w[c].y);
+		p2 = setfvector2d(w[c + 1 >= count ? 0 : c + 1].x,
+		w[c + 1 >= count ? 0 : c + 1].y);
+		if (w[c].z == -1)
 			if (collideline(setline(pos,
-			newpos, m.walls[w.sp], m.walls[w.ep])))
+			newpos, p1, p2)))
 				return (1);
-		count++;
+		c++;
 	}
 	return (0);
 }

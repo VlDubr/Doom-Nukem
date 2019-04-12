@@ -40,7 +40,6 @@ int				main(int agrc, char **argv)
 
 	doom = initdoom(argv[0]);
 	doom->thismap = loadmap(argv[1]);
-	//doom->thismap = testmap();
 	doom->player = defaultplayerdata();
 	doom->player.sector = doom->thismap.startplayer.sector;
 	doom->player.pos = doom->thismap.startplayer.pos;

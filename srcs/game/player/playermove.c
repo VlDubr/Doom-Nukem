@@ -26,7 +26,7 @@ void	movelr(SDL_Keycode key, t_doom *doom)
 	doom->thismap.sectors[doom->player.sector].count))
 		return ;
 	doom->player.pos = setfvector(newpos.x, doom->player.pos.y, newpos.y);
-	doom->player.sector = isinside(newpos, doom->thismap, doom->player);
+	doom->player.sector = isinside(newpos, doom->thismap, doom->player.sector);
 }
 
 void	movefb(SDL_Keycode key, t_doom *doom)
@@ -43,7 +43,7 @@ void	movefb(SDL_Keycode key, t_doom *doom)
 	doom->thismap.sectors[doom->player.sector].count))
 		return ;
 	doom->player.pos = setfvector(newpos.x, doom->player.pos.y, newpos.y);
-	doom->player.sector = isinside(newpos, doom->thismap, doom->player);
+	doom->player.sector = isinside(newpos, doom->thismap, doom->player.sector);
 }
 
 void	playerjump(t_player *player)

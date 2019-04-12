@@ -2,9 +2,11 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
+		game/map/switchlevel.c \
 		game/player/playermove.c game/player/nextplayerposition.c game/player/defaultplayerdata.c \
 		engine/collide.c engine/inside.c \
-		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c engine/filesystem/loadmap.c \
+		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
+		engine/filesystem/loadassets.c engine/filesystem/loadmap.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c \
 		engine/draw/drawwall.c engine/draw/drawline.c

@@ -116,10 +116,13 @@ typedef struct	s_doom
 {
 	char		*path;
 	t_window	*win;
-	t_list		*zbuffer;
 	SDL_Event	event;
 	t_input		input;
+
 	t_player	player;
+
+	t_map		*maps;
+	size_t		mapcount;
 	t_map		thismap;
 }				t_doom;
 
@@ -152,10 +155,12 @@ void		playerjump(t_player *player);
 
 void		loadinput(char *path, t_input *input);
 
-size_t		isinside(t_fvector2d pos, t_map	map, t_player p);
+size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
 int			inside(t_fvector2d i, t_fvector *p, size_t size);
 
+void		loadassets(char *path, t_doom *doom);
 t_map		loadmap(char *path);
+void		switchlevel(t_doom *doom, size_t level);
 
 void		free2dstring(char **str);
 size_t		stringcount(char **str);

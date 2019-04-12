@@ -19,9 +19,13 @@
 #  define BUFF_SIZE 100
 # endif
 # ifdef __APPLE__
+#  define SEPARATOR '/'
 #  define CREATEFLAG S_IWOTH | S_IREAD
 # elif __linux__
+#  define SEPARATOR '/'
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
+# elif WIN32
+#  define SEPARATOR '\'
 # endif
 # define SINT(fd, name) (serializeint(fd, #name, name))
 # define DSINT(str, int) (deserializeint(str, #int))

@@ -33,13 +33,13 @@ int	inside(t_fvector2d i, t_fvector *p, size_t size)
 	return (b&1) != 0;
 }
 
-size_t	isinside(t_fvector2d pos, t_map	map, t_player p)
+size_t	isinside(t_fvector2d pos, t_map	map, size_t	lastsecid)
 {
 	size_t count;
 
 	count = 0;
-	if (!inside(pos, map.walls + map.sectors[p.sector].start,
-	map.sectors[p.sector].count))
+	if (!inside(pos, map.walls + map.sectors[lastsecid].start,
+	map.sectors[lastsecid].count))
 	{
 		while (count < map.sectorcount)
 		{
@@ -49,5 +49,5 @@ size_t	isinside(t_fvector2d pos, t_map	map, t_player p)
 			count++;
 		}
 	}
-	return (p.sector);
+	return (lastsecid);
 }

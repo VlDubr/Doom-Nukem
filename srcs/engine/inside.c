@@ -14,47 +14,40 @@
 
 int	inside(t_fvector2d i, t_fvector *p, size_t size)
 {
+	size_t		c;
+	size_t		prev;
 	int			b;
-	t_ivector	c;
-	t_ivector2d	S;
-	t_ivector2d	S2;
 
-	c.x = 0;
-	while (c.x < size)
+	c = 0;
+	b = 0;
+	prev = size - 1;
+	while (c < size)
 	{
-		b = 0;
-		c.y = c.x < size - 1 ? c.x + 1 : 0;
-		while (b == 0)
-		{
-			c.z = c.y + 1;
-			if (c.z >= size)
-				c.z = 0;
-			if (c.z == (c.x < size - 1 ? c.x + 1 : 0))
-				break ;
-			S.x = fabsf(p[c.y].x * (p[c.z].y - p[c.x].y) +
-					  p[c.z].x * (p[c.x].y - p[c.y].y) +
-					  p[c.x].x * (p[c.y].y - p[c.z].y));
-			S.y = fabsf(p[c.y].x * (p[c.z].y - i.y) +
-					  p[c.z].x *      (i.y - p[c.y].y) +
-					  i.x *      (p[c.y].y - p[c.z].y));
-			S2.x = fabsf(p[c.x].x *(p[c.z].y - i.y) +
-					   p[c.z].x *     (i.y - p[c.x].y) +
-					   i.x *     (p[c.x].y - p[c.z].y));
-			S2.y = fabsf(p[c.y].x *(p[c.x].y - i.y) +
-					   p[c.x].x *     (i.y - p[c.y].y) +
-					   i.x *     (p[c.y].y - p[c.x].y));
-			if (S.x == S.y + S2.x + S2.y)
-			{
-				b = 1;
-				break ;
-			}
-			c.y++;
-			if (c.y >= size)
-				c.y = 0;
-		}
-		if (b == 0)
-			break ;
-		c.x++;
+		if ((((p[c].y <= i.y) && (i.y < p[prev].y)) ||
+		 ((p[prev].y <= i.y) && (i.y < p[c].y))) &&
+		(i.x < ((p[prev].x - p[c].x) * (i.y - p[c].y) / (p[prev].y - p[c].y) + p[c].x)))
+			b++;
+		prev = c;
+		c++;
 	}
-	return (b);
+	return (b&1) != 0;
+}
+
+size_t	isinside(t_fvector2d pos, t_map	map, t_player p)
+{
+	size_t count;
+
+	count = 0;
+	if (!inside(pos, map.walls + map.sectors[p.sector].start,
+	map.sectors[p.sector].count))
+	{
+		while (count < map.sectorcount)
+		{
+			if (inside(pos, map.walls + map.sectors[count].start,
+			map.sectors[count].count))
+				return (count);
+			count++;
+		}
+	}
+	return (p.sector);
 }

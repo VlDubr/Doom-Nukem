@@ -152,7 +152,10 @@ void		playerjump(t_player *player);
 
 void		loadinput(char *path, t_input *input);
 
+size_t		isinside(t_fvector2d pos, t_map	map, t_player p);
 int			inside(t_fvector2d i, t_fvector *p, size_t size);
+
+t_map		loadmap(char *path);
 
 void		free2dstring(char **str);
 size_t		stringcount(char **str);

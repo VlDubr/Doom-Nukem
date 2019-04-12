@@ -71,8 +71,9 @@ void	draw(t_doom *doom)
 	cleartexture(doom->win);
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[0].start,
-	doom->thismap.sectors[0].count);
+	doom->thismap.sectors[doom->player.sector].start,
+	doom->thismap.sectors[doom->player.sector].count);
+
 	drawplayer(doom->win->pixels, doom->player);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,

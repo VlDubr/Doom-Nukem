@@ -14,4 +14,9 @@
 
 void	update(t_doom *doom)
 {
+	float	y;
+
+	y = doom->thismap.sectors[doom->player.sector].floor;
+	if (doom->player.pos.y >= y)
+		doom->player.pos.y -= 0.1f;
 }

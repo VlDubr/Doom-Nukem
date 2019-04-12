@@ -32,7 +32,6 @@ void	updateevent(t_doom *doom)
 			key == doom->input.moveleft || key == doom->input.moveright ? movelr(key, doom) : 0;
 			key == doom->input.rotleft || key == doom->input.rotright ? rotate(key, doom) : 0;
 			key == doom->input.jump ? playerjump(&doom->player) : 0;
-			printf("key: %d\n", key);
 		}
 	}
 }

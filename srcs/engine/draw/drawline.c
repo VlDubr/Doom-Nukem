@@ -7,7 +7,7 @@ void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	t_ivector2d		cord;
 
 	delta = setfvector(fabs(start.x - end.x),
-	fabs(start.y - end.y), fabs(start.y - end.y));
+	fabs(start.y - end.y), fabs(start.y - end.y), 0);
 	edi.x = 0;
 	edi.y = end.y - start.y;
 	edi.y > 0 ? edi.y = 1 : 0;
@@ -36,7 +36,7 @@ void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	t_ivector2d		cord;
 
 	delta = setfvector(fabs(start.x - end.x),
-	fabs(start.y - end.y), fabs(start.x - end.x));
+	fabs(start.y - end.y), fabs(start.x - end.x), 0);
 	edi.x = 0;
 	edi.y = end.x - start.x;
 	edi.y > 0 ? edi.y = 1 : 0;

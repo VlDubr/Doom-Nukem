@@ -26,6 +26,7 @@ t_doom			*initdoom(char *argv0)
 		error("Error: Memory is not allocated");
 	d->path = getpath(argv0);
 	loadassets(ft_strjoin(d->path, "assets/assets.cfg"), d);
+	d->level = 0;
 	loadinput(d->path, &d->input);
 	initsdl(SDL_INIT_EVERYTHING);
 	d->win = createwindow(setivector2d(800, 600), "DOOM", SDL_WINDOW_RESIZABLE);
@@ -41,7 +42,7 @@ int				main(int agrc, char **argv)
 
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata();
-	switchlevel(doom, 0);
+	switchlevel(doom, doom->level);
 	while (doom->win->state)
 	{
 		updateevent(doom);

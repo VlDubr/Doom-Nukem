@@ -12,6 +12,137 @@
 
 #include "doom.h"
 
+typedef struct	s_camera
+{
+	float		near;
+	float		far;
+	float		fov;
+	float		aspectratio;
+}				t_camera;
+
+t_camera	initcam(t_ivector2d sizewin)
+{
+	t_camera cam;
+
+	cam.near = 0.1f;
+	cam.far = 1000;
+	cam.fov = 60;
+	cam.aspectratio = (float)sizewin.y / (float)sizewin.x;
+	return (cam);
+}
+
+
+t_mat4x4	matprojection(t_camera cam)
+{
+	float		fovrad;
+	t_mat4x4	m;
+
+	fovrad = 1 / tan(degrtorad(cam.fov * 0.5f));
+	m = initmat(0);
+	m.mat[0][0] = cam.aspectratio * fovrad;
+	m.mat[1][1] = fovrad;
+	m.mat[2][2] = cam.far / (cam.far - cam.near);
+	m.mat[3][2] = (-cam.far * cam.near) / (cam.far - cam.near);
+	m.mat[2][3] = 1;
+	m.mat[3][3] = 0;
+	return (m);
+}
+
+t_mat4x4	matcam(t_player *player)
+{
+	t_fvector	up;
+	t_fvector	target;
+	t_fvector	lookdir;
+	t_mat4x4	cammat;
+
+	up = setfvector(0, -1, 0, 1);
+	target = setfvector(0, 0, 1, 1);
+	lookdir = multipmatrix(target, matroty(player->rotate.z - 1.57f));
+	target = addfvtofv(player->pos, lookdir);
+	cammat = multipmattomat(mattranslate(-player->pos.x,
+	-player->pos.y, -player->pos.z), matpointat(player->pos, target, up));
+	cammat = multipmattomat(cammat, matrotx(player->rotate.x));
+	cammat = matinverse(cammat);
+	return (cammat);
+}
+
+t_fvector	inspectplane(t_fvector planep, t_fvector planen,
+t_fvector linestart, t_fvector lineend)
+{
+	t_fvector	linestarttoend;
+	t_fvector	linetoinspector;
+	t_fvector	planedadbd;
+	float t;
+
+	planen = normfvector(planen);
+	planedadbd.x = -dotproductfvtofv(planen, planep);
+	planedadbd.y = dotproductfvtofv(linestart, planen);
+	planedadbd.z = dotproductfvtofv(lineend, planen);
+	t = (-planedadbd.x - planedadbd.y) /
+	(planedadbd.z - planedadbd.y);
+	linestarttoend = subfvtofv(lineend, linestart);
+	linetoinspector = multfvector(linestarttoend, t, t, t);
+	return (addfvtofv(linestart, linetoinspector));
+}
+
+int		clip(t_player *player, t_fvector p[4])
+{
+	if (p[0].z <= 0 && p[1].z <= 0)
+		return (0);
+	if (p[0].z < 0 || p[1].z < 0 || p[2].z < 0 || p[3].z < 0)
+	{
+		if (p[0].z < 0)
+			p[0] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[0], p[1]);
+		if (p[1].z < 0)
+			p[1] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[1], p[0]);
+		if (p[2].z < 0)
+			p[2] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[2], p[3]);
+		if (p[3].z < 0)
+			p[3] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[3], p[2]);
+	}
+	return (1);
+}
+
+void	initdrawwall(t_fvector *view)
+{
+	int			y;
+
+	y = 0;
+	while (y < 4)
+	{
+		view[y].x = 0;
+		view[y].y = 0;
+		view[y].z = 0;
+		view[y].w = 1;
+		y++;
+	}
+}
+
+void	multmatrixdrawwall(t_fvector *view, t_mat4x4 mat)
+{
+	view[0] = multipmatrix(view[0], mat);
+	view[1] = multipmatrix(view[1], mat);
+	view[2] = multipmatrix(view[2], mat);
+	view[3] = multipmatrix(view[3], mat);
+}
+
+void	adddrawwall(t_fvector *view, float x, float y, float z)
+{
+	view[0] = addfvector(view[0], x, y, z);
+	view[1] = addfvector(view[1], x, y, z);
+	view[2] = addfvector(view[2], x, y, z);
+	view[3] = addfvector(view[3], x, y, z);
+}
+
+void	multdrawwall(t_fvector *view, float x, float y, float z)
+{
+	view[0] = multfvector(view[0], x, y, z);
+	view[1] = multfvector(view[1], x, y, z);
+	view[2] = multfvector(view[2], x, y, z);
+	view[3] = multfvector(view[3], x, y, z);
+}
+
+
 void	cleartexture(t_window *win)
 {
 	t_ivector2d cord;
@@ -39,9 +170,9 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 	c = 0;
 	while (c < count)
 	{
-		p1 = setfvector(w[c].x, w[c].y, 0);
+		p1 = setfvector(w[c].x, w[c].y, 0, 1);
 		p2 = setfvector(w[c + 1 >= count ? 0 : c + 1].x,
-		w[c + 1 >= count ? 0 : c + 1].y, 0);
+		w[c + 1 >= count ? 0 : c + 1].y, 0, 1);
 		p1 = subfvector(p1, play.pos.x, play.pos.z, 0);
 		p2 = subfvector(p2, play.pos.x, play.pos.z, 0);
 		p1 = addfvector(p1, 400, 300, 0);
@@ -55,14 +186,58 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 	}
 }
 
+void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil)
+{
+	t_fvector	wa[4];
+	t_rgb		color;
+	t_mat4x4	cammat;
+	t_mat4x4	projec;
+	size_t		c;
+
+	c = 0;
+	cammat = matcam(&play);
+	projec = matprojection(initcam(setivector2d(800, 400)));
+	while (c < count)
+	{
+		wa[0] = setfvector(w[c].x, floor, w[c].y, 1);
+		wa[1] = setfvector(w[c + 1 >= count ? 0 : c + 1].x, floor, w[c + 1 >= count ? 0 : c + 1].y, 1);
+		wa[2] = addfvector(wa[0], 0, ceil, 0);
+		wa[3] = addfvector(wa[1], 0, ceil, 0);
+		multmatrixdrawwall(wa, cammat);
+		if (clip(&play, wa))
+		{
+			multmatrixdrawwall(wa, projec);
+			wa[0] = divfvector(wa[0], wa[0].w, wa[0].w, wa[0].w);
+			wa[1] = divfvector(wa[1], wa[1].w, wa[1].w, wa[1].w);
+			wa[2] = divfvector(wa[2], wa[2].w, wa[2].w, wa[2].w);
+			wa[3] = divfvector(wa[3], wa[3].w, wa[3].w, wa[3].w);
+			adddrawwall(wa, 1, 1, 0);
+			multdrawwall(wa, 400, 300, 1);
+			if (!((wa[0].x < 0 && wa[1].x < 0) || (wa[0].x > 800 && wa[1].x > 800)
+			|| (wa[2].x < 0 && wa[3].x < 0) || (wa[2].x > 800 && wa[3].x > 800)))
+			{
+				if (w[c].z == -1)
+					color = setrgb(255, 255, 255);
+				else
+					color = setrgb(255, 0, 0);
+				drawline(p, wa[0], wa[1], color);
+				drawline(p, wa[0], wa[2], color);
+				drawline(p, wa[2], wa[3], color);
+				drawline(p, wa[1], wa[3], color);
+			}
+		}
+		c++;
+	}
+}
+
 void	drawplayer(uint32_t *p, t_player play)
 {
 	t_fvector	dir;
 
 	dir.x = cos(play.rotate.z) * 5;
 	dir.y = sin(play.rotate.z) * 5;
-	drawline(p, setfvector(400, 300, 0),
-	setfvector(400 + dir.x, 300 + dir.y, 0), setrgb(255, 255, 0));
+	drawline(p, setfvector(400, 300, 0, 1),
+	setfvector(400 + dir.x, 300 + dir.y, 0, 1), setrgb(255, 255, 0));
 }
 
 void	draw(t_doom *doom)
@@ -70,10 +245,13 @@ void	draw(t_doom *doom)
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
 
+	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	doom->thismap.sectors[doom->player.sector].start,
+	doom->thismap.sectors[doom->player.sector].count, doom->thismap.sectors[doom->player.sector].floor, doom->thismap.sectors[doom->player.sector].height);
+
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,
 	doom->thismap.sectors[doom->player.sector].count);
-
 	drawplayer(doom->win->pixels, doom->player);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,

@@ -113,7 +113,7 @@ t_fvector *v1, t_fvector *v2, t_rgb color)
 	{
 		alpha = (v1->y - v0->y) / (v2->y - v0->y);
 		vi = setfvector(v0->x + (v2->x - v0->x) * alpha,
-		v0->y + (v2->y - v0->y) * alpha, 0);
+		v0->y + (v2->y - v0->y) * alpha, 0, 1);
 		if (v1->x < vi.x)
 		{
 			drawflattoptriangle(p, *v1, vi, *v2, color);
@@ -171,15 +171,15 @@ void	drawfloor(uint32_t *p, t_fvector *v0, t_fvector *v1, t_rgb color)
 	}
 }
 
-void	drawwallv2(t_window *win, t_wall w)
-{
-	t_rgb color;
+// void	drawwallv2(t_window *win, t_wall w)
+// {
+// 	t_rgb color;
 
-	drawceil(win->pixels, &w.view[2], &w.view[3], setrgb(150, 150, 150));
-	if (w.nextsector == -1)
-		color = setrgb(255, 255, 255);
-	else
-		color = setrgb(255, 0, 0);
-	drawfilltriangle(win->pixels, &w.view[0], &w.view[1], &w.view[3], color);
-	drawfilltriangle(win->pixels, &w.view[0], &w.view[2], &w.view[3], color);
-}
+// 	drawceil(win->pixels, &w.view[2], &w.view[3], setrgb(150, 150, 150));
+// 	if (w.nextsector == -1)
+// 		color = setrgb(255, 255, 255);
+// 	else
+// 		color = setrgb(255, 0, 0);
+// 	drawfilltriangle(win->pixels, &w.view[0], &w.view[1], &w.view[3], color);
+// 	drawfilltriangle(win->pixels, &w.view[0], &w.view[2], &w.view[3], color);
+// }

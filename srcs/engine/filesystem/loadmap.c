@@ -24,7 +24,7 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 		{
 			tmp = ft_strsplit(str[y], ' ');
 			tmp2 = ft_strsplit(tmp[1], ',');
-			(*wall)[y2] = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]), ft_atoi(tmp2[2]));
+			(*wall)[y2] = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]), ft_atoi(tmp2[2]), 0);
 			free2dstring(tmp);
 			free2dstring(tmp2);
 			y2++;
@@ -59,6 +59,7 @@ void	loadsector(char **str, t_sector **sector, size_t *count)
 			(*sector)[y2].count = ft_atoi(tmp[2]);
 			(*sector)[y2].floor = ft_atoi(tmp[3]);
 			(*sector)[y2].height = ft_atoi(tmp[4]);
+			(*sector)[y2].type = ft_atoi(tmp[5]);
 			free2dstring(tmp);
 			y2++;
 		}
@@ -85,10 +86,11 @@ void	loadplayer(char	**str, t_player *player)
 				error("Error: player");
 			tmp = ft_strsplit(str[y], ' ');
 			tmp2 = ft_strsplit(tmp[1], ',');
-			player->pos = setfvector(ft_atoi(tmp2[0]), 0, ft_atoi(tmp2[1]));
+			player->pos = setfvector(ft_atoi(tmp2[0]), 0, ft_atoi(tmp2[1]), 0);
 			free2dstring(tmp2);
 			tmp2 = ft_strsplit(tmp[2], ',');
-			player->rotate = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]), ft_atoi(tmp2[2]));
+			player->rotate = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]),
+			ft_atoi(tmp2[2]), 0);
 			free2dstring(tmp2);
 			free2dstring(tmp);
 		}

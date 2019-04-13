@@ -64,6 +64,8 @@ typedef struct	s_input
 	int			moveright;
 	int			rotleft;
 	int			rotright;
+	int			rotup;
+	int			rotdown;
 	int			jump;
 }				t_input;
 
@@ -86,21 +88,13 @@ typedef struct	s_player
 	int			state;
 }				t_player;
 
-typedef struct	s_wall
-{
-	int			sp;
-	int			ep;
-	t_fvector	view[4];
-	int			texture;
-	int			nextsector;
-}				t_wall;
-
 typedef struct	s_sector
 {
 	size_t			start;
 	size_t			count;
 	int				floor;
 	int				height;
+	int				type;
 }				t_sector;
 
 typedef struct	s_map
@@ -123,6 +117,7 @@ typedef struct	s_doom
 
 	t_map		*maps;
 	size_t		mapcount;
+	size_t		level;
 	t_map		thismap;
 }				t_doom;
 

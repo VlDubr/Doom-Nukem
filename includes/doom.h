@@ -76,6 +76,7 @@ typedef struct	s_player
 	t_fvector	velosity;
 	size_t		sector;
 
+	float		height;
 	float		maxhealth;
 	float		health;
 	float		maxstamina;

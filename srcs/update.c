@@ -26,9 +26,9 @@ void	checkswaplevel(t_doom *doom, size_t secid)
 
 void	playerzpos(t_player *p, float y)
 {
-	if (p->pos.y - 5 >= y)
+	if (p->pos.y - p->height >= y)
 		p->pos.y -= 0.08f;
-	if (p->pos.y - 5 < y)
+	if (p->pos.y - p->height < y)
 		p->pos.y += 0.08f;
 }
 

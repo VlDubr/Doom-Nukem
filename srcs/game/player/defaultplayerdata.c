@@ -20,6 +20,7 @@ t_player	defaultplayerdata(void)
 	r.health = 100;
 	r.maxstamina = 100;
 	r.stamina = 100;
+	r.height = 5;
 	r.maxheightjump = 10;
 	r.movespeed = 1;
 	r.runspeed = 5;

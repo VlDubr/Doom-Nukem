@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/11 18:37:05 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/15 17:36:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 
 void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil)
 {
-	t_fvector	wa[4];
+	t_wall		wa;
 	t_rgb		color;
 	t_mat4x4	cammat;
 	t_mat4x4	projec;
@@ -199,31 +199,32 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	projec = matprojection(initcam(setivector2d(800, 400)));
 	while (c < count)
 	{
-		wa[0] = setfvector(w[c].x, floor, w[c].y, 1);
-		wa[1] = setfvector(w[c + 1 >= count ? 0 : c + 1].x, floor, w[c + 1 >= count ? 0 : c + 1].y, 1);
-		wa[2] = addfvector(wa[0], 0, ceil, 0);
-		wa[3] = addfvector(wa[1], 0, ceil, 0);
-		multmatrixdrawwall(wa, cammat);
-		if (clip(&play, wa))
+		wa.p[0] = setfvector(w[c].x, floor, w[c].y, 1);
+		wa.p[1] = setfvector(w[c + 1 >= count ? 0 : c + 1].x, floor, w[c + 1 >= count ? 0 : c + 1].y, 1);
+		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
+		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
+		multmatrixdrawwall(wa.p, cammat);
+		if (clip(&play, wa.p))
 		{
-			multmatrixdrawwall(wa, projec);
-			wa[0] = divfvector(wa[0], wa[0].w, wa[0].w, wa[0].w);
-			wa[1] = divfvector(wa[1], wa[1].w, wa[1].w, wa[1].w);
-			wa[2] = divfvector(wa[2], wa[2].w, wa[2].w, wa[2].w);
-			wa[3] = divfvector(wa[3], wa[3].w, wa[3].w, wa[3].w);
-			adddrawwall(wa, 1, 1, 0);
-			multdrawwall(wa, 400, 300, 1);
-			if (!((wa[0].x < 0 && wa[1].x < 0) || (wa[0].x > 800 && wa[1].x > 800)
-			|| (wa[2].x < 0 && wa[3].x < 0) || (wa[2].x > 800 && wa[3].x > 800)))
+			multmatrixdrawwall(wa.p, projec);
+			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
+			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
+			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
+			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
+			adddrawwall(wa.p, 1, 1, 0);
+			multdrawwall(wa.p, 400, 300, 1);
+			if (!((wa.p[0].x < 0 && wa.p[1].x < 0) || (wa.p[0].x > 800 && wa.p[1].x > 800)
+			|| (wa.p[2].x < 0 && wa.p[3].x < 0) || (wa.p[2].x > 800 && wa.p[3].x > 800)))
 			{
 				if (w[c].z == -1)
 					color = setrgb(255, 255, 255);
 				else
 					color = setrgb(255, 0, 0);
-				drawline(p, wa[0], wa[1], color);
-				drawline(p, wa[0], wa[2], color);
-				drawline(p, wa[2], wa[3], color);
-				drawline(p, wa[1], wa[3], color);
+				//drow_wall(p, wa, *tga);
+				drawline(p, wa.p[0], wa.p[1], color);
+				drawline(p, wa.p[0], wa.p[2], color);
+				drawline(p, wa.p[2], wa.p[3], color);
+				drawline(p, wa.p[1], wa.p[3], color);
 			}
 		}
 		c++;
@@ -245,9 +246,12 @@ void	draw(t_doom *doom)
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
 
-	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[doom->player.sector].start,
-	doom->thismap.sectors[doom->player.sector].count, doom->thismap.sectors[doom->player.sector].floor, doom->thismap.sectors[doom->player.sector].height);
+	for(int i = 0; i < doom->thismap.sectorcount; i++)
+	{
+		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	doom->thismap.sectors[i].start,
+	doom->thismap.sectors[i].count, doom->thismap.sectors[i].floor, doom->thismap.sectors[i].height);
+	}
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,

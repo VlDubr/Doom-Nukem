@@ -10,7 +10,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/build/doom",
 			"preLaunchTask": "Build debug(MacOS)",
-			"args": [ "${workspaceFolder}/build/assets/maps/test.map"],
+			"args": [ "${workspaceFolder}/build/assets/maps/test.map", "${workspaceFolder}/640x400.tga"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

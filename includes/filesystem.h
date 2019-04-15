@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:02 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:08:56 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/15 15:27:00 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,6 @@
 # include <fcntl.h>
 # ifndef BUFF_SIZE
 #  define BUFF_SIZE 100
-# endif
-# ifdef __APPLE__
-#  define SEPARATOR '/'
-#  define CREATEFLAG S_IWOTH | S_IREAD
-# elif __linux__
-#  define SEPARATOR '/'
-#  define CREATEFLAG __S_IWRITE | __S_IREAD
-# elif WIN32
-#  define SEPARATOR '\'
 # endif
 # define SINT(fd, name) (serializeint(fd, #name, name))
 # define DSINT(str, int) (deserializeint(str, #int))

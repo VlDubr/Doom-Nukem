@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"doom.h": "c",
-		"utils.h": "c"
+		"utils.h": "c",
+		"tga.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/11 18:37:55 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/15 20:01:03 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../lib/ft_graphics/includes/mat.h"
 # include "../lib/ft_graphics/includes/utils.h"
 # include "../lib/ft_graphics/includes/color.h"
+# include "../lib/TGA-Reader/include/tga.h"
 # include "filesystem.h"
 # include "physics.h"
 # include <stdlib.h>
@@ -107,6 +108,12 @@ typedef struct	s_map
 	t_player	startplayer;
 }				t_map;
 
+typedef struct	s_wall
+{
+	t_fvector	p[4];
+	t_tga		texture;
+}				t_wall;
+
 typedef struct	s_doom
 {
 	char		*path;
@@ -122,6 +129,8 @@ typedef struct	s_doom
 	t_map		thismap;
 }				t_doom;
 
+t_tga		*tga;
+
 typedef struct	s_button
 {
 	t_irect		rect;
@@ -134,6 +143,7 @@ int			clickbutton(t_button button, t_mouse mouse);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 t_map		testmap(void);
+void		drow_wall(uint32_t *p, t_wall wall, t_tga image);
 
 void		destrotwindow(t_doom *doom);
 
@@ -162,7 +172,7 @@ void		free2dstring(char **str);
 size_t		stringcount(char **str);
 void		error(const char *str);
 
-int		collide(t_fvector2d pos, t_fvector2d newpos, t_fvector *w,
-size_t count);
+int			collide(t_fvector2d pos, t_fvector2d newpos,
+t_fvector *w, size_t count);
 
 #endif

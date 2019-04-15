@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 15:03:41 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/15 15:39:36 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int				main(int agrc, char **argv)
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata();
 	switchlevel(doom, doom->level);
+	tga = tga_reader(argv[2]);
 	while (doom->win->state)
 	{
 		updateevent(doom);

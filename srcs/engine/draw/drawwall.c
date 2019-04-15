@@ -6,180 +6,135 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 18:29:39 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 17:58:46 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/15 15:41:06 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-static void			drawflattoptriangle(uint32_t *px, t_fvector v0,
-t_fvector v1, t_fvector v2, t_rgb color)
+void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 {
-	t_fvector2d	m;
-	t_fvector2d	p;
-	t_ivector2d	cord;
-	t_ivector2d	ystartend;
-	t_ivector2d	xstartend;
+	int dx1;
+	int dy1;
+	int dx4;
+	int dy4;
+	int dist1;
+	int dist4;
+	float dir1;
+	float dir4;
+	float k;
+	char r;
+	char g;
+	char b;
+	int i;
+	int x;
+	int y;
+	float m;
+	char a;
+	float *stena1_x;
+	float *stena1_y;
+	float *stena2_x;
+	float *stena2_y;
 
-	m.x = (v2.x - v0.x) / (v2.y - v0.y);
-	m.y = (v2.x - v1.x) / (v2.y - v1.y);
-	ystartend.x = (int)ceil(v0.y - 0.5f);
-	ystartend.y = (int)ceil(v2.y - 0.5f);
-	cord.y = ystartend.x - 1;
-	cord.y < 0 ? cord.y = -1 : 0;
-	ystartend.y > 600 ? ystartend.y = 600 : 0;
-	while (++cord.y < ystartend.y)
+	float *dist_sten;
+	float *ugol_sten;
+	float shag_dlya_2_steni;
+	float shag_dlya_1_steni;
+	int maxdist;
+	int x0;
+	int y0;
+	int x2;
+	int y2;
+	int x1;
+	int y1;
+	int xp;
+	int yp;
+	int mindist;
+	int buf;
+
+	if (wall.p[2].x > wall.p[3].x)
 	{
-		p.x = m.x * ((float)(cord.y) + 0.5f - v0.y) + v0.x;
-		p.y = m.y * ((float)(cord.y) + 0.5f - v1.y) + v1.x;
-		xstartend.x = (int)ceil(p.x - 0.5f);
-		xstartend.y = (int)ceil(p.y - 0.5f);
-		cord.x = xstartend.x - 1;
-		cord.x < 0 ? cord.x = -1 : 0;
-		xstartend.y > 800 ? xstartend.y = 800 : 0;
-		while (++cord.x < xstartend.y)
-			px[cord.x + (cord.y * 800)] = ((((((255 << 8) |
-			color.red) << 8) | color.green) << 8) | color.blue);
+		buf = wall.p[2].x;
+		wall.p[2].x = wall.p[3].x;
+		wall.p[2].x = buf;
 	}
-}
-
-static void			drawflatbottomtriangle(uint32_t *px, t_fvector v0,
-t_fvector v1, t_fvector v2, t_rgb color)
-{
-	t_fvector2d	m;
-	t_fvector2d	p;
-	t_ivector2d	cord;
-	t_ivector2d	ystartend;
-	t_ivector2d	xstartend;
-
-	m.x = (v1.x - v0.x) / (v1.y - v0.y);
-	m.y = (v2.x - v0.x) / (v2.y - v0.y);
-	ystartend.x = (int)ceil(v0.y - 0.5f);
-	ystartend.y = (int)ceil(v2.y - 0.5f);
-	cord.y = ystartend.x - 1;
-	cord.y < 0 ? cord.y = -1 : 0;
-	ystartend.y > 600 ? ystartend.y = 600 : 0;
-	while (++cord.y < ystartend.y)
+	if (wall.p[0].x > wall.p[1].x)
 	{
-		p.x = m.x * ((float)(cord.y) + 0.5f - v0.y) + v0.x;
-		p.y = m.y * ((float)(cord.y) + 0.5f - v0.y) + v0.x;
-		xstartend.x = (int)ceil(p.x - 0.5f);
-		xstartend.y = (int)ceil(p.y - 0.5f);
-		cord.x = xstartend.x - 1;
-		cord.x < 0 ? cord.x = -1 : 0;
-		xstartend.y > 800 ? xstartend.y = 800 : 0;
-		while (++cord.x < xstartend.y)
-			px[cord.x + (cord.y * 800)] = ((((((255 << 8) |
-			color.red) << 8) | color.green) << 8) | color.blue);
+		buf = wall.p[0].x;
+		wall.p[0].x = wall.p[1].x;
+		wall.p[1].x = buf;
 	}
-}
-
-void				drawfilltriswap(t_fvector *v0,
-t_fvector *v1, t_fvector *v2)
-{
-	if (v1->y < v0->y)
-		ft_swap((void**)&v0, (void**)&v1);
-	if (v2->y < v0->y)
-		ft_swap((void**)&v0, (void**)&v2);
-	if (v1->y > v2->y)
-		ft_swap((void**)&v2, (void**)&v1);
-}
-
-void				drawfilltriangle(uint32_t *p, t_fvector *v0,
-t_fvector *v1, t_fvector *v2, t_rgb color)
-{
-	float		alpha;
-	t_fvector	vi;
-
-	if (v1->y < v0->y)
-		ft_swap((void**)&v0, (void**)&v1);
-	if (v2->y < v0->y)
-		ft_swap((void**)&v0, (void**)&v2);
-	if (v1->y > v2->y)
-		ft_swap((void**)&v2, (void**)&v1);
-	if (v0->y == v1->y)
+	dx1 = wall.p[0].x - wall.p[1].x;
+	dy1 = wall.p[0].y - wall.p[1].y;
+	dx4 = wall.p[2].x - wall.p[3].x;
+	dy4 = wall.p[2].y - wall.p[3].y;
+	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
+	dist4 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
+	if (dist4 > dist1)
 	{
-		if (v1->x < v0->x)
-			ft_swap((void**)&v1, (void**)&v0);
-		drawflattoptriangle(p, *v0, *v1, *v2, color);
-	}
-	else if (v1->y == v2->y)
-	{
-		if (v2->x < v1->x)
-			ft_swap((void**)&v1, (void**)&v2);
-		drawflatbottomtriangle(p, *v0, *v1, *v2, color);
+		maxdist = dist4;
+		mindist = dist1;
+		shag_dlya_1_steni = 1;
+		shag_dlya_2_steni = (float)mindist / (float)maxdist;
 	}
 	else
 	{
-		alpha = (v1->y - v0->y) / (v2->y - v0->y);
-		vi = setfvector(v0->x + (v2->x - v0->x) * alpha,
-		v0->y + (v2->y - v0->y) * alpha, 0, 1);
-		if (v1->x < vi.x)
-		{
-			drawflattoptriangle(p, *v1, vi, *v2, color);
-			drawflatbottomtriangle(p, *v0, *v1, vi, color);
-		}
-		else
-		{
-			drawflattoptriangle(p, vi, *v1, *v2, color);
-			drawflatbottomtriangle(p, *v0, vi, *v1, color);
-		}
+		maxdist = dist1;
+		mindist = dist4;
+		shag_dlya_1_steni = (float)mindist / (float)maxdist;
+		shag_dlya_2_steni = 1;
 	}
-}
 
-void	drawceil(uint32_t *p, t_fvector *v2, t_fvector *v3, t_rgb color)
-{
-	t_fvector2d	cord;
-	t_fvector2d	end;
-
-	cord.x = v2->x < v3->x ? v2->x : v3->x;
-	end.x = v2->x < v3->x ? v3->x : v2->x;
-	while (cord.x < end.x)
+	dir1 = (atan((float)dy1/(float)dx1));
+	dir4 = (atan((float)dy4/(float)dx4));
+	stena1_x = (float *)malloc((sizeof(float)) * (maxdist+1));
+	stena1_y = (float *)malloc((sizeof(float)) * (maxdist+1));
+	stena2_x = (float *)malloc((sizeof(float)) * (maxdist+1));
+	stena2_y = (float *)malloc((sizeof(float)) * (maxdist+1));
+	ugol_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
+	dist_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
+	i = 0;
+	while (i < maxdist)
 	{
-		cord.y = 0;
-		end.y = v2->y < v3->y ? v3->y : v2->y;
-		while (cord.y < end.y)
-		{
-			if (cord.x >= 0 && cord.x < 800 && cord.y >= 0 && cord.y < 600)
-				p[(int)(cord.x + (cord.y * 800))] = ((((((255 << 8) |
-				color.red) << 8) | color.green) << 8) | color.blue);
-			cord.y++;
-		}
-		cord.x++;
+		stena1_x[i] = wall.p[2].x + (i * shag_dlya_1_steni) * cos(dir4);
+		stena1_y[i] = wall.p[2].y + (i * shag_dlya_1_steni) * sin(dir4);
+		stena2_x[i] = wall.p[0].x + (i * shag_dlya_2_steni) * cos(dir1);
+		stena2_y[i] = wall.p[0].y + (i * shag_dlya_2_steni) * sin(dir1);
+		ugol_sten[i] = atan((float)(stena1_y[i] - stena2_y[i])/(stena1_x[i] - stena2_x[i]));
+
+		dist_sten[i] = sqrt(pow(stena2_x[i] - stena1_x[i], 2) + pow(stena2_y[i] - stena1_y[i], 2));
+		 printf ("%f\n", dist_sten[i]);
+		if (ugol_sten[i] > 0)
+			ugol_sten[i] -= M_PI;
+		i++;
 	}
-}
 
-void	drawfloor(uint32_t *p, t_fvector *v0, t_fvector *v1, t_rgb color)
-{
-	t_fvector2d	cord;
-	t_fvector2d	end;
-
-	cord.x = v0->x < v1->x ? v0->x : v1->x;
-	end.x = v0->x < v1->x ? v1->x : v0->x;
-	while (cord.x < end.x)
+	x = 0;
+	while (x < maxdist)
 	{
-		cord.y = v0->y < v1->y ? v0->y : v1->y;
-		end.y = 800;
-		while (cord.y < end.y)
+		y = 0;
+		while (y < dist_sten[x] )
 		{
-			if (cord.x >= 0 && cord.x < 800 && cord.y >= 0 && cord.y < 600)
-				p[(int)(cord.x + (cord.y * 800))] = ((((((255 << 8) |
-				color.red) << 8) | color.green) << 8) | color.blue);
-			cord.y++;
+			k = dist_sten[x]   / image.height;
+			m = (float)maxdist / image.width;
+			x0 = (stena1_x[x]) + y *1  * cos(ugol_sten[x]);
+			y0 = (stena1_y[x]) + y*1 * sin(ugol_sten[x]);
+			yp = (int)(y/k);
+			xp = (int)(x/m);
+			r = image.pic[yp][xp].red;
+			g = image.pic[yp][xp].green;
+			b = image.pic[yp][xp].blue;
+			a = image.pic[yp][xp].alpha;
+			if (x >= 0 && x < 800 && y >= 0 && y < 600)
+				p[(int)x + (y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+			y++;
 		}
-		cord.x++;
+		x++;
 	}
+	free(stena1_x);
+	free(stena1_y);
+	free(stena2_x);
+	free(stena2_y);
+	free(ugol_sten);
+	free(dist_sten);
 }
-
-// void	drawwallv2(t_window *win, t_wall w)
-// {
-// 	t_rgb color;
-
-// 	drawceil(win->pixels, &w.view[2], &w.view[3], setrgb(150, 150, 150));
-// 	if (w.nextsector == -1)
-// 		color = setrgb(255, 255, 255);
-// 	else
-// 		color = setrgb(255, 0, 0);
-// 	drawfilltriangle(win->pixels, &w.view[0], &w.view[1], &w.view[3], color);
-// 	drawfilltriangle(win->pixels, &w.view[0], &w.view[2], &w.view[3], color);
-// }

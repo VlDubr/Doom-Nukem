@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/15 20:01:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/16 12:41:31 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,10 @@ typedef struct	s_mouse
 	float		sensivety;
 }				t_mouse;
 
-typedef enum	e_key
-{
-	MOVEF = 0,
-	MOVEB,
-	MOVEL,
-	MOVER
-}				t_key;
-
-
 typedef struct	s_input
 {
 	t_mouse		mouse;
+	Uint8		*keystate;
 	int			moveforward;
 	int			movebackward;
 	int			moveleft;
@@ -156,7 +148,8 @@ t_player	defaultplayerdata(void);
 t_fvector2d	retnewpos(float rotz);
 void		movelr(SDL_Keycode key, t_doom *doom);
 void		movefb(SDL_Keycode key, t_doom *doom);
-void		playermove(t_player *player, t_fvector2d dir);
+void		moveplayer(t_doom *doom, SDL_Keycode key, t_fvector2d dir);
+void		playermove(t_doom *doom);
 void		playerjump(t_player *player);
 
 void		loadinput(char *path, t_input *input);

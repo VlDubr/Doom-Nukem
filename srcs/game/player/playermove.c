@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/15 20:01:00 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/16 12:59:33 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,31 @@ void	movefb(SDL_Keycode key, t_doom *doom)
 	doom->player.sector = isinside(newpos, doom->thismap, doom->player.sector);
 }
 
-// void	moveplayer(t_player	*player, t_map map, float rotoffset, int i)
-// {
-// 	t_fvector2d	dir;
-// 	size_t		lastsector;
+void	moveplayer(t_doom *doom, int i, t_fvector2d dir)
+{
+	size_t		lastsector;
 
-// 	dir.x = cos(player->rotate.z + rotoffset);
-// 	dir.y = sin(player->rotate.z + rotoffset);
-// 	player->velocity = i ? addfvector(player->pos, dir.x , 0, dir.z) :
-// 	subfvector(player->pos, dir.x , 0, dir.z);
-// 	if (//Collide)
-// 		return ;
-// 	lastsector = player->sector;
-// 	player->sector = //inside;
-// 	if (lastsector != player->sector)
-// 		if (!(player.velocity.z + player->height > map.sector[player->sector].floor))
-// 			return ;
-// 	player->pos = player->velocity;
-// }
+	if (i)
+		doom->player.velosity = addfvector(doom->player.pos, dir.x , 0, dir.y);
+	else
+		doom->player.velosity = subfvector(doom->player.pos, dir.x , 0, dir.y);
+
+	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
+		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
+		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,
+		doom->thismap.sectors[doom->player.sector].count))
+		return ;
+	lastsector = doom->player.sector;
+	doom->player.sector = isinside(setfvector2d(doom->player.velosity.x,
+	doom->player.velosity.z), doom->thismap, doom->player.sector);
+	if (lastsector != doom->player.sector)
+		if ((doom->player.velosity.y / 2) < doom->thismap.sectors[doom->player.sector].floor)
+		{
+			doom->player.sector = lastsector;
+			return ;
+		}
+	doom->player.pos = doom->player.velosity;
+}
 
 void	playerjump(t_player *player)
 {
@@ -71,14 +78,30 @@ void	playerjump(t_player *player)
 	(1 / player->maxstamina) * player->stamina);
 }
 
-void	playermove(t_player *player, t_fvector2d dir)
+void	playermove(t_doom *doom)
 {
-	if (player->state == 2 && player->stamina > 0)
+	int			i;
+	t_fvector2d	dir;
+
+	if (doom->input.keystate[SDL_SCANCODE_D] ||
+	doom->input.keystate[SDL_SCANCODE_A])
 	{
-		dir = multfvector2d(dir, player->runspeed, player->runspeed);
-		player->stamina--;
+		dir.x = cos(doom->player.rotate.z + 1.57f);
+		dir.y = sin(doom->player.rotate.z + 1.57f);
 	}
 	else
-		dir = multfvector2d(dir, player->movespeed, player->movespeed);
-	player->velosity = setfvector(dir.x, dir.y, 0, 1);
+	{
+		dir.x = cos(doom->player.rotate.z);
+		dir.y = sin(doom->player.rotate.z);
+	}
+	i = doom->input.keystate[SDL_SCANCODE_W] ||
+	doom->input.keystate[SDL_SCANCODE_D] ? 1 : 0;
+	if (doom->player.state == 2 && doom->player.stamina > 0)
+	{
+		dir = multfvector2d(dir, doom->player.runspeed, doom->player.runspeed);
+		doom->player.stamina--;
+	}
+	else
+		dir = multfvector2d(dir, doom->player.movespeed, doom->player.movespeed);
+	moveplayer(doom, i, dir);
 }

@@ -46,6 +46,25 @@ void	movefb(SDL_Keycode key, t_doom *doom)
 	doom->player.sector = isinside(newpos, doom->thismap, doom->player.sector);
 }
 
+void	moveplayer(t_player	*player, t_map map, float rotoffset, int i)
+{
+	t_fvector2d	dir;
+	size_t		lastsector;
+
+	dir.x = cos(player->rotate.z + rotoffset);
+	dir.y = sin(player->rotate.z + rotoffset);
+	player->velocity = i ? addfvector(player->pos, dir.x , 0, dir.z) :
+	subfvector(player->pos, dir.x , 0, dir.z);
+	if (//Collide)
+		return ;
+	lastsector = player->sector;
+	player->sector = //inside;
+	if (lastsector != player->sector)
+		if (!(player.velocity.z + player->height > map.sector[player->sector].floor))
+			return ;
+	player->pos = player->velocity;
+}
+
 void	playerjump(t_player *player)
 {
 	player->pos.y = flerp(0, player->maxheightjump,

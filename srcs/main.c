@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 11:58:50 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 15:46:43 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int				main(int agrc, char **argv)
 		doom->currentframe = SDL_GetPerformanceCounter();
 		doom->delta = (double)((doom->currentframe - doom->lastframe) *
 		1000 / (double)SDL_GetPerformanceFrequency());
-		printf("delta: %f\n", doom->delta);
+		// printf("delta: %f\n", doom->delta);
 		updateevent(doom);
 		update(doom, doom->delta);
 		draw(doom);

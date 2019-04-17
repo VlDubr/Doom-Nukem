@@ -1,73 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drow_wall.c                                        :+:      :+:    :+:   */
+/*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/17 20:40:17 by vmcclure         ###   ########.fr       */
+/*   Created: 2019/04/04 18:29:39 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/17 20:36:15 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "doom.h"
 
-void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, float stena, uint32_t *p)
-{
-	float dx;
-	float dy;
-	float x;
-	float y;
-	float d;
-	float d1;
-	float d2;
-	int r;
-	int g;
-	int b;
-	int yp;
-	float k;
-	float e;
-	char a;
-
-	e = 1;
-	x = x0;
-	y = y0;
-	dx = fabs(x1 - x0);
-	if (stena == 1)
-		{
-			e = -1;
-			y = y1;
-			x = x1;
-		}		
-	dy = (y1 - y0);
-	d = 2* (dx - dy);
-	d1 = 2 * dx * e;
-	d2 = (dx - dy) *2.0;
-
-	k = dy   / (image.width);
-
-	while (y >= y0 && y <= y1)
-	{
-		y += e ;
-		if (d < 0)
-			d +=d1* e;
-		else
-		{
-			x += 1;
-			d +=d2;
-		}
-		yp = (int)((y - y0 )/k);
-		r = image.pic[yp][xp].red;
-		g = image.pic[yp][xp].green;
-		b = image.pic[yp][xp].blue;
-		a = image.pic[yp][xp].alpha;
-		
-		if (x >= 0 && x < 800 && y >= 0 && y < 600)
-				p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-	}
-	
-}
 void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 {
 	int dx1;
@@ -86,21 +30,28 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	int x;
 	int y;
 	float m;
+	char a;
 	float *stena1_x;
 	float *stena1_y;
 	float *stena2_x;
 	float *stena2_y;
+
+	float *dist_sten;
+	float *ugol_sten;
 	float shag_dlya_2_steni;
 	float shag_dlya_1_steni;
 	int maxdist;
 	int x0;
 	int y0;
+	int x2;
+	int y2;
 	int x1;
 	int y1;
 	int xp;
 	int yp;
 	int mindist;
 	int buf;
+
 	if (wall.p[2].x > wall.p[3].x)
 	{
 		buf = wall.p[2].x;
@@ -117,56 +68,73 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	dy1 = wall.p[0].y - wall.p[1].y;
 	dx4 = wall.p[2].x - wall.p[3].x;
 	dy4 = wall.p[2].y - wall.p[3].y;
-
-
-	clock_t start = clock();
 	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
 	dist4 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
-	if (dx4 < dx1)
+	if (dist4 > dist1)
 	{
-		maxdist = fabs(wall.p[3].x - wall.p[2].x);
-		mindist = fabs(wall.p[1].x - wall.p[0].x);
+		maxdist = dist4;
+		mindist = dist1;
 		shag_dlya_1_steni = 1;
-		k = 1;
-		shag_dlya_2_steni = (float)mindist / (float)maxdist;		
+		shag_dlya_2_steni = (float)mindist / (float)maxdist;
 	}
 	else
 	{
-		maxdist =fabs(wall.p[1].x - wall.p[0].x);
-		mindist =fabs(wall.p[3].x - wall.p[2].x);
+		maxdist = dist1;
+		mindist = dist4;
 		shag_dlya_1_steni = (float)mindist / (float)maxdist;
 		shag_dlya_2_steni = 1;
-		k = 2;
-	}	
+	}
+
 	dir1 = (atan((float)dy1/(float)dx1));
 	dir4 = (atan((float)dy4/(float)dx4));
 	stena1_x = (float *)malloc((sizeof(float)) * (maxdist+1));
 	stena1_y = (float *)malloc((sizeof(float)) * (maxdist+1));
 	stena2_x = (float *)malloc((sizeof(float)) * (maxdist+1));
 	stena2_y = (float *)malloc((sizeof(float)) * (maxdist+1));
-
+	ugol_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
+	dist_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
 	i = 0;
-	while (i <= maxdist)
+	while (i < maxdist)
 	{
-			stena1_x[i] = wall.p[0].x + (i * shag_dlya_2_steni);
-			stena1_y[i] = wall.p[0].y + (i * shag_dlya_2_steni * (dist1/(float)dx1)) * sin(dir1);
-			stena2_x[i] = wall.p[2].x + (i * shag_dlya_1_steni);
-			stena2_y[i] = wall.p[2].y - (i * shag_dlya_1_steni* (dist4/(float)dx4)) *  sin(dir4);
+		stena1_x[i] = wall.p[2].x + (i * shag_dlya_1_steni) * cos(dir4);
+		stena1_y[i] = wall.p[2].y + (i * shag_dlya_1_steni) * sin(dir4);
+		stena2_x[i] = wall.p[0].x + (i * shag_dlya_2_steni) * cos(dir1);
+		stena2_y[i] = wall.p[0].y + (i * shag_dlya_2_steni) * sin(dir1);
+		ugol_sten[i] = atan((float)(stena1_y[i] - stena2_y[i])/(stena1_x[i] - stena2_x[i]));
+
+		dist_sten[i] = sqrt(pow(stena2_x[i] - stena1_x[i], 2) + pow(stena2_y[i] - stena1_y[i], 2));
+		 printf ("%f\n", dist_sten[i]);
+		if (ugol_sten[i] > 0)
+			ugol_sten[i] -= M_PI;
 		i++;
 	}
+
 	x = 0;
-	m = maxdist /(float)image.width ;
 	while (x < maxdist)
 	{
-		xp = (int)((x)/m);
-		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp, k, p);
+		y = 0;
+		while (y < dist_sten[x] )
+		{
+			k = dist_sten[x]   / image.height;
+			m = (float)maxdist / image.width;
+			x0 = (stena1_x[x]) + y * 1  * cos(ugol_sten[x]);
+			y0 = (stena1_y[x]) + y * 1 * sin(ugol_sten[x]);
+			yp = (int)(y/k);
+			xp = (int)(x/m);
+			r = image.pic[yp][xp].red;
+			g = image.pic[yp][xp].green;
+			b = image.pic[yp][xp].blue;
+			a = image.pic[yp][xp].alpha;
+			if (x >= 0 && x < 800 && y >= 0 && y < 600)
+				p[(int)x + (y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+			y++;
+		}
 		x++;
 	}
-	clock_t end = clock();
-	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-	printf("The time: %f seconds\n", seconds);
 	free(stena1_x);
 	free(stena1_y);
 	free(stena2_x);
 	free(stena2_y);
+	free(ugol_sten);
+	free(dist_sten);
 }

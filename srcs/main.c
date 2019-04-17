@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/15 15:39:36 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 11:58:50 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,16 @@ int				main(int agrc, char **argv)
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata();
 	switchlevel(doom, doom->level);
-	tga = tga_reader(argv[2]);
+	doom->currentframe = SDL_GetPerformanceCounter();
 	while (doom->win->state)
 	{
+		doom->lastframe = doom->currentframe;
+		doom->currentframe = SDL_GetPerformanceCounter();
+		doom->delta = (double)((doom->currentframe - doom->lastframe) *
+		1000 / (double)SDL_GetPerformanceFrequency());
+		printf("delta: %f\n", doom->delta);
 		updateevent(doom);
-		update(doom);
+		update(doom, doom->delta);
 		draw(doom);
 	}
 	quitprogram(doom);

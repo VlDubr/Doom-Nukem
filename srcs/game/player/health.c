@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   defaultplayerdata.c                                :+:      :+:    :+:   */
+/*   health.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/04 17:51:31 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 12:27:03 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/04/17 12:36:01 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/04/17 12:39:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-t_player	defaultplayerdata(void)
+void	addhealth(t_player *p, float addvalue)
 {
-	t_player r;
+	if (p->health < p->maxhealth)
+		p->health += addvalue;
+}
 
-	r.maxhealth = 100;
-	r.health = 100;
-	r.maxstamina = 100;
-	r.stamina = 100;
-	r.height = 5;
-	r.maxheightjump = 10;
-	r.movespeed = 0.1f;
-	r.runspeed = 0.3f;
-	r.state = 0;
-	return (r);
+void	minushealth(t_player *p, float minusvalue)
+{
+	if (p->health > 0)
+		p->health -= minusvalue;
+}
+
+void	playerdeath(t_player *p)
+{
+	if (p->health <= 0)
+		printf("Death\n");
 }

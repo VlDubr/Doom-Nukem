@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/15 17:36:34 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 14:07:49 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,9 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil)
 {
 	t_wall		wa;
+	float		vec;
+	t_fvector2d	tmp;
+	t_fvector2d	delta;
 	t_rgb		color;
 	t_mat4x4	cammat;
 	t_mat4x4	projec;
@@ -221,6 +224,25 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				else
 					color = setrgb(255, 0, 0);
 				//drow_wall(p, wa, *tga);
+				if (wa.p[0].x < 0)
+				{
+
+					delta.x = wa.p[1].x - wa.p[0].x;
+					delta.y = wa.p[1].y - wa.p[0].y;
+					tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
+					vec = atan(delta.y / delta.x);
+					wa.p[0].y = wa.p[0].y + (sqrt((tmp.x * tmp.x) + (tmp.y * tmp.y)) - 800) * sin(vec);
+					wa.p[0].x = wa.p[0].x + (sqrt((tmp.x * tmp.x) + (tmp.y * tmp.y)) - 800) * cos(vec);
+				}
+				if (wa.p[2].x < 0)
+				{
+					delta.x = wa.p[3].x - wa.p[2].x;
+					delta.y = wa.p[3].y - wa.p[2].y;
+					tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
+					vec = atan(delta.y / delta.x);
+					wa.p[2].y = wa.p[2].y + (sqrt((tmp.x * tmp.x) + (tmp.y * tmp.y)) - 800) * sin(vec);
+					wa.p[2].x = wa.p[2].x + (sqrt((tmp.x * tmp.x) + (tmp.y * tmp.y)) - 800) * cos(vec);
+				}
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
 				drawline(p, wa.p[2], wa.p[3], color);

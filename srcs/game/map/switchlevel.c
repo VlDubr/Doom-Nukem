@@ -2,7 +2,7 @@
 
 void	switchlevel(t_doom *doom, size_t level)
 {
-	if (level < doom->mapcount && level >= 0)
+	if (level < doom->mapcount)
 	{
 		doom->thismap = doom->maps[level];
 		doom->player.sector = isinside(

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/16 12:41:31 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 13:47:48 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_mouse
 typedef struct	s_input
 {
 	t_mouse		mouse;
-	Uint8		*keystate;
+	const Uint8	*keystate;
 	int			moveforward;
 	int			movebackward;
 	int			moveleft;
@@ -111,6 +111,11 @@ typedef struct	s_doom
 	char		*path;
 	t_window	*win;
 	SDL_Event	event;
+
+	Uint64		lastframe;
+	Uint64		currentframe;
+	double		delta;
+
 	t_input		input;
 
 	t_player	player;
@@ -120,8 +125,6 @@ typedef struct	s_doom
 	size_t		level;
 	t_map		thismap;
 }				t_doom;
-
-t_tga		*tga;
 
 typedef struct	s_button
 {
@@ -134,28 +137,26 @@ int			clickbutton(t_button button, t_mouse mouse);
 
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
-t_map		testmap(void);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image);
 
 void		destrotwindow(t_doom *doom);
 
 void		updateevent(t_doom *doom);
-void		update(t_doom *doom);
+void		update(t_doom *doom, double delta);
 void		draw(t_doom *doom);
 void		quitprogram(t_doom *doom);
 
 t_player	defaultplayerdata(void);
-t_fvector2d	retnewpos(float rotz);
-void		movelr(SDL_Keycode key, t_doom *doom);
-void		movefb(SDL_Keycode key, t_doom *doom);
-void		moveplayer(t_doom *doom, SDL_Keycode key, t_fvector2d dir);
-void		playermove(t_doom *doom);
+void		addstamina(t_player *p, float addvalue);
+void		playermove(t_doom *doom, double delta);
 void		playerjump(t_player *player);
 
 void		loadinput(char *path, t_input *input);
 
-size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
+int			collide(t_fvector2d pos, t_fvector2d newpos,
+t_fvector *w, size_t count);
 int			inside(t_fvector2d i, t_fvector *p, size_t size);
+size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
 
 void		loadassets(char *path, t_doom *doom);
 t_map		loadmap(char *path);
@@ -164,8 +165,5 @@ void		switchlevel(t_doom *doom, size_t level);
 void		free2dstring(char **str);
 size_t		stringcount(char **str);
 void		error(const char *str);
-
-int			collide(t_fvector2d pos, t_fvector2d newpos,
-t_fvector *w, size_t count);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:47:12 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/09 12:39:45 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/16 13:20:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ static t_input	defaultinput(void)
 {
 	t_input r;
 
-	r.moveforward = SDLK_w;
-	r.movebackward = SDLK_s;
-	r.moveleft = SDLK_a;
-	r.moveright = SDLK_d;
-	r.jump = SDLK_SPACE;
-	r.rotleft = SDLK_LEFT;
-	r.rotright = SDLK_RIGHT;
-	r.rotup = SDLK_UP;
-	r.rotdown = SDLK_DOWN;
+	r.moveforward = SDL_SCANCODE_W;
+	r.movebackward = SDL_SCANCODE_S;
+	r.moveleft = SDL_SCANCODE_A;
+	r.moveright = SDL_SCANCODE_D;
+	r.jump = SDL_SCANCODE_SPACE;
+	r.rotleft = SDL_SCANCODE_LEFT;
+	r.rotright = SDL_SCANCODE_RIGHT;
+	r.rotup = SDL_SCANCODE_UP;
+	r.rotdown = SDL_SCANCODE_DOWN;
 	r.mouse.sensivety = 1;
 	return (r);
 }

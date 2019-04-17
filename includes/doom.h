@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 20:06:55 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 21:18:45 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,9 @@ typedef struct	s_button
 	SDL_Surface	*surf;
 	void		(*clickevent)(void);
 }				t_button;
+
+t_tga		*tga;
+
 t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
 int			clickbutton(t_button button, t_mouse mouse);
 

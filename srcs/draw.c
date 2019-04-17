@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 21:14:56 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/17 21:19:16 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
+				drow_wall(p, wa, *tga);
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
 				drawline(p, wa.p[2], wa.p[3], color);

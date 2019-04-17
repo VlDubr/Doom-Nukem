@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 13:47:48 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 20:06:55 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@
 # include "physics.h"
 # include <stdlib.h>
 # ifdef __APPLE__
+#  define CREATEFLAG S_IWRITE | S_IREAD
 #  include "../lib/SDL/include/SDL2/SDL.h"
 # elif __linux__
+#  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>
 # endif
 

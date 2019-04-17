@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 12:39:47 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 20:13:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ void	rotate(t_doom *doom, double delta)
 {
 	if (doom->input.keystate[SDL_SCANCODE_RIGHT])
 		doom->player.rotate.z += 0.005f * delta;
-	else
+	else if (doom->input.keystate[SDL_SCANCODE_LEFT])
 		doom->player.rotate.z -= 0.005f * delta;
-	// else if (key == doom->input.rotup)
-	// 	doom->player.rotate.x += 0.05f;
-	// else
-	// 	doom->player.rotate.x -= 0.05f;
+	else if (doom->input.keystate[SDL_SCANCODE_UP])
+		doom->player.rotate.x += 0.005f * delta;
+	else
+		doom->player.rotate.x -= 0.005f * delta;
 }
 
 void	checkkeyboard(t_doom *doom, double delta)
@@ -68,7 +68,7 @@ void	checkkeyboard(t_doom *doom, double delta)
 		doom->input.keystate[doom->input.moveright])
 		playermove(doom, delta);
 	if (doom->input.keystate[doom->input.rotleft] ||
-	doom->input.keystate[doom->input.rotright])
+	doom->input.keystate[doom->input.rotright] || doom->input.keystate[SDL_SCANCODE_UP] || doom->input.keystate[SDL_SCANCODE_DOWN])
 		rotate(doom, delta);
 	if (doom->input.keystate[doom->input.jump])
 		playerjump(&doom->player);

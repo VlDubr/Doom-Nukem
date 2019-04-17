@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:19:22 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/11 18:14:49 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/17 15:29:29 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static void	rgba(t_tga *img, unsigned char *buf, t_service *s, int k)
 
 void		rec(t_tga *img, unsigned char *buf, t_service *s)
 {
-	int	k;
-	int	step;
+	unsigned int	k;
+	int				step;
 
 	k = 0;
 	step = img->bpp / 8;
@@ -88,7 +88,7 @@ void		c_rec(t_tga *img, unsigned char *buf, t_service *s)
 
 void		mono_rec(t_tga *img, unsigned char *buf, t_service *s)
 {
-	int	k;
+	unsigned int	k;
 
 	k = 0;
 	while (k < s->read_l && s->y < img->height)

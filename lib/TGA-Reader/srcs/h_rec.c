@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 18:10:45 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/11 18:10:57 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/17 13:58:11 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,5 @@ void		head_rec(t_tga *img, unsigned char *buf, t_service *s)
 		ft_error("Damaged file (wrong bpp)!");
 	img->flip_g = buf[17] & 32;
 	img->flip_v = buf[17] & 16;
-	if (!(img->pic = malloc_pix(img->pic, img->width, img->height)))
-		ft_error("Malloc error!");
 	s->read_l = img->width * img->height * (img->bpp / 8);
 }

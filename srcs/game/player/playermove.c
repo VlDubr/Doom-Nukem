@@ -6,19 +6,17 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 11:54:11 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/17 20:26:50 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-static void	changepos(t_doom *doom, int i, t_fvector2d dir)
+static void	checkpos(t_doom *doom, t_fvector newpos, t_fvector2d dir)
 {
 	size_t		lastsector;
 
-	doom->player.velosity = i ? addfvector(doom->player.pos, dir.x, 0, dir.y) :
-	subfvector(doom->player.pos, dir.x, 0, dir.y);
-
+	doom->player.velosity = newpos;
 	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
 		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
 		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,
@@ -43,6 +41,10 @@ void		playermove(t_doom *doom, double delta)
 	float		angle;
 	t_fvector2d	dir;
 
+	if (doom->input.keystate[SDL_SCANCODE_W])
+	{
+		angle = doom->player.rotate.z;
+	}
 	angle = doom->input.keystate[SDL_SCANCODE_D] ||
 	doom->input.keystate[SDL_SCANCODE_A] ? doom->player.rotate.z + 1.57f :
 	doom->player.rotate.z;

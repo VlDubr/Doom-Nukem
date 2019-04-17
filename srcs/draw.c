@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/04/17 20:07:45 by gdaniel          ###   ########.fr       */
+=======
+/*   Updated: 2019/04/17 15:47:13 by vmcclure         ###   ########.fr       */
+>>>>>>> 19c6e158459d12a6da42793f55600b531dfa24d0
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +200,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_mat4x4	cammat;
 	t_mat4x4	projec;
 	size_t		c;
+	int x;
 
+	x = 0;
 	c = 0;
 	cammat = matcam(&play);
 	projec = matprojection(initcam(setivector2d(800, 400)));
@@ -216,6 +222,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
 			adddrawwall(wa.p, 1, 1, 0);
 			multdrawwall(wa.p, 400, 300, 1);
+
 			if (!((wa.p[0].x < 0 && wa.p[1].x < 0) || (wa.p[0].x > 800 && wa.p[1].x > 800)
 			|| (wa.p[2].x < 0 && wa.p[3].x < 0) || (wa.p[2].x > 800 && wa.p[3].x > 800)))
 			{
@@ -223,6 +230,38 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					color = setrgb(255, 255, 255);
 				else
 					color = setrgb(255, 0, 0);
+				if (wa.p[0].x < 0)
+				{
+
+					delta.x = wa.p[1].x - wa.p[0].x;
+					delta.y = wa.p[1].y - wa.p[0].y;
+					vec = atan(delta.y / delta.x);
+					tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
+
+					wa.p[0].x = wa.p[1].x;
+					while (wa.p[0].x > 0)
+					{
+						wa.p[0].x = wa.p[1].x - x * cos(vec);
+						wa.p[0].y = wa.p[1].y - x * sin(vec);
+						x += 100;
+					}
+				}
+				if (wa.p[2].x < 0)
+				{
+
+					delta.x = wa.p[3].x - wa.p[2].x;
+					delta.y = wa.p[3].y - wa.p[2].y;
+					vec = atan(delta.y / delta.x);
+					tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
+
+					wa.p[2].x = wa.p[3].x;
+					while (wa.p[2].x > 0)
+					{
+						wa.p[2].x = wa.p[3].x - x * cos(vec);
+						wa.p[2].y = wa.p[3].y - x * sin(vec);
+						x += 100;
+					}
+				}
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
 				drawline(p, wa.p[2], wa.p[3], color);

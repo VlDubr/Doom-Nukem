@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/19 17:05:11 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 18:37:16 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,21 +120,27 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	int buf;
 	int start;
 	
-	if (wall.p[2].x > wall.p[3].x)
+	if (wall.p[2].x > wall.p[3].x && wall.p[0].x > wall.p[1].x)
 	{
-		buf = wall.p[2].x;
-		wall.p[2].x = wall.p[3].x;
-		wall.p[2].x = buf;
+		ft_swap((void**)&wall.p[0], (void**)&wall.p[2]);
+		ft_swap((void**)&wall.p[1], (void**)&wall.p[3]);
+
 	}
-	if (wall.p[0].x > wall.p[1].x)
-	{
-		buf = wall.p[0].x;
-		wall.p[0].x = wall.p[1].x;
-		wall.p[1].x = buf;
-	}
-	dx1 = (wall.p[1].x - wall.p[0].x);
+	// if (wall.p[2].x > wall.p[3].x)
+	// {
+	// 	buf = wall.p[2].x;
+	// 	wall.p[2].x = wall.p[3].x;
+	// 	wall.p[2].x = buf;
+	// }
+	// if (wall.p[0].x > wall.p[1].x)
+	// {
+	// 	buf = wall.p[0].x;
+	// 	wall.p[0].x = wall.p[1].x;
+	// 	wall.p[1].x = buf;
+	// }
+	dx1 = fabs(wall.p[1].x - wall.p[0].x);
 	dy1 = (wall.p[1].y - wall.p[0].y);
-	dx4 = (wall.p[3].x - wall.p[2].x);
+	dx4 = fabs(wall.p[3].x - wall.p[2].x);
 	dy4 = (wall.p[3].y - wall.p[2].y);
 	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
 	dist2 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
@@ -198,10 +204,10 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 		// 	g = image.pic[yp][xp].green;
 		// 	b = image.pic[yp][xp].blue;
 		// 	a = image.pic[yp][xp].alpha;
-		// 	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-		// 	SDL_RenderDrawPoint (renderer,x0, y0);
-		// 	// if (x0 >= 0 && x0 < 800 && y0 >= 0 && y0 < 600)
-		// 	// 	p[(int)x0 + (y0 * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+		// 	// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+		// 	// SDL_RenderDrawPoint (renderer,x0, y0);
+		// 	if (x0 >= 0 && x0 < 800 && y0 >= 0 && y0 < 600)
+		// 		p[(int)x0 + (y0 * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 		// 	y++;
 		// }
 		x++;

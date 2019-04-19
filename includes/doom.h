@@ -143,6 +143,8 @@ int			clickbutton(t_button button, t_mouse mouse);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image);
+void		drawfloor(uint32_t *p, t_wall wa, t_rgb color);
+void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
 
 void		destrotwindow(t_doom *doom);
 

@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/19 18:45:01 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 18:49:44 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,12 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	int buf;
 	int start;
 	
-	if (wall.p[2].x > wall.p[3].x && wall.p[0].x > wall.p[1].x)
-	{
-		ft_swap((void**)&wall.p[0], (void**)&wall.p[1]);
-		ft_swap((void**)&wall.p[2], (void**)&wall.p[3]);
-		printf ("x0 %f y0 %f \n", wall.p[0].x, wall.p[0].y);
-	}
+	// if (wall.p[2].x > wall.p[3].x && wall.p[0].x > wall.p[1].x)
+	// {
+	// 	ft_swap((void**)&wall.p[0], (void**)&wall.p[1]);
+	// 	ft_swap((void**)&wall.p[2], (void**)&wall.p[3]);
+	// 	printf ("x0 %f y0 %f \n", wall.p[0].x, wall.p[0].y);
+	// }
 	// if (wall.p[2].x > wall.p[3].x)
 	// {
 	// 	buf = wall.p[2].x;

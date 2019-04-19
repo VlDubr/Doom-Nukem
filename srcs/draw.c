@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/18 16:28:33 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 17:10:17 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,11 +297,12 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				//printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
 				// printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
 				// printf ("\n");
-				ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
-				ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
-				drawceil(p, wa, colorceil);
-				//drow_wall(p, wa, *tga);
-				drawfloor(p, wa, colorfloor);
+				// ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
+				// ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
+				// drawceil(p, wa, colorceil);
+				// drawfloor(p, wa, colorfloor);
+				drow_wall(p, wa, *tga);
+				
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
 				drawline(p, wa.p[2], wa.p[3], color);

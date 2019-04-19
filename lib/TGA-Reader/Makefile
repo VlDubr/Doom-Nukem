@@ -1,5 +1,5 @@
 NAME = libtga.a
-HEAD = ./include/*.h
+HEAD = ./include/
 SRCSFOLDER = ./srcs/
 SRCS = ft_error.c h_rec.c memory.c record.c tga_reader.c turn_pic.c bitmap.c
 FLAG = -Wall -Wextra -Werror

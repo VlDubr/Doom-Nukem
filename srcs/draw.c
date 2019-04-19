@@ -186,7 +186,7 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 	}
 }
 
-void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil)
+void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil)
 {
 	t_wall		wa;
 	float		vec;
@@ -259,7 +259,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
-				
+
 				x =0;
 				if (wa.p[1].x > 800)
 				{
@@ -294,12 +294,14 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
-				printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
-				 printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
+				//printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
+				// printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
 				// printf ("\n");
 				ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
 				ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
-				drow_wall(p, wa, *tga);
+				drawceil(p, wa, colorceil);
+				//drow_wall(p, wa, *tga);
+				drawfloor(p, wa, colorfloor);
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
 				drawline(p, wa.p[2], wa.p[3], color);
@@ -322,12 +324,39 @@ void	drawplayer(uint32_t *p, t_player play)
 
 void	draw(t_doom *doom)
 {
+	t_rgb	colorfloor;
+	t_rgb	colorceil;
+	int		i;
+
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-
+	i = doom->thismap.sectorcount - 1;
+	while (i > -1)
+	{
+		switch (i)
+		{
+			case 0:
+				colorfloor = setrgb(0, 0, 255);
+				colorceil = setrgb(150, 150, 150);
+				break;
+			case 1:
+				colorfloor = setrgb(0, 255, 0);
+				colorceil = setrgb(0, 150, 150);
+				break;
+			case 2:
+				colorfloor = setrgb(255, 0, 0);
+				colorceil = setrgb(0, 0, 150);
+				break;
+			default:
+				colorfloor = setrgb(255, 255, 255);
+				colorceil = setrgb(50, 50, 50);
+				break;
+		}
 		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[0].start,
-	doom->thismap.sectors[0].count, doom->thismap.sectors[0].floor, doom->thismap.sectors[0].height);
+		doom->thismap.sectors[i].start,
+		doom->thismap.sectors[i].count, doom->thismap.sectors[i].floor, doom->thismap.sectors[i].height, colorfloor, colorceil);
+		i--;
+	}
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,

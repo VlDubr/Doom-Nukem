@@ -7,14 +7,14 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color)
 	int		x;
 	int		i;
 
-	if (wa.p[0].x > wa.p[1].x)
-		ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+	if (wa.p[2].x > wa.p[3].x)
+		ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 
-	x = wa.p[0].x;
+	x = wa.p[2].x;
 	i = 0;
-	while (x < wa.p[1].x)
+	while (x < wa.p[3].x)
 	{
-		y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
+		y = flerp(wa.p[2].y, wa.p[3].y, ((float)1 / (wa.p[3].x - wa.p[2].x)) * i);
 		endy = 800;
 		while (y < endy)
 		{

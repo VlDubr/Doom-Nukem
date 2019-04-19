@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/19 18:37:16 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 18:40:55 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	
 	if (wall.p[2].x > wall.p[3].x && wall.p[0].x > wall.p[1].x)
 	{
-		ft_swap((void**)&wall.p[0], (void**)&wall.p[2]);
-		ft_swap((void**)&wall.p[1], (void**)&wall.p[3]);
-
+		ft_swap((void**)&wall.p[0], (void**)&wall.p[1]);
+		ft_swap((void**)&wall.p[2], (void**)&wall.p[3]);
+		printf ("x0 %f y0 %f \n", wall.p[0].x, wall.p[0].y);
 	}
 	// if (wall.p[2].x > wall.p[3].x)
 	// {
@@ -138,9 +138,9 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	// 	wall.p[0].x = wall.p[1].x;
 	// 	wall.p[1].x = buf;
 	// }
-	dx1 = fabs(wall.p[1].x - wall.p[0].x);
+	dx1 = (wall.p[1].x - wall.p[0].x);
 	dy1 = (wall.p[1].y - wall.p[0].y);
-	dx4 = fabs(wall.p[3].x - wall.p[2].x);
+	dx4 = (wall.p[3].x - wall.p[2].x);
 	dy4 = (wall.p[3].y - wall.p[2].y);
 	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
 	dist2 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);

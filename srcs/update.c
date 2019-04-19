@@ -38,10 +38,10 @@ void	playerrotate(t_player *p)
 		p->rotate.z = 0;
 	if (p->rotate.z < 0)
 		p->rotate.z = 6.27f;
-	if (p->rotate.x > 1.57f)
-		p->rotate.x = 1.57f;
-	if (p->rotate.x < -1.57f)
-		p->rotate.x = -1.57f;
+	if (p->rotate.x > 0.79f)
+		p->rotate.x = 0.79f;
+	if (p->rotate.x < -0.79f)
+		p->rotate.x = -0.79f;
 }
 
 void	rotate(t_doom *doom, double delta)

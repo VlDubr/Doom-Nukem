@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/19 18:52:46 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 19:33:24 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_mat4x4	projec;
 	size_t		c;
 	int x;
-
+	float offsetx1;
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -244,7 +244,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					{
 						wa.p[0].x = wa.p[1].x - x * cos(vec);
 						wa.p[0].y = wa.p[1].y - x * sin(vec);
-						x += 1000;
+						x += 100;
 					}
 				}
 				x = 0;
@@ -261,7 +261,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					{
 						wa.p[2].x = wa.p[3].x - x * cos(vec);
 						wa.p[2].y = wa.p[3].y - x * sin(vec);
-						x += 1000;
+						x += 100;
 					}
 				}
 
@@ -279,7 +279,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					{
 						wa.p[1].x = wa.p[0].x + x * cos(vec);
 						wa.p[1].y = wa.p[0].y + x * sin(vec);
-						x += 1000;
+						x += 100;
 					}
 				}
 				x = 0;
@@ -296,7 +296,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					{
 						wa.p[3].x = wa.p[2].x + x * cos(vec);
 						wa.p[3].y = wa.p[2].y + x * sin(vec);
-						x += 1000;
+						x += 100;
 					}
 				}
 				//printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
@@ -306,7 +306,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				// ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
 				// drawceil(p, wa, colorceil);
 				// drawfloor(p, wa, colorfloor);
-				if (fabs(wa.p[3].y - wa.p[2].y) < 2000)
+				if (fabs(wa.p[3].y - wa.p[2].y) < 3000)
 					drow_wall(p, wa, *tga);
 				
 				drawline(p, wa.p[0], wa.p[1], color);

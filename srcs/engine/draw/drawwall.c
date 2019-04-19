@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/19 18:49:44 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 19:29:50 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		}
 		if (x >= 0 && x < 800 && y >= 0 && y < 600)
 				{	
-					
+					if (y < 600 && y > 0)
+						p[(int)(x) + ((int)(y+1) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+					
 				}
 		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 		// 	SDL_RenderDrawPoint (renderer,x, y);

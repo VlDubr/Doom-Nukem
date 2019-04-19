@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/19 19:33:24 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/19 20:33:15 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_mat4x4	projec;
 	size_t		c;
 	int x;
-	float offsetx1;
+
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -237,8 +237,6 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					delta.x = wa.p[1].x - wa.p[0].x;
 					delta.y = wa.p[1].y - wa.p[0].y;
 					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
-
 					wa.p[0].x = wa.p[1].x;
 					while (wa.p[0].x > 0)
 					{
@@ -250,11 +248,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				x = 0;
 				if (wa.p[2].x < 0)
 				{
-
 					delta.x = wa.p[3].x - wa.p[2].x;
 					delta.y = wa.p[3].y - wa.p[2].y;
 					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
 
 					wa.p[2].x = wa.p[3].x;
 					while (wa.p[2].x > 0)
@@ -268,11 +264,10 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				x =0;
 				if (wa.p[1].x > 800)
 				{
-
+					
 					delta.x = wa.p[1].x - wa.p[0].x;
 					delta.y = wa.p[1].y - wa.p[0].y;
 					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
 
 					wa.p[1].x = wa.p[0].x;
 					while (wa.p[1].x < 800)
@@ -289,7 +284,6 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					delta.x = wa.p[3].x - wa.p[2].x;
 					delta.y = wa.p[3].y - wa.p[2].y;
 					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
 
 					wa.p[3].x = wa.p[2].x;
 					while (wa.p[3].x < 800)
@@ -299,14 +293,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
-				//printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
-				// printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
-				// printf ("\n");
-				// ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
-				// ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
 				// drawceil(p, wa, colorceil);
 				// drawfloor(p, wa, colorfloor);
-				if (fabs(wa.p[3].y - wa.p[2].y) < 3000)
+				if (fabs(wa.p[3].y - wa.p[2].y) < 4000 && w[c].z == -1)
 					drow_wall(p, wa, *tga);
 				
 				drawline(p, wa.p[0], wa.p[1], color);

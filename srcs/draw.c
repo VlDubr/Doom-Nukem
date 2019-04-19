@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 21:19:16 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/18 16:28:33 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_fvector linestart, t_fvector lineend)
 
 int		clip(t_player *player, t_fvector p[4])
 {
-	if (p[0].z <= 0 && p[1].z <= 0)
+	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
 	if (p[0].z < 0 || p[1].z < 0 || p[2].z < 0 || p[3].z < 0)
 	{
@@ -232,7 +232,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 					delta.x = wa.p[1].x - wa.p[0].x;
 					delta.y = wa.p[1].y - wa.p[0].y;
 					vec = atan(delta.y / delta.x);
-					tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
+					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
 
 					wa.p[0].x = wa.p[1].x;
 					while (wa.p[0].x > 0)
@@ -242,13 +242,14 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
+				x = 0;
 				if (wa.p[2].x < 0)
 				{
 
 					delta.x = wa.p[3].x - wa.p[2].x;
 					delta.y = wa.p[3].y - wa.p[2].y;
 					vec = atan(delta.y / delta.x);
-					tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
+					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
 
 					wa.p[2].x = wa.p[3].x;
 					while (wa.p[2].x > 0)
@@ -258,6 +259,46 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 						x += 100;
 					}
 				}
+				
+				x =0;
+				if (wa.p[1].x > 800)
+				{
+
+					delta.x = wa.p[1].x - wa.p[0].x;
+					delta.y = wa.p[1].y - wa.p[0].y;
+					vec = atan(delta.y / delta.x);
+					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
+
+					wa.p[1].x = wa.p[0].x;
+					while (wa.p[1].x < 800)
+					{
+						wa.p[1].x = wa.p[0].x + x * cos(vec);
+						wa.p[1].y = wa.p[0].y + x * sin(vec);
+						x += 100;
+					}
+				}
+				x = 0;
+				if (wa.p[3].x > 800)
+				{
+
+					delta.x = wa.p[3].x - wa.p[2].x;
+					delta.y = wa.p[3].y - wa.p[2].y;
+					vec = atan(delta.y / delta.x);
+					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
+
+					wa.p[3].x = wa.p[2].x;
+					while (wa.p[3].x < 800)
+					{
+						wa.p[3].x = wa.p[2].x + x * cos(vec);
+						wa.p[3].y = wa.p[2].y + x * sin(vec);
+						x += 100;
+					}
+				}
+				printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
+				 printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
+				// printf ("\n");
+				ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
+				ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
 				drow_wall(p, wa, *tga);
 				drawline(p, wa.p[0], wa.p[1], color);
 				drawline(p, wa.p[0], wa.p[2], color);
@@ -284,12 +325,9 @@ void	draw(t_doom *doom)
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
 
-	for(int i = 0; i < doom->thismap.sectorcount; i++)
-	{
 		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[i].start,
-	doom->thismap.sectors[i].count, doom->thismap.sectors[i].floor, doom->thismap.sectors[i].height);
-	}
+	doom->thismap.sectors[0].start,
+	doom->thismap.sectors[0].count, doom->thismap.sectors[0].floor, doom->thismap.sectors[0].height);
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,

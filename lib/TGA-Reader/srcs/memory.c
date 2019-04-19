@@ -6,24 +6,37 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:24:19 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/17 15:41:33 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/18 14:48:31 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/tga.h"
 
-t_rgba	**malloc_pic(t_rgba **pix, int width, int height)
+t_rgba	**malloc_pic(t_rgba **pic, int width, int height)
 {
 	int	i;
 
-	if (!(pix = (t_rgba**)malloc(sizeof(t_rgba *) * (height + 100))))
+	if (!(pic = (t_rgba **)malloc(sizeof(t_rgba *) * height)))
 		ft_error("Malloc error!");
 	i = 0;
-	while (i < width)
+	while (i < height)
 	{
-		if (!(pix[i] = (t_rgba *)malloc(sizeof(t_rgba) * (width + 100))))
+		if (!(pic[i] = (t_rgba *)malloc(sizeof(t_rgba) * width)))
 			ft_error("Malloc error!");
 		i++;
 	}
-	return (pix);
+	return (pic);
+}
+
+void free_pic(t_tga *img)
+{
+	int	i;
+
+	i = 0;
+	while (i < img->height)
+	{
+		free(img->pic[i]);
+		i++;
+	}
+	free(img->pic);
 }

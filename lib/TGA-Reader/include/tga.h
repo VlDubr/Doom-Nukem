@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tga.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:11:21 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/17 20:08:01 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/18 15:16:30 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 # include "../../ft_graphics/includes/color.h"
 # include "../../libft/includes/libft.h"
 
-
 typedef struct		s_service
 {
+	int				i;
 	int				j;
 	int				x;
 	int				y;
-	int				i;
-	unsigned int	read_l;
+	int				xx;
+	int				yy;
+	long			read_l;
 	int				flag;
 }					t_service;
 
@@ -45,11 +46,16 @@ typedef struct		s_tga
 }					t_tga;
 
 t_rgba				**malloc_pic(t_rgba **pix, int width, int height);
+void 				free_pic(t_tga *img);
+
+t_tga				**bitmap(char *path, t_ivector2d wh);
 t_tga				*tga_reader(char *path);
 
-void				ft_error(const char *str);
 void				head_rec(t_tga *img, unsigned char buf[], t_service *s);
 void				rec(t_tga *img, unsigned char buf[], t_service *s);
 void				c_rec(t_tga *img, unsigned char buf[], t_service *s);
 void				mono_rec(t_tga *img, unsigned char *buf, t_service *s);
+void				ft_error(const char *str);
+void				turn_pic_g(t_tga *img);
+void				turn_pic_v(t_tga *img);
 #endif

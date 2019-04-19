@@ -6,53 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:28:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/17 15:29:11 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/18 12:37:57 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/tga.h"
-
-static void	turn_pix_g(t_tga *img)
-{
-	int		x;
-	int		y;
-	t_rgba	temp;
-
-	y = 0;
-	while (y < img->height / 2)
-	{
-		x = 0;
-		while (x < img->width)
-		{
-			temp = img->pic[y][x];
-			img->pic[y][x] = img->pic[img->height - y - 1][x];
-			img->pic[img->height - y - 1][x] = temp;
-			x++;
-		}
-		y++;
-	}
-}
-
-static void	turn_pix_v(t_tga *img)
-{
-	int		x;
-	int		y;
-	t_rgba	temp;
-
-	x = 0;
-	while (x < img->width / 2)
-	{
-		y = 0;
-		while (y < img->height)
-		{
-			temp = img->pic[y][x];
-			img->pic[y][x] = img->pic[y][img->height - x - 1];
-			img->pic[y][img->height - x - 1] = temp;
-			y++;
-		}
-		x++;
-	}
-}
 
 static void	recorder(t_tga *img, unsigned char *buf, t_service *s)
 {
@@ -117,8 +75,8 @@ t_tga		*tga_reader(char *path)
 		ft_error("Wrong file path");
 	close(fd);
 	if (img->flip_g == 0)
-		turn_pix_g(img);
+		turn_pic_g(img);
 	if (img->flip_v == 1)
-		turn_pix_v(img);
+		turn_pic_v(img);
 	return (img);
 }

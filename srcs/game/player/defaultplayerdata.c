@@ -24,6 +24,7 @@ t_player	defaultplayerdata(void)
 	r.maxheightjump = 10;
 	r.movespeed = 0.1f;
 	r.runspeed = 0.3f;
-	r.state = 0;
+	r.run = 0;
+	r.jump = 0;
 	return (r);
 }

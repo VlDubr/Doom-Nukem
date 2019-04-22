@@ -12,12 +12,11 @@
 
 #include "doom.h"
 
-static void	checkpos(t_doom *doom, int i, t_fvector2d dir)
+static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 {
 	size_t		lastsector;
 
-	doom->player.velosity = i ? addfvector(doom->player.pos, dir.x, 0, dir.y) :
-	subfvector(doom->player.pos, dir.x, 0, dir.y);
+	doom->player.velosity = newvec;
 	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
 		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
 		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,
@@ -27,35 +26,56 @@ static void	checkpos(t_doom *doom, int i, t_fvector2d dir)
 	doom->player.sector = isinside(setfvector2d(doom->player.velosity.x,
 	doom->player.velosity.z), doom->thismap, doom->player.sector);
 	if (lastsector != doom->player.sector)
-		if ((doom->player.velosity.y / 2)
-		< doom->thismap.sectors[doom->player.sector].floor)
+	{
+		if ((doom->player.velosity.y / 1.5f)
+		< doom->thismap.sectors[doom->player.sector].floor ||
+		doom->player.velosity.y >
+		doom->thismap.sectors[doom->player.sector].floor
+		+ doom->thismap.sectors[doom->player.sector].height)
 		{
 			doom->player.sector = lastsector;
 			return ;
 		}
+	}
 	doom->player.pos = doom->player.velosity;
+}
+
+t_fvector2d	retdir(t_doom *doom)
+{
+	t_fvector2d	dir;
+
+	dir = setfvector2d(0, 0);
+	if (doom->input.keystate[doom->input.moveforward])
+		dir = addfvector2d(dir, cos(doom->player.rotate.z),
+		sin(doom->player.rotate.z));
+	if (doom->input.keystate[doom->input.movebackward])
+		dir = addfvector2d(dir, -cos(doom->player.rotate.z),
+		-sin(doom->player.rotate.z));
+	if (doom->input.keystate[doom->input.moveright])
+		dir = addfvector2d(dir, cos(doom->player.rotate.z + 1.57f),
+		sin(doom->player.rotate.z + 1.57f));
+	if (doom->input.keystate[doom->input.moveleft])
+		dir = addfvector2d(dir, -cos(doom->player.rotate.z + 1.57f),
+		-sin(doom->player.rotate.z + 1.57f));
+	return (dir);
 }
 
 void		playermove(t_doom *doom, double delta)
 {
 	int			i;
-	float		angle;
 	t_fvector2d	dir;
+	t_fvector	newvec;
 
-	angle = doom->input.keystate[SDL_SCANCODE_D] ||
-	doom->input.keystate[SDL_SCANCODE_A] ? doom->player.rotate.z + 1.57f :
-	doom->player.rotate.z;
-	dir = setfvector2d(cos(angle), sin(angle));
-	i = doom->input.keystate[SDL_SCANCODE_W] ||
-	doom->input.keystate[SDL_SCANCODE_D] ? 1 : 0;
-	if (doom->player.state == 2 && doom->player.stamina > 0)
+	dir = retdir(doom);
+	if (doom->player.run && doom->player.stamina > 0)
 	{
 		dir = multfvector2d(dir, doom->player.runspeed
 		* delta, doom->player.runspeed * delta);
-		doom->player.stamina--;
+		minusstamina(&doom->player, 1);
 	}
 	else
 		dir = multfvector2d(dir, doom->player.movespeed * delta,
 		doom->player.movespeed * delta);
-	checkpos(doom, i, dir);
+	newvec = addfvector(doom->player.pos, dir.x, 0, dir.y);
+	checkpos(doom, newvec, dir);
 }

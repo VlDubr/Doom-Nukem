@@ -24,12 +24,14 @@ void	checkswaplevel(t_doom *doom, size_t secid)
 	}
 }
 
-void	playerzpos(t_player *p, float y, double delta)
+void	gravity(t_player *p, float y, double delta)
 {
-	if (p->pos.y - p->height >= y)
-		p->pos.y -= 0.005f * delta;
+	if (p->pos.y - p->height > y)
+		p->pos.y -= 0.02f * delta;
+	if (p->pos.y - p->height > y - 0.1f && p->pos.y - p->height < y + 0.1f)
+		p->jump = 0;
 	if (p->pos.y - p->height < y)
-		p->pos.y += 0.005f * delta;
+		p->pos.y += 0.02f * delta;
 }
 
 void	playerrotate(t_player *p)
@@ -46,11 +48,11 @@ void	playerrotate(t_player *p)
 
 void	rotate(t_doom *doom, double delta)
 {
-	if (doom->input.keystate[SDL_SCANCODE_RIGHT])
+	if (doom->input.keystate[doom->input.rotright])
 		doom->player.rotate.z += 0.005f * delta;
-	else if (doom->input.keystate[SDL_SCANCODE_LEFT])
+	else if (doom->input.keystate[doom->input.rotleft])
 		doom->player.rotate.z -= 0.005f * delta;
-	else if (doom->input.keystate[SDL_SCANCODE_UP])
+	else if (doom->input.keystate[doom->input.rotup])
 		doom->player.rotate.x += 0.005f * delta;
 	else
 		doom->player.rotate.x -= 0.005f * delta;
@@ -58,31 +60,48 @@ void	rotate(t_doom *doom, double delta)
 
 void	checkkeyboard(t_doom *doom, double delta)
 {
-	if (doom->input.keystate[SDL_SCANCODE_RSHIFT] || doom->input.keystate[SDL_SCANCODE_LSHIFT])
-		doom->player.state |= 2;
+	if (doom->input.keystate[SDL_SCANCODE_RSHIFT] ||
+	doom->input.keystate[SDL_SCANCODE_LSHIFT])
+		doom->player.run = 1;
 	else
-		doom->player.state = 0;
+		doom->player.run = 0;
+
+	if (doom->input.keystate[SDL_SCANCODE_RCTRL] ||
+	doom->input.keystate[SDL_SCANCODE_LCTRL])
+		doom->player.height = 2;
+	else
+		doom->player.height = 5;
+
 	if (doom->input.keystate[doom->input.moveforward] ||
 		doom->input.keystate[doom->input.movebackward] ||
 		doom->input.keystate[doom->input.moveleft] ||
 		doom->input.keystate[doom->input.moveright])
 		playermove(doom, delta);
+
 	if (doom->input.keystate[doom->input.rotleft] ||
-	doom->input.keystate[doom->input.rotright] || doom->input.keystate[SDL_SCANCODE_UP] || doom->input.keystate[SDL_SCANCODE_DOWN])
+	doom->input.keystate[doom->input.rotright] ||
+	doom->input.keystate[doom->input.rotup] ||
+	doom->input.keystate[doom->input.rotdown])
 		rotate(doom, delta);
-	if (doom->input.keystate[doom->input.jump])
-		playerjump(&doom->player);
+
+	if ((!doom->player.jump) && doom->input.keystate[doom->input.jump] &&
+	doom->player.stamina > 0)
+		playerjump(doom, &doom->player);
+
 	if (doom->input.keystate[SDL_SCANCODE_ESCAPE])
 		doom->win->state = 0;
+
+	if (doom->player.velosity.x == 0 || doom->player.velosity.y == 0 ||
+	doom->player.velosity.z == 0)
+		addstamina(&doom->player, 0.1f);
+	doom->player.velosity = setfvector(0, 0, 0, 0);
 }
 
 void	update(t_doom *doom, double delta)
 {
 	checkkeyboard(doom, delta);
 	playerrotate(&doom->player);
-	playerzpos(&doom->player,
+	gravity(&doom->player,
 	doom->thismap.sectors[doom->player.sector].floor, delta);
-	if (!(doom->player.state & 2))
-		addstamina(&doom->player, 1);
 	checkswaplevel(doom, doom->player.sector);
 }

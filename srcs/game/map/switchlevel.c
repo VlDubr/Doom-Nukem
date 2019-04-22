@@ -9,6 +9,8 @@ void	switchlevel(t_doom *doom, size_t level)
 		setfvector2d(doom->thismap.startplayer.pos.x,
 		doom->thismap.startplayer.pos.z), doom->thismap, 0);
 		doom->player.pos = doom->thismap.startplayer.pos;
+		doom->player.pos.y = doom->thismap.sectors[doom->player.sector].floor
+		+ doom->player.height;
 		doom->player.rotate = doom->thismap.startplayer.rotate;
 	}
 }

@@ -12,8 +12,19 @@
 
 #include "doom.h"
 
-void	playerjump(t_player *player)
+void	playerjump(t_doom *doom, t_player *player)
 {
-	player->pos.y = flerp(0, player->maxheightjump,
+	float	height;
+
+	height = doom->thismap.sectors[player->sector].floor +
+	doom->thismap.sectors[player->sector].height >
+	doom->thismap.sectors[player->sector].floor + player->maxheightjump ?
+	doom->thismap.sectors[player->sector].floor + player->maxheightjump :
+	doom->thismap.sectors[player->sector].floor +
+	doom->thismap.sectors[player->sector].height;
+
+	player->pos.y = flerp(doom->thismap.sectors[player->sector].floor, height,
 	(1 / player->maxstamina) * player->stamina);
+	minusstamina(player, 20);
+	player->jump = 1;
 }

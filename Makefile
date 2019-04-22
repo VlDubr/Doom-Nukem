@@ -4,12 +4,13 @@ SRCS = main.c \
 		error.c createwindow.c utils.c \
 		game/map/switchlevel.c \
 		game/player/playermove.c game/player/playerjump.c game/player/stamina.c game/player/defaultplayerdata.c \
+		game/ui/bar.c game/ui/drawui.c \
 		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/filesystem/loadassets.c engine/filesystem/loadmap.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c \
-		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c
+		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/
@@ -87,6 +88,7 @@ folder:
 	mkdir -p $(OBJDIR)engine/sound
 	mkdir -p $(OBJDIR)game/map
 	mkdir -p $(OBJDIR)game/player
+	mkdir -p $(OBJDIR)game/ui
 
 re:	fclean $(NAME)
 

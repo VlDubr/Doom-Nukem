@@ -42,6 +42,31 @@ typedef struct	s_window
 }				t_window;
 t_window		*createwindow(t_ivector2d size, char *title, Uint32 flag);
 
+typedef struct	s_bar
+{
+	t_rgba		color;
+	t_fvector2d	pos;
+	t_fvector2d	widthheight;
+}				t_bar;
+t_bar		setbar(t_rgba color, t_fvector2d pos, t_fvector2d wh);
+void		drawbar(uint32_t *p, t_bar bar);
+
+typedef struct	s_anim
+{
+	t_tga		*frame;
+	t_tga		thisframe;
+	int			maxframe;
+	int			countframe;
+	int			state;
+}				t_anim;
+t_anim			setanim(t_tga *frame, int maxframe);
+void			startanim(t_anim *anim);
+void			stopanim(t_anim *anim);
+void			pauseanim(t_anim *anim);
+void			unpauseanim(t_anim *anim);
+void			nextframe(t_anim *anim);
+void			previousframe(t_anim *anim);
+
 typedef struct	s_mouse
 {
 	t_ivector2d	old;
@@ -71,6 +96,8 @@ typedef struct	s_player
 	t_fvector	velosity;
 	size_t		sector;
 
+	size_t		targetid;
+
 	float		height;
 	float		maxhealth;
 	float		health;
@@ -81,7 +108,8 @@ typedef struct	s_player
 	float		movespeed;
 	float		runspeed;
 
-	int			state;
+	int			run;
+	int			jump;
 }				t_player;
 
 typedef struct	s_sector
@@ -128,18 +156,9 @@ typedef struct	s_doom
 	t_map		thismap;
 }				t_doom;
 
-typedef struct	s_button
-{
-	t_irect		rect;
-	SDL_Surface	*surf;
-	void		(*clickevent)(void);
-}				t_button;
-
 t_tga		*tga;
 
-t_button	setbutton(t_irect r, SDL_Surface *s, void (*clickevent)(void));
-int			clickbutton(t_button button, t_mouse mouse);
-
+void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image);
@@ -151,12 +170,14 @@ void		destrotwindow(t_doom *doom);
 void		updateevent(t_doom *doom);
 void		update(t_doom *doom, double delta);
 void		draw(t_doom *doom);
+void		drawui(t_doom *doom);
 void		quitprogram(t_doom *doom);
 
 t_player	defaultplayerdata(void);
 void		addstamina(t_player *p, float addvalue);
+void		minusstamina(t_player *p, float minusvalue);
 void		playermove(t_doom *doom, double delta);
-void		playerjump(t_player *player);
+void		playerjump(t_doom *doom, t_player *player);
 
 void		loadinput(char *path, t_input *input);
 

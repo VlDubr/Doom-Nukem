@@ -85,20 +85,33 @@ t_fvector linestart, t_fvector lineend)
 	return (addfvtofv(linestart, linetoinspector));
 }
 
-int		clip(t_player *player, t_fvector p[4])
+int		clip(t_player *player, t_fvector p[4], t_fvector offset[4])
 {
+	int			i;
+	t_fvector	tmpp[4];
+
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
+	i = -1;
+	while (++i < 4)
+	{
+		tmpp[i] = p[i];
+		offset[i] = setfvector(0, 0, 0, 0);
+	}
 	if (p[0].z < 0 || p[1].z < 0 || p[2].z < 0 || p[3].z < 0)
 	{
 		if (p[0].z < 0)
 			p[0] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[0], p[1]);
+		offset[0] = subfvtofv(subfvtofv(tmpp[1], tmpp[0]), subfvtofv(tmpp[1], p[0]));
 		if (p[1].z < 0)
 			p[1] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[1], p[0]);
+		offset[1] = subfvtofv(subfvtofv(tmpp[0], tmpp[1]), subfvtofv(tmpp[0], p[1]));
 		if (p[2].z < 0)
 			p[2] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[2], p[3]);
+		offset[2] = subfvtofv(subfvtofv(tmpp[3], tmpp[2]), subfvtofv(tmpp[3], p[2]));
 		if (p[3].z < 0)
 			p[3] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[3], p[2]);
+		offset[3] = subfvtofv(subfvtofv(tmpp[2], tmpp[3]), subfvtofv(tmpp[2], p[3]));
 	}
 	return (1);
 }
@@ -190,8 +203,8 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 {
 	t_wall		wa;
 	float		vec;
-	t_fvector2d	tmp;
 	t_fvector2d	delta;
+	t_fvector	offset[4];
 	t_rgb		color;
 	t_mat4x4	cammat;
 	t_mat4x4	projec;
@@ -209,111 +222,109 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
 		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
 		multmatrixdrawwall(wa.p, cammat);
-		if (clip(&play, wa.p))
+		if (clip(&play, wa.p, offset))
 		{
+			multmatrixdrawwall(offset, projec);
 			multmatrixdrawwall(wa.p, projec);
 			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
 			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
 			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
 			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
+
+			if (offset[0].w != 0)
+				offset[0] = divfvector(offset[0], offset[0].w, offset[0].w, offset[0].w);
+			if (offset[1].w != 0)
+				offset[1] = divfvector(offset[1], offset[1].w, offset[1].w, offset[1].w);
+			if (offset[2].w != 0)
+				offset[2] = divfvector(offset[2], offset[2].w, offset[2].w, offset[2].w);
+			if (offset[3].w != 0)
+				offset[3] = divfvector(offset[3], offset[3].w, offset[3].w, offset[3].w);
 			adddrawwall(wa.p, 1, 1, 0);
+			adddrawwall(offset, 1, 1, 0);
+			multdrawwall(offset, 400, 300, 1);
 			multdrawwall(wa.p, 400, 300, 1);
-
-			if (!((wa.p[0].x < 0 && wa.p[1].x < 0) || (wa.p[0].x > 800 && wa.p[1].x > 800)
-			|| (wa.p[2].x < 0 && wa.p[3].x < 0) || (wa.p[2].x > 800 && wa.p[3].x > 800)))
+			if (w[c].z == -1)
+				color = setrgb(255, 255, 255);
+			else
+				color = setrgb(255, 0, 0);
+			if (wa.p[2].x > wa.p[3].x && wa.p[0].x > wa.p[1].x)
 			{
-				if (w[c].z == -1)
-					color = setrgb(255, 255, 255);
-				else
-					color = setrgb(255, 0, 0);
-				if (wa.p[2].x > wa.p[3].x && wa.p[0].x > wa.p[1].x)
-				{
-					ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
-					ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
-				}
-				if (wa.p[0].x < 0)
-				{
-
-					delta.x = wa.p[1].x - wa.p[0].x;
-					delta.y = wa.p[1].y - wa.p[0].y;
-					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
-
-					wa.p[0].x = wa.p[1].x;
-					while (wa.p[0].x > 0)
-					{
-						wa.p[0].x = wa.p[1].x - x * cos(vec);
-						wa.p[0].y = wa.p[1].y - x * sin(vec);
-						x += 100;
-					}
-				}
-				x = 0;
-				if (wa.p[2].x < 0)
-				{
-
-					delta.x = wa.p[3].x - wa.p[2].x;
-					delta.y = wa.p[3].y - wa.p[2].y;
-					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
-
-					wa.p[2].x = wa.p[3].x;
-					while (wa.p[2].x > 0)
-					{
-						wa.p[2].x = wa.p[3].x - x * cos(vec);
-						wa.p[2].y = wa.p[3].y - x * sin(vec);
-						x += 100;
-					}
-				}
-
-				x =0;
-				if (wa.p[1].x > 800)
-				{
-
-					delta.x = wa.p[1].x - wa.p[0].x;
-					delta.y = wa.p[1].y - wa.p[0].y;
-					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[0].x, wa.p[0].y);
-
-					wa.p[1].x = wa.p[0].x;
-					while (wa.p[1].x < 800)
-					{
-						wa.p[1].x = wa.p[0].x + x * cos(vec);
-						wa.p[1].y = wa.p[0].y + x * sin(vec);
-						x += 100;
-					}
-				}
-				x = 0;
-				if (wa.p[3].x > 800)
-				{
-
-					delta.x = wa.p[3].x - wa.p[2].x;
-					delta.y = wa.p[3].y - wa.p[2].y;
-					vec = atan(delta.y / delta.x);
-					//tmp = setfvector2d(wa.p[2].x, wa.p[2].y);
-
-					wa.p[3].x = wa.p[2].x;
-					while (wa.p[3].x < 800)
-					{
-						wa.p[3].x = wa.p[2].x + x * cos(vec);
-						wa.p[3].y = wa.p[2].y + x * sin(vec);
-						x += 100;
-					}
-				}
-				//printf ("x2 %f x0 %f\n",wa.p[3].x,wa.p[1].x);
-				// printf ("y2 %f y0 %f\n",wa.p[3].y,wa.p[1].y);
-				// printf ("\n");
-				// ft_swap((void**)&wa.p[0], (void**)&wa.p[2]);
-				// ft_swap((void**)&wa.p[1], (void**)&wa.p[3]);
-				// drawceil(p, wa, colorceil);
-				// drawfloor(p, wa, colorfloor);
-				if (fabs(wa.p[3].y - wa.p[2].y) < 1000)
-					drow_wall(p, wa, *tga);
-				
-				drawline(p, wa.p[0], wa.p[1], color);
-				drawline(p, wa.p[0], wa.p[2], color);
-				drawline(p, wa.p[2], wa.p[3], color);
-				drawline(p, wa.p[1], wa.p[3], color);
+				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 			}
+			if (wa.p[0].x < 0)
+			{
+
+				delta.x = wa.p[1].x - wa.p[0].x;
+				delta.y = wa.p[1].y - wa.p[0].y;
+				vec = atan(delta.y / delta.x);
+
+				wa.p[0].x = wa.p[1].x;
+				while (wa.p[0].x > 0)
+				{
+					wa.p[0].x = wa.p[1].x - x * cos(vec);
+					wa.p[0].y = wa.p[1].y - x * sin(vec);
+					x += 100;
+				}
+			}
+			x = 0;
+			if (wa.p[2].x < 0)
+			{
+
+				delta.x = wa.p[3].x - wa.p[2].x;
+				delta.y = wa.p[3].y - wa.p[2].y;
+				vec = atan(delta.y / delta.x);
+
+				wa.p[2].x = wa.p[3].x;
+				while (wa.p[2].x > 0)
+				{
+					wa.p[2].x = wa.p[3].x - x * cos(vec);
+					wa.p[2].y = wa.p[3].y - x * sin(vec);
+					x += 100;
+				}
+			}
+
+			x =0;
+			if (wa.p[1].x > 800)
+			{
+
+				delta.x = wa.p[1].x - wa.p[0].x;
+				delta.y = wa.p[1].y - wa.p[0].y;
+				vec = atan(delta.y / delta.x);
+
+				wa.p[1].x = wa.p[0].x;
+				while (wa.p[1].x < 800)
+				{
+					wa.p[1].x = wa.p[0].x + x * cos(vec);
+					wa.p[1].y = wa.p[0].y + x * sin(vec);
+					x += 100;
+				}
+			}
+			x = 0;
+			if (wa.p[3].x > 800)
+			{
+
+				delta.x = wa.p[3].x - wa.p[2].x;
+				delta.y = wa.p[3].y - wa.p[2].y;
+				vec = atan(delta.y / delta.x);
+
+				wa.p[3].x = wa.p[2].x;
+				while (wa.p[3].x < 800)
+				{
+					wa.p[3].x = wa.p[2].x + x * cos(vec);
+					wa.p[3].y = wa.p[2].y + x * sin(vec);
+					x += 100;
+				}
+			}
+			//drawceil(p, wa, colorceil);
+			// if (fabs(wa.p[3].y - wa.p[2].y) < 1000)
+			// 	drow_wall(p, wa, *tga);
+			//drawfloor(p, wa, colorfloor);
+
+			drawline(p, wa.p[0], wa.p[1], color);
+			drawline(p, wa.p[0], wa.p[2], color);
+			drawline(p, wa.p[2], wa.p[3], color);
+			drawline(p, wa.p[1], wa.p[3], color);
 		}
 		c++;
 	}
@@ -369,6 +380,8 @@ void	draw(t_doom *doom)
 	doom->thismap.sectors[doom->player.sector].start,
 	doom->thismap.sectors[doom->player.sector].count);
 	drawplayer(doom->win->pixels, doom->player);
+
+	drawui(doom);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,
 	doom->win->size.x * sizeof(uint32_t));

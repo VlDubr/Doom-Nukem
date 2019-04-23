@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/23 21:56:32 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/23 22:12:59 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 			t1 = sqrt((fabs(p[1].x - p[0].x) * fabs(p[1].x - p[0].x)) + (fabs(p[1].z - p[0].z) * fabs(p[1].z - p[0].z)));
 			// t1 = sqrt((fabs(p[3].x - p[2].x) * fabs(p[3].x - p[2].x)) + (fabs(p[3].z - p[2].z) * fabs(p[3].z - p[2].z)));
 			l = setline2(setfvector2d(p[0].x, p[0].z), setfvector2d(p[1].x, p[1].z),
-			setfvector2d(0, 0), setfvector2d(cos(-0.506145f) * 100, sin(-0.506145f) * 100));
+			setfvector2d(0, 0), setfvector2d(cos(player->rotate.z-0.523599) * 100, sin(player->rotate.z-0.523599) * 100));
 			crossline(l, &ret);
 			// l1 = setline2(setfvector2d(p[2].x, p[2].z), setfvector2d(p[3].x, p[3].z),
 			// setfvector2d(0, 0), setfvector2d(cos(-0.523599f) * 100, sin(-0.523599f) * 100));
@@ -166,17 +166,15 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 			// printf ("z2 %f z3 %f\n", p[2].z, p[3].z);
 			t2 = sqrt((fabs(p[1].x - p[0].x) * fabs(p[1].x - p[0].x)) + (fabs(p[1].z - p[0].z) * fabs(p[1].z - p[0].z)));
 			t3 = sqrt((fabs(p[3].x - p[2].x) * fabs(p[3].x - p[2].x)) + (fabs(p[3].z - p[2].z) * fabs(p[3].z - p[2].z)));
-			printf ("%f\n", t2/t1);
+			// printf ("%f\n", t2/t1);
 			// printf ("%f\n",  t2);
 			// printf ("%f\n",  t3);
 			// if (p[1].z < 8.0)
 			// 	return (0);
-			// if (p[0].z > p[1].z - 1)
-			// 	return (0);
+			if (p[0].z > p[1].z)
+				return (0);
 			offset[0] = t2/t1;
 			// if (p[0].z < -42.0)
-			// 	return (0);
-			// if (p[0].z > p[1].z - 1)
 			// 	return (0);
 		}
 		if (p[1].z < 0)
@@ -322,6 +320,11 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
 		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
 		multmatrixdrawwall(wa.p, cammat);
+		offset[0] = 1;
+		offset[1] = 1;
+		offset[2] = 1;
+		offset[3] = 1;
+		
 		if (clip(&play, wa.p, offset, c))
 		{
 			multmatrixdrawwall(wa.p, projec);

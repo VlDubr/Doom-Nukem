@@ -6,12 +6,12 @@
 		{
 			"label": "Build debug(MacOS)",
 			"type": "shell",
-			"command": "make re_d_macos"
+			"command": "make"
 		},
 		{
 			"label": "Build debug(Linux)",
 			"type": "shell",
-			"command": "make re_d_linux"
+			"command": "make"
 		}
 	]
 }

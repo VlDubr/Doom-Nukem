@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/19 20:33:15 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/23 18:45:02 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,33 +85,101 @@ t_fvector linestart, t_fvector lineend)
 	return (addfvtofv(linestart, linetoinspector));
 }
 
-int		clip(t_player *player, t_fvector p[4], t_fvector offset[4])
+typedef struct	s_line2
 {
-	int			i;
-	t_fvector	tmpp[4];
+	t_fvector2d		p[4];
+}				t_line2;
+
+t_line2 setline2(t_fvector2d p0, t_fvector2d p1, t_fvector2d p2, t_fvector2d p3)
+{
+	t_line2 line;
+
+	line.p[0] = p0;
+	line.p[1] = p1;
+	line.p[2] = p2;
+	line.p[3] = p3;
+	return (line);
+}
+
+int		crossline(t_line2 line, t_fvector2d *ret)
+{
+	float dx1;
+	float dy1;
+	float dx2;
+	float dy2;
+
+	dx1 = line.p[1].x - line.p[0].x;
+	dy1 = line.p[1].y - line.p[0].y;
+	dx2 = line.p[3].x - line.p[2].x;
+	dy2 = line.p[3].y - line.p[2].y;
+	ret->x = dy1 * dx2 - dy2 * dx1;
+	if (!ret->x || !dx2)
+		return (0);
+	ret->y = line.p[2].x * line.p[3].y - line.p[2].y * line.p[3].x;
+	ret->x = ((line.p[0].x * line.p[1].y - line.p[0].y
+	* line.p[1].x) * dx2 - ret->y * dx1) / ret->x;
+	ret->y = (dy2 * ret->x - ret->y) / dx2;
+	return (((line.p[0].x <= ret->x && line.p[1].x >= ret->x) ||
+	(line.p[1].x <= ret->x && line.p[0].x >= ret->x))
+	&& ((line.p[2].x <= ret->x && line.p[3].x >= ret->x)
+	|| (line.p[3].x <= ret->x && line.p[2].x >= ret->x)));
+}
+
+int		clip(t_player *player, t_fvector p[4], float offset[4])
+{
+	float		t1;
+	float		t2;
+	t_fvector2d ret;
+	t_line2 l;
 
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
-	i = -1;
-	while (++i < 4)
-	{
-		tmpp[i] = p[i];
-		offset[i] = setfvector(0, 0, 0, 0);
-	}
 	if (p[0].z < 0 || p[1].z < 0 || p[2].z < 0 || p[3].z < 0)
 	{
+		offset[0] = 1;
+		offset[1] = 1;
+		offset[2] = 1;
+		offset[3] = 1;
 		if (p[0].z < 0)
-			p[0] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[0], p[1]);
-		offset[0] = subfvtofv(subfvtofv(tmpp[1], tmpp[0]), subfvtofv(tmpp[1], p[0]));
+		{
+			t1 = sqrt((p[0].x * p[0].x) + (p[0].z * p[0].z));
+			l = setline2(setfvector2d(p[0].x, p[0].z), setfvector2d(p[1].x, p[1].z),
+			setfvector2d(0, 0), setfvector2d(cos(-0.523599f) * 10, sin(-0.523599f) * 10));
+			crossline(l, &ret);
+			p[0] = setfvector(ret.x, p[0].y, ret.y, 1);
+			t2 = sqrt((p[0].x * p[0].x) + (p[0].z * p[0].z));
+			offset[0] = (1. / t1) * t2;
+		}
 		if (p[1].z < 0)
-			p[1] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[1], p[0]);
-		offset[1] = subfvtofv(subfvtofv(tmpp[0], tmpp[1]), subfvtofv(tmpp[0], p[1]));
+		{
+			t1 = sqrt((p[1].x * p[1].x) + (p[1].z * p[1].z));
+			l = setline2(setfvector2d(p[1].x, p[1].z), setfvector2d(p[0].x, p[0].z),
+			setfvector2d(0, 0), setfvector2d(cos(0.523599f) * 10, sin(0.523599f) * 10));
+			crossline(l, &ret);
+			p[1] = setfvector(ret.x, p[1].y, ret.y, 1);
+			t2 = sqrt((p[1].x * p[1].x) + (p[1].z * p[1].z));
+			offset[1] = (1. / t1) * t2;
+		}
 		if (p[2].z < 0)
-			p[2] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[2], p[3]);
-		offset[2] = subfvtofv(subfvtofv(tmpp[3], tmpp[2]), subfvtofv(tmpp[3], p[2]));
+		{
+			t1 = sqrt((p[2].x * p[2].x) + (p[2].z * p[2].z));
+			l = setline2(setfvector2d(p[2].x, p[2].z), setfvector2d(p[3].x, p[3].z),
+			setfvector2d(0, 0), setfvector2d(cos(-0.523599f) * 10, sin(-0.523599f) * 10));
+			crossline(l, &ret);
+			p[2] = setfvector(ret.x, p[2].y, ret.y, 1);
+			t2 = sqrt((p[2].x * p[2].x) + (p[2].z * p[2].z));
+			offset[2] = (1. / t1) * t2;
+		}
 		if (p[3].z < 0)
-			p[3] = inspectplane(setfvector(0, 0, 0.1f, 1), setfvector(0, 0, 1, 1), p[3], p[2]);
-		offset[3] = subfvtofv(subfvtofv(tmpp[2], tmpp[3]), subfvtofv(tmpp[2], p[3]));
+		{
+			t1 = sqrt((p[3].x * p[3].x) + (p[3].z * p[3].z));
+			l = setline2(setfvector2d(p[3].x, p[3].z), setfvector2d(p[2].x, p[2].z),
+			setfvector2d(0, 0), setfvector2d(cos(0.523599f) * 10, sin(0.523599f) * 10));
+			crossline(l, &ret);
+			p[3] = setfvector(ret.x, p[3].y, ret.y, 1);
+			t2 = sqrt((p[3].x * p[3].x) + (p[3].z * p[3].z));
+			offset[3] = (1. / t1) * t2;
+		}
 	}
 	return (1);
 }
@@ -199,16 +267,18 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 	}
 }
 
-void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil)
+void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i)
 {
 	t_wall		wa;
 	float		vec;
-	t_fvector2d	delta;
-	t_fvector	offset[4];
+	t_fvector	delta;
+	t_fvector	tmpp[4];
+	float		offset[4];
 	t_rgb		color;
 	t_mat4x4	cammat;
 	t_mat4x4	projec;
 	size_t		c;
+	t_fvector2d	r;
 	int x;
 
 	x = 0;
@@ -224,103 +294,29 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		multmatrixdrawwall(wa.p, cammat);
 		if (clip(&play, wa.p, offset))
 		{
-			multmatrixdrawwall(offset, projec);
 			multmatrixdrawwall(wa.p, projec);
+			tmpp[0] = wa.p[0];
+			tmpp[1] = wa.p[1];
+			tmpp[2] = wa.p[2];
+			tmpp[3] = wa.p[3];
+			if (wa.p[0].w < 1 || wa.p[1].w < 1 || wa.p[2].w < 1 || wa.p[3].w < 1)
+			{
+				c++;
+				printf("Check\n");
+				continue ;
+			}
 			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
 			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
 			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
 			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
 
-			if (offset[0].w != 0)
-				offset[0] = divfvector(offset[0], offset[0].w, offset[0].w, offset[0].w);
-			if (offset[1].w != 0)
-				offset[1] = divfvector(offset[1], offset[1].w, offset[1].w, offset[1].w);
-			if (offset[2].w != 0)
-				offset[2] = divfvector(offset[2], offset[2].w, offset[2].w, offset[2].w);
-			if (offset[3].w != 0)
-				offset[3] = divfvector(offset[3], offset[3].w, offset[3].w, offset[3].w);
+
 			adddrawwall(wa.p, 1, 1, 0);
-			adddrawwall(offset, 1, 1, 0);
-			multdrawwall(offset, 400, 300, 1);
 			multdrawwall(wa.p, 400, 300, 1);
 			if (w[c].z == -1)
 				color = setrgb(255, 255, 255);
 			else
 				color = setrgb(255, 0, 0);
-			if (wa.p[2].x > wa.p[3].x && wa.p[0].x > wa.p[1].x)
-			{
-				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
-				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
-			}
-			if (wa.p[0].x < 0)
-			{
-
-				delta.x = wa.p[1].x - wa.p[0].x;
-				delta.y = wa.p[1].y - wa.p[0].y;
-				vec = atan(delta.y / delta.x);
-
-				wa.p[0].x = wa.p[1].x;
-				while (wa.p[0].x > 0)
-				{
-					wa.p[0].x = wa.p[1].x - x * cos(vec);
-					wa.p[0].y = wa.p[1].y - x * sin(vec);
-					x += 100;
-				}
-			}
-			x = 0;
-			if (wa.p[2].x < 0)
-			{
-
-				delta.x = wa.p[3].x - wa.p[2].x;
-				delta.y = wa.p[3].y - wa.p[2].y;
-				vec = atan(delta.y / delta.x);
-
-				wa.p[2].x = wa.p[3].x;
-				while (wa.p[2].x > 0)
-				{
-					wa.p[2].x = wa.p[3].x - x * cos(vec);
-					wa.p[2].y = wa.p[3].y - x * sin(vec);
-					x += 100;
-				}
-			}
-
-			x =0;
-			if (wa.p[1].x > 800)
-			{
-
-				delta.x = wa.p[1].x - wa.p[0].x;
-				delta.y = wa.p[1].y - wa.p[0].y;
-				vec = atan(delta.y / delta.x);
-
-				wa.p[1].x = wa.p[0].x;
-				while (wa.p[1].x < 800)
-				{
-					wa.p[1].x = wa.p[0].x + x * cos(vec);
-					wa.p[1].y = wa.p[0].y + x * sin(vec);
-					x += 100;
-				}
-			}
-			x = 0;
-			if (wa.p[3].x > 800)
-			{
-
-				delta.x = wa.p[3].x - wa.p[2].x;
-				delta.y = wa.p[3].y - wa.p[2].y;
-				vec = atan(delta.y / delta.x);
-
-				wa.p[3].x = wa.p[2].x;
-				while (wa.p[3].x < 800)
-				{
-					wa.p[3].x = wa.p[2].x + x * cos(vec);
-					wa.p[3].y = wa.p[2].y + x * sin(vec);
-					x += 100;
-				}
-			}
-			//drawceil(p, wa, colorceil);
-			// if (fabs(wa.p[3].y - wa.p[2].y) < 1000)
-			// 	drow_wall(p, wa, *tga);
-			//drawfloor(p, wa, colorfloor);
-
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);
 			drawline(p, wa.p[2], wa.p[3], color);
@@ -348,33 +344,42 @@ void	draw(t_doom *doom)
 
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-	i = doom->thismap.sectorcount - 1;
-	while (i > -1)
-	{
-		switch (i)
-		{
-			case 0:
-				colorfloor = setrgb(0, 0, 255);
-				colorceil = setrgb(150, 150, 150);
-				break;
-			case 1:
-				colorfloor = setrgb(0, 255, 0);
-				colorceil = setrgb(0, 150, 150);
-				break;
-			case 2:
-				colorfloor = setrgb(255, 0, 0);
-				colorceil = setrgb(0, 0, 150);
-				break;
-			default:
-				colorfloor = setrgb(255, 255, 255);
-				colorceil = setrgb(50, 50, 50);
-				break;
-		}
-		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-		doom->thismap.sectors[i].start,
-		doom->thismap.sectors[i].count, doom->thismap.sectors[i].floor, doom->thismap.sectors[i].height, colorfloor, colorceil);
-		i--;
-	}
+	// i = doom->thismap.sectorcount - 1;
+	// while (i > -1)
+	// {
+	// 	switch (i)
+	// 	{
+	// 		case 0:
+	// 			colorfloor = setrgb(0, 0, 255);
+	// 			colorceil = setrgb(150, 150, 150);
+	// 			break;
+	// 		case 1:
+	// 			colorfloor = setrgb(0, 255, 0);
+	// 			colorceil = setrgb(0, 150, 150);
+	// 			break;
+	// 		case 2:
+	// 			colorfloor = setrgb(255, 0, 0);
+	// 			colorceil = setrgb(0, 0, 150);
+	// 			break;
+	// 		default:
+	// 			colorfloor = setrgb(255, 255, 255);
+	// 			colorceil = setrgb(50, 50, 50);
+	// 			break;
+	// 	}
+	// 	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	// 	doom->thismap.sectors[i].start,
+	// 	doom->thismap.sectors[i].count,
+	// 	doom->thismap.sectors[i].floor,
+	// 	doom->thismap.sectors[i].height, colorfloor, colorceil, i);
+	// 	i--;
+	// }
+	colorfloor = setrgb(0, 0, 255);
+	colorceil = setrgb(150, 150, 150);
+	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	doom->thismap.sectors[doom->player.sector].start,
+	doom->thismap.sectors[doom->player.sector].count,
+	doom->thismap.sectors[doom->player.sector].floor,
+	doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,

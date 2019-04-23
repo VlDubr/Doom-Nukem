@@ -3,6 +3,7 @@
 		"doom.h": "c",
 		"utils.h": "c",
 		"tga.h": "c",
-		"sdl_image.h": "c"
+		"sdl_image.h": "c",
+		"sdl.h": "c"
 	}
 }

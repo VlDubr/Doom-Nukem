@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 20:13:15 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/23 16:50:37 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ void	checkkeyboard(t_doom *doom, double delta)
 
 	if (doom->input.keystate[SDL_SCANCODE_ESCAPE])
 		doom->win->state = 0;
+
+	if (doom->input.keystate[SDL_SCANCODE_P])
+		printf("pos: %f %f %f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
 
 	if (doom->player.velosity.x == 0 || doom->player.velosity.y == 0 ||
 	doom->player.velosity.z == 0)

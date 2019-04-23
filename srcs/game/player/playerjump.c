@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 11:43:51 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 11:44:06 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/22 21:00:07 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	playerjump(t_doom *doom, t_player *player)
 	doom->thismap.sectors[player->sector].floor +
 	doom->thismap.sectors[player->sector].height;
 
-	player->pos.y = flerp(doom->thismap.sectors[player->sector].floor, height,
+	player->pos.y = flerp(doom->thismap.sectors[player->sector].floor +
+	player->height, height,
 	(1 / player->maxstamina) * player->stamina);
 	minusstamina(player, 20);
 	player->jump = 1;

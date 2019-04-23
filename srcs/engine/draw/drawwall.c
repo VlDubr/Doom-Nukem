@@ -6,13 +6,13 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/19 20:31:17 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/23 20:47:24 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "doom.h"
-void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int start, uint32_t *p)
+void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int start, uint32_t *p, float	*offset)
 {
 	float dx;
 	float dy;
@@ -81,7 +81,7 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		// 	SDL_RenderDrawPoint (renderer,x, y);
 	}
 }
-void drow_wall(uint32_t *p, t_wall wall, t_tga image)
+void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 {
 	int dx1;
 	int dy1;
@@ -146,7 +146,6 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	dy4 = (wall.p[3].y - wall.p[2].y);
 	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
 	dist2 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
-	
 	if (dx4 > dx1)
 	{
 		maxdist = abs(dx4);
@@ -163,7 +162,6 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 		shag_dlya_1_steni = 1.0;
 		shag_dlya_2_steni = (float)mindist / (float)maxdist;
 	}
-
 	dir1 = (atan((float)dy1/(float)dx1));
 	dir4 = (atan((float)dy4/(float)dx4));
 	stena1_x = (float *)malloc((sizeof(float)) * (maxdist+1));
@@ -180,7 +178,6 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 		stena2_x[i] = wall.p[2].x + (i * shag_dlya_2_steni);
 		stena2_y[i] = wall.p[2].y + (i * shag_dlya_2_steni * ((float)dist2/(float)dx4)) *sin(dir4);
 		ugol_sten[i] = atan((float)(stena2_y[i] - stena1_y[i])/(stena2_x[i] - stena1_x[i]));
-
 		dist_sten[i] = sqrt(pow(stena2_x[i] - stena1_x[i], 2) + pow(stena2_y[i] - stena1_y[i], 2));
 		if (ugol_sten[i] > 0)
 			ugol_sten[i] -= M_PI;
@@ -188,12 +185,30 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	}
 	// m = maxdist / (float)(image.width);
 	x = 0;
-	m = (maxdist) / (float)(image.width);
+	float kef;
+	kef = 0;
+	m = ((float)maxdist) / (float)(image.width);
+	if (wall.p[0].x < 0)
+	{
+		kef = (float)maxdist/offset[0] - (float)maxdist;
+		m = ((float)maxdist/offset[0]) / (float)(image.width);
+			//  printf ("%f\n", offset[0]);
+	}
+	// if (wall.p[1].x > 800)
+	// {
+	// 	return ;
+	// 	kef = -((float)maxdist/offset[1] - maxdist);
+	// 	m = ((float)maxdist/offset[1]) / (float)(image.width);
+	
+	// }
+	
+	
+
 	while (x < maxdist)
 	{
 		y = 0;
-		xp = (int)(x/m);
-		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p);
+		xp = (int)((float)(x+kef)/m);
+		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p, offset);
 		// while (y < dist_sten[x] *2)
 		// {
 		// 	k = dist_sten[x] *2   / (image.height -1 );
@@ -218,7 +233,7 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image)
 	// SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	// while (i < maxdist)
 	// {
-	// 	SDL_RenderDrawPoint (renderer,stena1_x[i], stena1_y[i]);		
+	// 	SDL_RenderDrawPoint (renderer,stena1_x[i], stena1_y[i]);
 	// 	i++;
 	// }
 	// SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);

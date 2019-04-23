@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/23 18:45:02 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/23 21:56:32 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,15 @@ int		crossline(t_line2 line, t_fvector2d *ret)
 	|| (line.p[3].x <= ret->x && line.p[2].x >= ret->x)));
 }
 
-int		clip(t_player *player, t_fvector p[4], float offset[4])
+int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 {
 	float		t1;
 	float		t2;
+	float 		t3;
 	t_fvector2d ret;
+	t_fvector2d ret1;
 	t_line2 l;
+	t_line2 l1;
 
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
@@ -140,15 +143,41 @@ int		clip(t_player *player, t_fvector p[4], float offset[4])
 		offset[1] = 1;
 		offset[2] = 1;
 		offset[3] = 1;
+		
 		if (p[0].z < 0)
 		{
-			t1 = sqrt((p[0].x * p[0].x) + (p[0].z * p[0].z));
+			// if (p[0].z < -42.0)
+			// 	return (0);
+			t1 = sqrt((fabs(p[1].x - p[0].x) * fabs(p[1].x - p[0].x)) + (fabs(p[1].z - p[0].z) * fabs(p[1].z - p[0].z)));
+			// t1 = sqrt((fabs(p[3].x - p[2].x) * fabs(p[3].x - p[2].x)) + (fabs(p[3].z - p[2].z) * fabs(p[3].z - p[2].z)));
 			l = setline2(setfvector2d(p[0].x, p[0].z), setfvector2d(p[1].x, p[1].z),
-			setfvector2d(0, 0), setfvector2d(cos(-0.523599f) * 10, sin(-0.523599f) * 10));
+			setfvector2d(0, 0), setfvector2d(cos(-0.506145f) * 100, sin(-0.506145f) * 100));
 			crossline(l, &ret);
+			// l1 = setline2(setfvector2d(p[2].x, p[2].z), setfvector2d(p[3].x, p[3].z),
+			// setfvector2d(0, 0), setfvector2d(cos(-0.523599f) * 100, sin(-0.523599f) * 100));
+			// crossline(l, &ret1);
+			printf ("%zu z0 %f z1 %f\n", c, p[0].z, p[1].z);
+			// printf ("%zu x0 %f x1 %f\n", c, p[0].x, p[1].x);
+			// printf ("z2 %f z3 %f\n", p[2].z, p[3].z);
 			p[0] = setfvector(ret.x, p[0].y, ret.y, 1);
-			t2 = sqrt((p[0].x * p[0].x) + (p[0].z * p[0].z));
-			offset[0] = (1. / t1) * t2;
+			// p[2] = setfvector(ret.x, p[2].y, ret.y, 1);
+			printf ("%zu z0 %f z1 %f\n", c, p[0].z, p[1].z);
+			// printf ("%zu x0 %f x1 %f\n", c, p[0].x, p[1].x);
+			// printf ("z2 %f z3 %f\n", p[2].z, p[3].z);
+			t2 = sqrt((fabs(p[1].x - p[0].x) * fabs(p[1].x - p[0].x)) + (fabs(p[1].z - p[0].z) * fabs(p[1].z - p[0].z)));
+			t3 = sqrt((fabs(p[3].x - p[2].x) * fabs(p[3].x - p[2].x)) + (fabs(p[3].z - p[2].z) * fabs(p[3].z - p[2].z)));
+			printf ("%f\n", t2/t1);
+			// printf ("%f\n",  t2);
+			// printf ("%f\n",  t3);
+			// if (p[1].z < 8.0)
+			// 	return (0);
+			// if (p[0].z > p[1].z - 1)
+			// 	return (0);
+			offset[0] = t2/t1;
+			// if (p[0].z < -42.0)
+			// 	return (0);
+			// if (p[0].z > p[1].z - 1)
+			// 	return (0);
 		}
 		if (p[1].z < 0)
 		{
@@ -285,6 +314,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	c = 0;
 	cammat = matcam(&play);
 	projec = matprojection(initcam(setivector2d(800, 400)));
+	printf ("\n");
 	while (c < count)
 	{
 		wa.p[0] = setfvector(w[c].x, floor, w[c].y, 1);
@@ -292,7 +322,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
 		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
 		multmatrixdrawwall(wa.p, cammat);
-		if (clip(&play, wa.p, offset))
+		if (clip(&play, wa.p, offset, c))
 		{
 			multmatrixdrawwall(wa.p, projec);
 			tmpp[0] = wa.p[0];
@@ -317,11 +347,14 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				color = setrgb(255, 255, 255);
 			else
 				color = setrgb(255, 0, 0);
+			if ((wa.p[1].y - wa.p[0].y) < 2000)
+				drow_wall(p, wa, *tga, offset );
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);
 			drawline(p, wa.p[2], wa.p[3], color);
 			drawline(p, wa.p[1], wa.p[3], color);
 		}
+		
 		c++;
 	}
 }

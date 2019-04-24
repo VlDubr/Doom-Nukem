@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 14:21:18 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/24 15:15:32 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ static void		initsdl(Uint32 sdlflag)
 {
 	if (SDL_Init(sdlflag))
 		error("Error: SDL not init...");
+	if ((Mix_Init(MIX_INIT_MP3)) == -1)
+		error("Error: SDL_Mixer not init...");
+	if ((Mix_OpenAudio(22050, AUDIO_U16SYS, 2, 1024)) == -1)
+		error("OpenAudio error!");
+	Mix_AllocateChannels(16);
+	Mix_Volume(-1, 64);
 }
 
 t_doom			*initdoom(char *argv0)

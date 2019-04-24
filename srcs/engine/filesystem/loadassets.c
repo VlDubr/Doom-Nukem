@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/24 14:08:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/24 15:04:26 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	loadimage(char **tmp)
 		y++;
 }
 
-t_sound	*loadsound(char **tmp, t_sound *s)
+t_sound	*loadsound(char *path, char **tmp, t_sound *s)
 {
 	int		y;
 
@@ -36,7 +36,7 @@ t_sound	*loadsound(char **tmp, t_sound *s)
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]))
 	{
-		s->samples[y] = Mix_LoadWAV(tmp[y]);
+		s->samples[y] = Mix_LoadWAV(ft_strjoin(path, tmp[y]));
 		y++;
 	}
 	return (s);
@@ -75,7 +75,8 @@ void	loadassets(char *path, t_doom *doom)
 		if (ft_strequ("image:", tmp[y]))
 			loadimage(tmp + (y + 1));
 		else if (ft_strequ("sound:", tmp[y]))
-			doom->sounds = loadsound(tmp + (y + 1), &doom->sounds);
+			doom->sounds = loadsound(ft_strjoin(doom->path, "assets/"),
+			tmp + (y + 1), doom->sounds);
 		else if (ft_strequ("map:", tmp[y]))
 			loadmaps(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
 			&doom->maps, &doom->mapcount);

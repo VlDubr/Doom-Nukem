@@ -33,7 +33,7 @@ TGAREADERFOLDER = ./lib/TGA-Reader/
 TGAREADERINCLUDES = $(TGAREADERFOLDER)includes/
 TGAREADERLINK = -I $(TGAREADERINCLUDES) -L $(TGAREADERFOLDER) -ltga
 
-SDL2LINKMACOS = -I ./lib/SDL/include/SDL2/ -F ./lib/SDL/Frameworks/ -framework SDL2  -framework SDL2_mixer
+SDL2LINKMACOS = -I ./lib/SDL/include/SDL2/ -F ./lib/SDL/Frameworks/ -framework SDL2
 SDL2LINKLINUX = -lm -lSDL2
 
 all: $(NAME)

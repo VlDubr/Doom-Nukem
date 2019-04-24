@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 14:08:44 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/24 15:41:17 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # ifdef __APPLE__
 #  define CREATEFLAG S_IWRITE | S_IREAD
 #  include "../lib/SDL/include/SDL2/SDL.h"
-#  include "../lib/SDL/include/SDL2/SDL_mixer.h"
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>

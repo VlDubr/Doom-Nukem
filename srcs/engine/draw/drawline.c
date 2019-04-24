@@ -16,7 +16,7 @@ void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	edi.z = 0;
 	while (edi.z < end.x - start.x)
 	{
-		if (cord.x + edi.z >= 0 && cord.x + edi.z < 800 && cord.y >= 0 && cord.y < 600)
+		if (cord.x + edi.z >= 0 && cord.x + edi.z < 800 && cord.y >= 0 && cord.y < 800)
 			p[(int)(cord.x + edi.z) + (cord.y * 800)] = ((((((255 << 8) |
 			color.red) << 8) | color.green) << 8) | color.blue);
 		edi.x = edi.x + delta.z;
@@ -45,7 +45,7 @@ void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	edi.z = 0;
 	while (edi.z < end.y - start.y)
 	{
-		if (cord.x >= 0 && cord.x < 800 && cord.y + edi.z >= 0 && cord.y + edi.z < 600)
+		if (cord.x >= 0 && cord.x < 800 && cord.y + edi.z >= 0 && cord.y + edi.z < 800)
 			p[cord.x + (int)((cord.y + edi.z) * 800)] = ((((((255 << 8) |
 			color.red) << 8) | color.green) << 8) | color.blue);
 		edi.x = edi.x + delta.z;

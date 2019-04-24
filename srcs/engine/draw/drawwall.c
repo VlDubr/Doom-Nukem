@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/23 20:47:24 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/24 13:50:09 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	if (ey == 1)
 		e *=-1;
 	k = dy   / (image.height);
-	 
+
 	while (y <= y0 && y >= y1)
 	{
 		y += ey; ;
@@ -70,12 +70,12 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 			b = image.pic[yp][xp].blue;
 			a = image.pic[yp][xp].alpha;
 		}
-		if (x >= 0 && x < 800 && y >= 0 && y < 600)
-				{	
+		if (x >= 0 && x < 800 && y >= 0 && y < 800)
+				{
 					if (y < y0 && y > y1 && x > 0)
 						p[(int)(x -1) + ((int)(y+1) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-					
+
 				}
 		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 		// 	SDL_RenderDrawPoint (renderer,x, y);
@@ -121,7 +121,7 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	int mindist;
 	int buf;
 	int start;
-	
+
 	// if (wall.p[2].x > wall.p[3].x && wall.p[0].x > wall.p[1].x)
 	// {
 	// 	ft_swap((void**)&wall.p[0], (void**)&wall.p[1]);
@@ -199,10 +199,10 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	// 	return ;
 	// 	kef = -((float)maxdist/offset[1] - maxdist);
 	// 	m = ((float)maxdist/offset[1]) / (float)(image.width);
-	
+
 	// }
-	
-	
+
+
 
 	while (x < maxdist)
 	{

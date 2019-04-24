@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 15:23:33 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/24 20:19:55 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_camera	initcam(t_ivector2d sizewin)
 {
 	t_camera cam;
 
-	cam.near = 0.1f;
+	cam.near = 0.1;
 	cam.far = 1000;
 	cam.fov = 60;
-	cam.aspectratio = (float)sizewin.y / (float)sizewin.x;
+	cam.aspectratio = (float)sizewin.x / (float)sizewin.y;
 	return (cam);
 }
 
@@ -37,12 +37,12 @@ t_mat4x4	matprojection(t_camera cam)
 	float		fovrad;
 	t_mat4x4	m;
 
-	fovrad = 1.0 / tan(degrtorad(cam.fov));
+	fovrad = 1.0 / tan(degrtorad(cam.fov/2));
 	m = initmat(0);
-	m.mat[0][0] = cam.aspectratio * fovrad;
+	m.mat[0][0] = fovrad/cam.aspectratio;
 	m.mat[1][1] = fovrad;
-	m.mat[2][2] = cam.far / (cam.far - cam.near);
-	m.mat[3][2] = (-cam.far * cam.near) / (cam.far - cam.near);
+	m.mat[2][2] = (cam.near + cam.far) / (cam.far - cam.near);
+	m.mat[3][2] = (-2.0*(cam.far * cam.near) )/ (cam.far - cam.near);
 	m.mat[2][3] = 1;
 	m.mat[3][3] = 0;
 	return (m);
@@ -170,28 +170,28 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	tmpp[1] = p[1];
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
-	if (p[0].z < 0 || p[1].z < 0 || p[2].z < 0 || p[3].z < 0)
+	if (p[0].z < 10 || p[1].z < 10 || p[2].z < 10 || p[3].z < 10)
 	{
-		if (p[0].z < 0)
+		if (p[0].z < 10)
 			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-			cos(-0.52) * 100, sin(-0.52)
-			* 100)))
+			cos(-1.04) * 100, sin(-1.04) * 100)))
 				return (0);
-		if (p[1].z < 0)
+		if (p[1].z < 10)
 			if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-			cos(0.52) * 100, sin(0.52)
-			* 100)))
+			cos(1.04) * 100, sin(1.04) * 100)))
 				return (0);
-		if (p[2].z < 0)
+		if (p[2].z < 10)
 			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-			cos(-0.52) * 100, sin(-0.52)
-			* 100)))
+			cos(-1.04) * 100, sin(-1.04) * 100)))
 				return (0);
-		if (p[3].z < 0)
+		if (p[3].z < 10)
 			if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-			cos(0.52) * 100, sin(0.52)
-			* 100)))
+			cos(1.04) * 100, sin(1.04) * 100)))
 				return (0);
+		if (offset[0] < 0)
+			printf("check 0\n");
+		if (offset[1] < 0)
+			printf("check 1\n");
 	}
 	return (1);
 }
@@ -234,7 +234,6 @@ void	multdrawwall(t_fvector *view, float x, float y, float z)
 	view[2] = multfvector(view[2], x, y, z);
 	view[3] = multfvector(view[3], x, y, z);
 }
-
 
 void	cleartexture(t_window *win)
 {
@@ -331,11 +330,24 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 
 			adddrawwall(wa.p, 1, 1, 0);
 			multdrawwall(wa.p, 400, 400, 1);
+			// if (wa.p[0].x < 0 && wa.p[0].z < 0.97)
+			// {
+			// 	float dir1;
+			// 	float dir2;
+			// 	delta.x =wa.p[1].x - wa.p[0].x;
+			// 	delta.y =wa.p[1].y - wa.p[0].y;
+			// 	dir1 = atan (delta.y / delta.x);
+
+			// 	wa.p[0].x = -wa.p[1].x * (1 - offset[0]);
+
+			// 	wa.p[2].x = -wa.p[3].x * (1- offset[2]);
+			// 	//  wa.p[2].y -= wa.p[3].y * (1 - offset[2]);
+			// }
 			if (w[c].z == -1)
 				color = setrgb(255, 255, 255);
 			else
 				color = setrgb(255, 0, 0);
-			printf("w: %zu x0: %f x1: %f\n", c, wa.p[0].x, wa.p[1].x);
+			printf("w: %zu x0: %f x1: %f z0: %f  w0 %f \n", c, wa.p[0].x, wa.p[1].x, wa.p[0].z, wa.p[0].w);
 			if ((wa.p[1].y - wa.p[0].y) < 2000 && !(wa.p[0].x > 800 || wa.p[1].x < 0))
 			{
 				drow_wall(p, wa, *tga, offset );

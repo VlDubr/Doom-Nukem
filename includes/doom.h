@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/23 18:54:19 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/24 14:08:44 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,19 @@
 # include "filesystem.h"
 # include "physics.h"
 # include <stdlib.h>
+
 # ifdef __APPLE__
 #  define CREATEFLAG S_IWRITE | S_IREAD
 #  include "../lib/SDL/include/SDL2/SDL.h"
+#  include "../lib/SDL/include/SDL2/SDL_mixer.h"
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>
+#  include <SDL2/SDL_mixer.h>
+# elif __WIN32__
+#  define CREATEFLAG __S_IWRITE | __S_IREAD
+#  include <C:\MinGW\msys\1.0\include\SDL2\SDL.h>
+#  include <C:\MinGW\msys\1.0\include\SDL2\SDL_mixer.h>
 # endif
 
 typedef struct	s_window
@@ -136,11 +143,20 @@ typedef struct	s_wall
 	t_tga		texture;
 }				t_wall;
 
+typedef struct	s_sound
+{
+	Mix_Music	*menu;
+	Mix_Music	*game;
+	Mix_Chunk	**samples;
+}				t_sound;
+
 typedef struct	s_doom
 {
 	char		*path;
 	t_window	*win;
 	SDL_Event	event;
+
+	t_sound		*sounds;
 
 	Uint64		lastframe;
 	Uint64		currentframe;

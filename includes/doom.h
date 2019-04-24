@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 15:41:17 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/24 15:42:39 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,20 +142,11 @@ typedef struct	s_wall
 	t_tga		texture;
 }				t_wall;
 
-typedef struct	s_sound
-{
-	Mix_Music	*menu;
-	Mix_Music	*game;
-	Mix_Chunk	**samples;
-}				t_sound;
-
 typedef struct	s_doom
 {
 	char		*path;
 	t_window	*win;
 	SDL_Event	event;
-
-	t_sound		*sounds;
 
 	Uint64		lastframe;
 	Uint64		currentframe;

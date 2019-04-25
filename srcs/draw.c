@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 20:19:55 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/25 11:32:31 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,21 +170,21 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	tmpp[1] = p[1];
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
-	if (p[0].z < 10 || p[1].z < 10 || p[2].z < 10 || p[3].z < 10)
+	if (p[0].z < 17 || p[1].z < 17 || p[2].z < 17 || p[3].z < 17)
 	{
-		if (p[0].z < 10)
+		if (p[0].z < 17)
 			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
 			cos(-1.04) * 100, sin(-1.04) * 100)))
 				return (0);
-		if (p[1].z < 10)
+		if (p[1].z < 17)
 			if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
 			cos(1.04) * 100, sin(1.04) * 100)))
 				return (0);
-		if (p[2].z < 10)
+		if (p[2].z < 17)
 			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
 			cos(-1.04) * 100, sin(-1.04) * 100)))
 				return (0);
-		if (p[3].z < 10)
+		if (p[3].z < 17)
 			if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
 			cos(1.04) * 100, sin(1.04) * 100)))
 				return (0);
@@ -330,32 +330,20 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 
 			adddrawwall(wa.p, 1, 1, 0);
 			multdrawwall(wa.p, 400, 400, 1);
-			// if (wa.p[0].x < 0 && wa.p[0].z < 0.97)
-			// {
-			// 	float dir1;
-			// 	float dir2;
-			// 	delta.x =wa.p[1].x - wa.p[0].x;
-			// 	delta.y =wa.p[1].y - wa.p[0].y;
-			// 	dir1 = atan (delta.y / delta.x);
-
-			// 	wa.p[0].x = -wa.p[1].x * (1 - offset[0]);
-
-			// 	wa.p[2].x = -wa.p[3].x * (1- offset[2]);
-			// 	//  wa.p[2].y -= wa.p[3].y * (1 - offset[2]);
-			// }
 			if (w[c].z == -1)
 				color = setrgb(255, 255, 255);
 			else
 				color = setrgb(255, 0, 0);
-			printf("w: %zu x0: %f x1: %f z0: %f  w0 %f \n", c, wa.p[0].x, wa.p[1].x, wa.p[0].z, wa.p[0].w);
-			if ((wa.p[1].y - wa.p[0].y) < 2000 && !(wa.p[0].x > 800 || wa.p[1].x < 0))
+			if (wa.p[0].x > wa.p[1].x)
 			{
-				drow_wall(p, wa, *tga, offset );
-				drawline(p, wa.p[0], wa.p[1], color);
-				drawline(p, wa.p[0], wa.p[2], color);
-				drawline(p, wa.p[2], wa.p[3], color);
-				drawline(p, wa.p[1], wa.p[3], color);
+				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 			}
+			drow_wall(p, wa, *tga, offset );
+			drawline(p, wa.p[0], wa.p[1], color);
+			drawline(p, wa.p[0], wa.p[2], color);
+			drawline(p, wa.p[2], wa.p[3], color);
+			drawline(p, wa.p[1], wa.p[3], color);
 		}
 
 		c++;

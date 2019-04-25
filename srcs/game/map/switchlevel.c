@@ -2,9 +2,15 @@
 
 void	switchlevel(t_doom *doom, size_t level)
 {
+	int mus;
+
+	mus = -1;
 	if (level < doom->mapcount)
 	{
-		Mix_PlayMusic(doom->sounds->game[level], -1);
+		if ((mus + 1) >= doom->sounds->music_count)
+			mus = -1;
+		mus++;
+		Mix_PlayMusic(doom->sounds->game_mus[mus], -1);
 		doom->thismap = doom->maps[level];
 		doom->player.sector = isinside(
 		setfvector2d(doom->thismap.startplayer.pos.x,

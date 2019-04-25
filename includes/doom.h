@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 15:16:48 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 16:35:32 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,16 @@ typedef struct	s_wall
 
 typedef struct	s_sound
 {
-	Mix_Music	*menu;
-	Mix_Music	**game;
+	int			music_count;
+	Mix_Music	**menu;
+	Mix_Music	**game_mus;
 	Mix_Chunk	**samples;
+	Mix_Music	*jump;
+	Mix_Music	*run;
+	Mix_Music	*move;
+	Mix_Music	*hurt;
+	Mix_Music	*die;
+
 	Mix_Chunk	*sample;
 }				t_sound;
 

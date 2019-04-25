@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/25 15:21:02 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 16:43:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,45 @@ void	loadsound(char *path, char **tmp, t_doom *doom)
 		y++;
 	}
 	Mix_AllocateChannels(5);
-	Mix_Volume(-1, 64);
+	Mix_Volume(-1, 96);
 }
 
 void	loadmusic(char *path, char **tmp, t_doom *doom)
 {
 	int		y;
+	int		flag;
+	char	*del;
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("sound:", tmp[y]))
 		y++;
-	doom->sounds->game = (Mix_Music	**)malloc(sizeof(Mix_Music	*) * y);
+	doom->sounds->game_mus = (Mix_Music	**)malloc(sizeof(Mix_Music	*) * y);
+	doom->sounds->menu = (Mix_Music	**)malloc(sizeof(Mix_Music	*) * y);
 	y = 0;
+	flag = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("sound:", tmp[y]))
 	{
-		doom->sounds->game[y] = Mix_LoadMUS(ft_strjoin(path, tmp[y]));
+		if (ft_strstr(tmp[y], "menu") != NULL)
+		{
+			doom->sounds->menu[flag] = Mix_LoadMUS(ft_strjoin(path, tmp[y]));
+			flag++;
+		}
+		else
+			doom->sounds->game_mus[y - flag] =
+				Mix_LoadMUS(del = ft_strjoin(path, tmp[y]));
 		y++;
+		free(del);
 	}
-	Mix_VolumeMusic(64);
+	doom->sounds->music_count = y - flag;
+	Mix_VolumeMusic(32);
 }
 
 void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 {
 	int		y;
+	char	*del;
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
@@ -75,8 +89,10 @@ void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("sound:", tmp[y]) && !ft_strequ("music:", tmp[y]))
 	{
-		(*map)[y] = loadmap(ft_strjoin(path, tmp[y]));
+		del = ft_strjoin(path, tmp[y]);
+		(*map)[y] = loadmap(del);
 		y++;
+		free(del);
 	}
 }
 
@@ -85,6 +101,7 @@ void	loadassets(char *path, t_doom *doom)
 	int		y;
 	char	*str;
 	char	**tmp;
+	char	*del;
 
 	y = 0;
 	str = readfile(path);
@@ -94,12 +111,23 @@ void	loadassets(char *path, t_doom *doom)
 		if (ft_strequ("image:", tmp[y]))
 			loadimage(tmp + (y + 1));
 		else if (ft_strequ("sound:", tmp[y]))
-			loadsound(ft_strjoin(doom->path, "assets/"), tmp + (y + 1), doom);
+		{
+			loadsound(del = ft_strjoin(doom->path, "assets/"),
+				tmp + (y + 1), doom);
+			free(del);
+		}
 		else if (ft_strequ("music:", tmp[y]))
-			loadmusic(ft_strjoin(doom->path, "assets/"), tmp + (y + 1), doom);
+		{
+			loadmusic(del = ft_strjoin(doom->path, "assets/"),
+				tmp + (y + 1), doom);
+			free(del);
+		}
 		else if (ft_strequ("map:", tmp[y]))
-			loadmaps(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
-			&doom->maps, &doom->mapcount);
+		{
+			loadmaps(del = ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
+				&doom->maps, &doom->mapcount);
+			free(del);
+		}
 		y++;
 	}
 }

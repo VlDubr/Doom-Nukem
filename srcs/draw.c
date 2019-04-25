@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 18:46:03 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/25 21:08:14 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,23 +85,7 @@ t_fvector linestart, t_fvector lineend)
 	return (addfvtofv(linestart, linetoinspector));
 }
 
-typedef struct	s_line2
-{
-	t_fvector2d		p[4];
-}				t_line2;
-
-t_line2 setline2(t_fvector2d p0, t_fvector2d p1, t_fvector2d p2, t_fvector2d p3)
-{
-	t_line2 line;
-
-	line.p[0] = p0;
-	line.p[1] = p1;
-	line.p[2] = p2;
-	line.p[3] = p3;
-	return (line);
-}
-
-int		crossline(t_line2 line, t_fvector2d *ret)
+int		crossline(t_line line, t_fvector2d *ret)
 {
 	float dx1;
 	float dy1;
@@ -132,18 +116,18 @@ t_fvector2d angle)
 	float		t2;
 	t_fvector2d ret;
 	t_fvector	tmpp;
-	t_line2 l;
+	t_line l;
 
 	t1 = sqrt((fabs(p2->x - p1->x) * fabs(p2->x - p1->x)) +
 	(fabs(p2->z - p1->z) * fabs(p2->z - p1->z)));
-	l = setline2(setfvector2d(p1->x, p1->z), setfvector2d(p2->x, p2->z),
+	l = setline(setfvector2d(p1->x, p1->z), setfvector2d(p2->x, p2->z),
 	setfvector2d(0, 0), setfvector2d(angle.x * 100, angle.y * 100));
 	crossline(l, &ret);
 	tmpp = *p1;
 	p1->x = ret.x;
 	p1->z = ret.y;
-	if (p1->z > p2->z)
-		return (0);
+	// if (p1->z > p2->z)
+	// 	return (0);
 	t2 = sqrt((fabs(p2->x - p1->x) * fabs(p2->x - p1->x))
 	+ (fabs(p2->z - p1->z) * fabs(p2->z - p1->z)));
 	*offset = t2/t1;
@@ -158,7 +142,7 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	float		t2;
 	t_fvector2d ret;
 	t_fvector	 tmpp[4];
-	t_line2 l;
+	t_line l;
 	float pos;
 	float pos1;
 	float pos2;
@@ -173,33 +157,55 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
 	pos2 = 17;
-	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-	switchcordwall(&tmpp[1], &tmpp[0], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
+	if (switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
+		printf("2Check switch %zu, %f, %f\n", c, p[1].z, tmpp[1].z);
+	
 	offset[0] = 1;
+	offset[1] = 1;
 	pos1 = tmpp[0].z;
-	// pos2 = tmpp[1].z;
-	 printf("p1 %f p2 %f\n", pos1, pos2);
-	// if (p[0].z < pos1 || p[1].z < pos2 || p[2].z < pos1 || p[3].z < pos2)
+
+
+	if (p[0].z < pos1 || p[2].z < pos1)
 	{
 		if (p[0].z < pos1)
-			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100)))				
-				return (0);			
-		if (p[1].z < pos2)
-			if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-			cos(1.047197551) * 100, sin(1.047197551) * 100)))
-				return (0);
+			if (!collideline(setline(setfvector2d(p[0].x, p[0].z), setfvector2d(p[1].x, p[1].z),
+				setfvector2d(0, 0), setfvector2d(cos(-1.047197551) * 100, sin(-1.047197551) * 100))))
+				if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
+				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))				
+					return (0);			
+		
 		if (p[2].z < pos1)
-			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
-				return (0);
-		if (p[3].z < pos2)
-			if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-			cos(1.047197551) * 100, sin(1.047197551) * 100)))
-				return (0);
+			if (!collideline(setline(setfvector2d(p[2].x, p[2].z), setfvector2d(p[3].x, p[3].z),
+				setfvector2d(0, 0), setfvector2d(cos(-1.047197551) * 100, sin(-1.047197551) * 100))))
+				if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
+				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
+					return (0);
+		
 	}
+	tmpp[0] = p[0];
+	tmpp[1] = p[1];
+	if (switchcordwall(&tmpp[1], &tmpp[0], &offset[1], setfvector2d(
+			cos(1.047197551) * 100, sin(1.047197551) * 100)))
+		printf("1Check switch %zu, %f, %f\n", c, p[1].z, tmpp[1].z);
+		pos2 = tmpp[1].z;
+		offset[1] = 1;
+			 printf("pos1 %f pos2 %f p1z %f p2z %f\n", pos1, pos2,p[0].z, p[1].z);
+	 if ( p[1].z < pos2 || p[3].z < pos2)
+	 {
+		 if (p[1].z < pos2)
+		 	if (!collideline(setline(setfvector2d(p[1].x, p[1].z), setfvector2d(p[0].x, p[0].z),
+				setfvector2d(0, 0), setfvector2d(cos(1.047197551) * 100, sin(1.047197551) * 100))))
+				if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
+				cos(1.047197551) * 100, sin(1.047197551) * 100)))
+					return (0);
+		if (p[3].z < pos2)
+			if (!collideline(setline(setfvector2d(p[3].x, p[3].z), setfvector2d(p[2].x, p[2].z),
+				setfvector2d(0, 0), setfvector2d(cos(1.047197551) * 100, sin(1.047197551) * 100))))
+				if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
+				cos(1.047197551) * 100, sin(1.047197551) * 100)))
+					return (0);
+	 }
 	return (1);
 }
 

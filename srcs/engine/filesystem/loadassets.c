@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/24 18:31:48 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 14:30:14 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_sound	*loadsound(char *path, char **tmp, t_sound *s)
 	}
 	return (s);
 }
-
 void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 {
 	int		y;

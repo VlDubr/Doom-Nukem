@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 15:21:33 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 15:37:02 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int				main(int agrc, char **argv)
 	switchlevel(doom, doom->level);
 	doom->currentframe = SDL_GetPerformanceCounter();
 	tga = tga_reader(argv[1]);
-	Mix_PlayMusic(doom->sounds->game[0], -1);
 	while (doom->win->state)
 	{
 		doom->lastframe = doom->currentframe;

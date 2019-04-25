@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/25 14:30:14 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 14:51:33 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	loadimage(char **tmp)
 		y++;
 }
 
-t_sound	*loadsound(char *path, char **tmp, t_sound *s)
+void	loadsound(char *path, char **tmp, t_doom *doom)
 {
 	int		y;
 
@@ -30,17 +30,18 @@ t_sound	*loadsound(char *path, char **tmp, t_sound *s)
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]))
 		y++;
-	Mix_AllocateChannels(y);
-	s->samples = (Mix_Chunk	**)malloc(sizeof(Mix_Chunk	*) * y);
+	doom->sounds->samples = (Mix_Chunk	**)malloc(sizeof(Mix_Chunk	*) * y);
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]))
 	{
-		s->samples[y] = Mix_LoadWAV(ft_strjoin(path, tmp[y]));
+		doom->sounds->samples[y] = Mix_LoadWAV(ft_strjoin(path, tmp[y]));
 		y++;
 	}
-	return (s);
+	Mix_AllocateChannels(5);
+	Mix_Volume(-1, 64);
 }
+
 void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 {
 	int		y;
@@ -74,8 +75,7 @@ void	loadassets(char *path, t_doom *doom)
 		if (ft_strequ("image:", tmp[y]))
 			loadimage(tmp + (y + 1));
 		else if (ft_strequ("sound:", tmp[y]))
-			doom->sounds = loadsound(ft_strjoin(doom->path, "assets/"),
-			tmp + (y + 1), doom->sounds);
+			loadsound(ft_strjoin(doom->path, "assets/"), tmp + (y + 1), doom);
 		else if (ft_strequ("map:", tmp[y]))
 			loadmaps(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
 			&doom->maps, &doom->mapcount);

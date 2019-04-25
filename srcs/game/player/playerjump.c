@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 11:43:51 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 14:29:34 by srafe            ###   ########.fr       */
+/*   Updated: 2019/04/25 15:10:19 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	playerjump(t_doom *doom, t_player *player)
 	player->height, height,
 	(1 / player->maxstamina) * player->stamina);
 	if (tmp != player->pos.y)
-		Mix_PlayChannel(3, doom->sounds->samples[0], 2);
+		Mix_PlayChannel(1, doom->sounds->samples[0], 0);
 	minusstamina(player, 20);
 	player->jump = 1;
 }

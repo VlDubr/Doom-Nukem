@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 11:32:31 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/25 18:46:03 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,9 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	t_fvector2d ret;
 	t_fvector	 tmpp[4];
 	t_line2 l;
-
+	float pos;
+	float pos1;
+	float pos2;
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
 	offset[0] = 1;
@@ -170,28 +172,33 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	tmpp[1] = p[1];
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
-	if (p[0].z < 17 || p[1].z < 17 || p[2].z < 17 || p[3].z < 17)
+	pos2 = 17;
+	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
+	switchcordwall(&tmpp[1], &tmpp[0], &offset[0], setfvector2d(
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
+	offset[0] = 1;
+	pos1 = tmpp[0].z;
+	// pos2 = tmpp[1].z;
+	 printf("p1 %f p2 %f\n", pos1, pos2);
+	// if (p[0].z < pos1 || p[1].z < pos2 || p[2].z < pos1 || p[3].z < pos2)
 	{
-		if (p[0].z < 17)
+		if (p[0].z < pos1)
 			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-			cos(-1.04) * 100, sin(-1.04) * 100)))
-				return (0);
-		if (p[1].z < 17)
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100)))				
+				return (0);			
+		if (p[1].z < pos2)
 			if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-			cos(1.04) * 100, sin(1.04) * 100)))
+			cos(1.047197551) * 100, sin(1.047197551) * 100)))
 				return (0);
-		if (p[2].z < 17)
+		if (p[2].z < pos1)
 			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-			cos(-1.04) * 100, sin(-1.04) * 100)))
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
 				return (0);
-		if (p[3].z < 17)
+		if (p[3].z < pos2)
 			if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-			cos(1.04) * 100, sin(1.04) * 100)))
+			cos(1.047197551) * 100, sin(1.047197551) * 100)))
 				return (0);
-		if (offset[0] < 0)
-			printf("check 0\n");
-		if (offset[1] < 0)
-			printf("check 1\n");
 	}
 	return (1);
 }

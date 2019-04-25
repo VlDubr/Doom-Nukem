@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/25 11:18:00 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/25 17:10:18 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,13 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 		m = ((float)maxdist/offset[0]) / (float)(image.width);
 			//  printf ("%f\n", offset[0]);
 	}
+	if (wall.p[1].x > 800)
+	{
+		kef = 0;//((float)maxdist/offset[1] - (float)maxdist);
+		m = ((float)maxdist/offset[1]) / (float)(image.width);
+			//  printf ("%f\n", offset[1]);
+			//  printf ("%f\n", offset[3]);
+	}
 	// if (wall.p[1].x > 800)
 	// {
 	// 	return ;
@@ -207,16 +214,16 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	while (x < maxdist)
 	{
 		y = 0;
-		xp = (int)((float)(x+kef)/m);
+		xp = (int)((float)((float)x+kef)/m);
 		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p, offset);
-		// while (y < dist_sten[x] *2)
+		// while (y < dist_sten[x] )
 		// {
-		// 	k = dist_sten[x] *2   / (image.height -1 );
-		// 	m = (float)maxdist / (image.width -1);
-		// 	x0 = (stena1_x[x]) + y * 0.5  * cos(ugol_sten[x]);
-		// 	y0 = (stena1_y[x]) + y * 0.5 * sin(ugol_sten[x]);
+		// 	k = dist_sten[x]    / (image.height -1 );
+		// 	// m = (float)maxdist / (image.width -1);
+		// 	x0 = (stena1_x[x]) + y   * cos(ugol_sten[x]);
+		// 	y0 = (stena1_y[x]) + y  * sin(ugol_sten[x]);
 		// 	yp = (int)(y/k);
-		// 	xp = (int)(x/m);
+		// 	// xp = (int)(x/m);
 		// 	r = image.pic[yp][xp].red;
 		// 	g = image.pic[yp][xp].green;
 		// 	b = image.pic[yp][xp].blue;

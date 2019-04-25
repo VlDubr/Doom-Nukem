@@ -86,11 +86,11 @@ void	loadplayer(char	**str, t_player *player)
 				error("Error: player");
 			tmp = ft_strsplit(str[y], ' ');
 			tmp2 = ft_strsplit(tmp[1], ',');
-			player->pos = setfvector(ft_atof(tmp2[0]), 0, ft_atof(tmp2[1]), 0);
+			player->pos = setfvector(ft_atoi(tmp2[0]), 0, ft_atoi(tmp2[1]), 0);
 			free2dstring(tmp2);
 			tmp2 = ft_strsplit(tmp[2], ',');
-			player->rotate = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
-			ft_atof(tmp2[2]), 0);
+			player->rotate = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]),
+			ft_atoi(tmp2[2]), 0);
 			free2dstring(tmp2);
 			free2dstring(tmp);
 		}

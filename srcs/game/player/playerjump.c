@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   playerjump.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 11:43:51 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 15:42:07 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/24 18:33:59 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	playerjump(t_doom *doom, t_player *player)
 	player->pos.y = flerp(doom->thismap.sectors[player->sector].floor +
 	player->height, height,
 	(1 / player->maxstamina) * player->stamina);
+	if (tmp != player->pos.y)
+		Mix_PlayChannel(3, doom->sounds->samples[0], 2);
 	minusstamina(player, 20);
 	player->jump = 1;
 }

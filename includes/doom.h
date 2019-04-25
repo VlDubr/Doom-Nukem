@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 11:13:29 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/04/24 17:20:11 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # ifdef __APPLE__
 #  define CREATEFLAG S_IWRITE | S_IREAD
 #  include "../lib/SDL/include/SDL2/SDL.h"
+#  include "../lib/SDL/include/SDL2/SDL_mixer.h"
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>
@@ -142,11 +143,21 @@ typedef struct	s_wall
 	t_tga		texture;
 }				t_wall;
 
+typedef struct	s_sound
+{
+	Mix_Music	*menu;
+	Mix_Music	*game;
+	Mix_Chunk	**samples;
+	Mix_Chunk	*sample;
+}				t_sound;
+
 typedef struct	s_doom
 {
 	char		*path;
 	t_window	*win;
 	SDL_Event	event;
+
+	t_sound		*sounds;
 
 	Uint64		lastframe;
 	Uint64		currentframe;

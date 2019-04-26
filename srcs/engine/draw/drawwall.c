@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/25 17:10:18 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/26 19:19:59 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		if (x >= 0 && x < 800 && y >= 0 && y < 800)
 				{
 					if (y < y0 && y > y1 && x > 0)
-						p[(int)(x) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+						p[(int)(x) + ((int)(y+1) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 
 				}
@@ -168,8 +168,8 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	stena1_y = (float *)malloc((sizeof(float)) * (maxdist+1));
 	stena2_x = (float *)malloc((sizeof(float)) * (maxdist+1));
 	stena2_y = (float *)malloc((sizeof(float)) * (maxdist+1));
-	ugol_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
-	dist_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
+	// ugol_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
+	// dist_sten = (float *)malloc((sizeof(float)) * (maxdist+1));
 	i = 0;
 	while (i < maxdist)
 	{
@@ -177,10 +177,10 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 		stena1_y[i] = wall.p[0].y + (i * shag_dlya_1_steni * ((float)dist1/(float)dx1)) * sin(dir1);
 		stena2_x[i] = wall.p[2].x + (i * shag_dlya_2_steni);
 		stena2_y[i] = wall.p[2].y + (i * shag_dlya_2_steni * ((float)dist2/(float)dx4)) *sin(dir4);
-		ugol_sten[i] = atan((float)(stena2_y[i] - stena1_y[i])/(stena2_x[i] - stena1_x[i]));
-		dist_sten[i] = sqrt(pow(stena2_x[i] - stena1_x[i], 2) + pow(stena2_y[i] - stena1_y[i], 2));
-		if (ugol_sten[i] > 0)
-			ugol_sten[i] -= M_PI;
+		// ugol_sten[i] = atan((float)(stena2_y[i] - stena1_y[i])/(stena2_x[i] - stena1_x[i]));
+		// dist_sten[i] = sqrt(pow(stena2_x[i] - stena1_x[i], 2) + pow(stena2_y[i] - stena1_y[i], 2));
+		// if (ugol_sten[i] > 0)
+		// 	ugol_sten[i] -= M_PI;
 		i++;
 	}
 	// m = maxdist / (float)(image.width);
@@ -188,29 +188,23 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	float kef;
 	kef = 0;
 	m = ((float)maxdist) / (float)(image.width);
-	if (wall.p[0].x < 0)
+
+	if (wall.p[0].x < 0 && wall.p[1].x > 801)
 	{
 		kef = (float)maxdist/offset[0] - (float)maxdist;
-		m = ((float)maxdist/offset[0]) / (float)(image.width);
-			//  printf ("%f\n", offset[0]);
+		m = (((float)maxdist/offset[0])) / (float)(image.width);
 	}
-	if (wall.p[1].x > 800)
+	else if (wall.p[1].x > 800)
 	{
 		kef = 0;//((float)maxdist/offset[1] - (float)maxdist);
 		m = ((float)maxdist/offset[1]) / (float)(image.width);
-			//  printf ("%f\n", offset[1]);
-			//  printf ("%f\n", offset[3]);
 	}
-	// if (wall.p[1].x > 800)
-	// {
-	// 	return ;
-	// 	kef = -((float)maxdist/offset[1] - maxdist);
-	// 	m = ((float)maxdist/offset[1]) / (float)(image.width);
-
-	// }
-
-
-
+	else if (wall.p[0].x < 0)
+	{
+		kef = (float)maxdist/offset[0] - (float)maxdist;
+		m = (((float)maxdist/offset[0])) / (float)(image.width);
+	}
+	
 	while (x < maxdist)
 	{
 		y = 0;
@@ -252,6 +246,6 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	free(stena1_y);
 	free(stena2_x);
 	free(stena2_y);
-	free(ugol_sten);
-	free(dist_sten);
+	// free(ugol_sten);
+	// free(dist_sten);
 }

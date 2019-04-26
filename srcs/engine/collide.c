@@ -52,7 +52,7 @@ int	collideline(t_line line)
 {
 	if (collideline1(line.p[0].x, line.p[1].x, line.p[2].x, line.p[3].x))
 		if (collideline1(line.p[0].y, line.p[1].y, line.p[2].y, line.p[3].y))
-			if (area(line.p[0], line.p[1], line.p[3]) * area(line.p[0], line.p[1], line.p[3]) <= 0)
+			if (area(line.p[0], line.p[1], line.p[2]) * area(line.p[0], line.p[1], line.p[3]) <= 0)
 				if (area(line.p[2], line.p[3], line.p[0]) * area(line.p[2], line.p[3], line.p[1]) <= 0)
 					return (1);
 	return (0);

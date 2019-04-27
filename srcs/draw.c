@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/26 19:25:58 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/04/27 11:34:37 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,19 +148,13 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	float pos2;
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
-	offset[0] = 1;
-	offset[1] = 1;
-	offset[2] = 1;
-	offset[3] = 1;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
-	// pos2 = 17;
 	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
 			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-		// printf("2Check switch %zu, %f, %f\n", c, p[1].z, tmpp[1].z);
-	
+
 	pos1 = tmpp[0].z;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
@@ -170,52 +164,39 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	pos2 = tmpp[1].z;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
-	if (((p[0].z < pos1 || p[2].z < pos1) && offset[0] < 1))// || ((p[1].z < pos2 || p[3].z < pos2) && offset[1] < 1))
+	if (((p[0].z < pos1 || p[2].z < pos1) && offset[0] < 1))
 	{
 		if (p[0].z <= pos1 && offset[0] < 1)
 			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))	
-				{printf("tyt1 \n");			
-					return (0);		}	
-		
+				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
+				{printf("tyt1 \n");
+					return (0);		}
+
 		if (p[2].z <= pos1 && offset[0] < 1)
 			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
 				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
 				{printf("tyt2\n");
 					return (0);}
-		// if (p[1].z < pos2 && offset[1] < 1)
-		// 	if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-		// 		cos(1.047197551) * 100, sin(1.047197551) * 100)))
-		// 		{printf("tyt3\n");
-		// 			return (0);
-		// 		}
-		// if (p[3].z < pos2 && offset[1] < 1)
-		// 	if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-		// 		cos(1.047197551) * 100, sin(1.047197551) * 100)))
-		// 		{printf("tyt4\n");
-		// 			return (0);
-		// 		}
 		return(1);
-		
 	}
 	p[0] = tmpp[0];
 	p[1] = tmpp[1];
 	 if ( (p[1].z < pos2 || p[3].z < pos2) && offset[1] < 1)
 	 {
-		  
+
 		 if (p[1].z < pos2)
 				if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-				cos(1.047197551) * 100, sin(1.047197551) * 100)))
+				cos(1.049) * 100, sin(1.049) * 100)))
 				{printf("tyt3\n");
 					return (0);
 				}
 		if (p[3].z < pos2)
 				if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-				cos(1.047197551) * 100, sin(1.047197551) * 100)))
+				cos(1.049) * 100, sin(1.049) * 100)))
 				{printf("tyt4\n");
 					return (0);
 				}
-			
+
 		return (1);
 	 }
 	if (tmpp[1].z > 10 && tmpp[0].z > 10)
@@ -343,17 +324,10 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			tmpp[1] = wa.p[1];
 			tmpp[2] = wa.p[2];
 			tmpp[3] = wa.p[3];
-			if (wa.p[0].w < 1 || wa.p[1].w < 1 || wa.p[2].w < 1 || wa.p[3].w < 1)
-			{
-				c++;
-				printf("Check\n");
-				continue ;
-			}
 			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
 			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
 			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
 			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
-
 
 			adddrawwall(wa.p, 1, 1, 0);
 			multdrawwall(wa.p, 400, 400, 1);

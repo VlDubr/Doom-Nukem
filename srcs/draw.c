@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/27 11:34:37 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/14 13:21:49 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_mat4x4	matcam(t_player *player)
 	cammat = multipmattomat(mattranslate(-player->pos.x,
 	-player->pos.y, -player->pos.z), matpointat(player->pos, target, up));
 	cammat = multipmattomat(cammat, matrotx(player->rotate.x));
-	cammat = matinverse(cammat);
+	//cammat = matinverse(cammat);
 	return (cammat);
 }
 
@@ -146,21 +146,33 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	float pos;
 	float pos1;
 	float pos2;
+	int peresechenie;
+	peresechenie = 1;
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
 	tmpp[2] = p[2];
 	tmpp[3] = p[3];
+	l.p[0].x = 0;
+	l.p[0].y = 0;
+	l.p[1].x = cos(-1.047197551/2) * 100;
+	l.p[1].y = sin(-1.047197551/2) * 100;
+	l.p[2].x = p[0].z;
+	l.p[2].y = p[0].x;
+	l.p[3].x = p[1].z;
+	l.p[3].y = p[1].x;
+	peresechenie = collideline(l);
 	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
 			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-
+		// printf ("%zu - %f\n", c, offset[0]);
+	
 	pos1 = tmpp[0].z;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
 	switchcordwall(&tmpp[1], &tmpp[0], &offset[1], setfvector2d(
 			cos(1.047197551) * 100, sin(1.047197551) * 100));
-
+	// printf ("%zu - %d\n", c, peresechenie);
 	pos2 = tmpp[1].z;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
@@ -339,7 +351,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			{
 				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
+				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
+			
 			drow_wall(p, wa, *tga, offset );
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);

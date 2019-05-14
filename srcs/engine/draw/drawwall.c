@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/04/27 14:12:41 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/14 13:41:09 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,13 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 		kef[0] = (float)maxdist/offset[0] - (float)maxdist;
 		m[0] = (((float)maxdist/offset[0])) / (float)(image.width);
 	}
+	// printf ("1 - %f\n", offset[1]);
+	// printf ("1 - %f\n", offset[1]);
 	if (offset[1] < 1)
 	{
-		kef[1] = (float)maxdist/offset[0] - (float)maxdist;
-		m[1] = (((float)maxdist/offset[0])) / (float)(image.width);
+		
+		kef[1] = (float)maxdist/offset[1] - (float)maxdist;
+		m[1] = (((float)maxdist/offset[1])) / (float)(image.width);
 	}
 
 	while (x < maxdist)

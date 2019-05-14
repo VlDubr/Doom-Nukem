@@ -3,59 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 15:41:33 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
+/*   Updated: 2019/05/14 16:21:35 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom.h"
+# include "../includes/editor.h"
 
-static void		initsdl(Uint32 sdlflag)
+int main (int argc, char **argv)
 {
-	if (SDL_Init(sdlflag))
-		error("Error: SDL not init...");
-}
+    t_sdl		sdl;
+    SDL_Event	e;
+    int quit;
+    int fd;
 
-t_doom			*initdoom(char *argv0)
-{
-	t_doom	*d;
+    SDL_Init(SDL_INIT_EVERYTHING);
+    sdl.win = SDL_CreateWindow("TGA Reader", 0, 0, 200, 200, 0);
+	sdl.ren = SDL_CreateRenderer(sdl.win, -1, 0);
+	SDL_RenderClear(sdl.ren);
 
-	if (!(d = (t_doom*)malloc(sizeof(t_doom))))
-		error("Error: Memory is not allocated");
-	d->path = getpath(argv0);
-	loadassets(ft_strjoin(d->path, "assets/assets.cfg"), d);
-	d->level = 0;
-	loadinput(d->path, &d->input);
-	initsdl(SDL_INIT_EVERYTHING);
-	d->win = createwindow(setivector2d(800, 800), "DOOM", SDL_WINDOW_RESIZABLE);
-	d->win->texture = SDL_CreateTexture(d->win->renderer,
-	SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 800, 800);
-	d->win->pixels = (uint32_t*)malloc(sizeof(uint32_t) * (800 * 800));
-	return (d);
-}
+	editor("file.txt");
 
-int				main(int agrc, char **argv)
-{
-	t_doom	*doom;
+    SDL_RenderPresent(sdl.ren);
+	SDL_RenderClear(sdl.ren);
+	quit = 0;
 
-	doom = initdoom(argv[0]);
-	doom->player = defaultplayerdata();
-	switchlevel(doom, doom->level);
-	doom->currentframe = SDL_GetPerformanceCounter();
-	tga = tga_reader(argv[1]);
-	while (doom->win->state)
+	while (quit == 0)
 	{
-		doom->lastframe = doom->currentframe;
-		doom->currentframe = SDL_GetPerformanceCounter();
-		doom->delta = (double)((doom->currentframe - doom->lastframe) *
-		1000 / (double)SDL_GetPerformanceFrequency());
-		// printf("delta: %f\n", doom->delta);
-		updateevent(doom);
-		update(doom, doom->delta);
-		draw(doom);
+		while (SDL_PollEvent(&e))
+		{
+			if (e.type == SDL_QUIT)
+				quit = 1;
+			if (e.type == SDLK_ESCAPE)
+				quit = 1;
+		}
 	}
-	quitprogram(doom);
 	return (0);
 }

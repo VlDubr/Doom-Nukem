@@ -2,6 +2,7 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
+		game/object/enemy/moveenemy.c game/object/enemy/agression.c \
 		game/map/switchlevel.c \
 		game/player/playermove.c game/player/playerjump.c game/player/stamina.c game/player/defaultplayerdata.c \
 		game/ui/bar.c game/ui/drawui.c \
@@ -87,6 +88,8 @@ folder:
 	mkdir -p $(OBJDIR)engine/serialize
 	mkdir -p $(OBJDIR)engine/sound
 	mkdir -p $(OBJDIR)game/map
+	mkdir -p $(OBJDIR)game/object/decore
+	mkdir -p $(OBJDIR)game/object/enemy
 	mkdir -p $(OBJDIR)game/player
 	mkdir -p $(OBJDIR)game/ui
 

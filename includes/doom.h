@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/25 11:13:29 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/15 18:26:41 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,34 @@ typedef struct	s_player
 	int			jump;
 }				t_player;
 
+typedef enum	e_typeobj
+{
+	PLAYER,
+	DECORE,
+	ENEMY
+}				t_typeobj;
+
+typedef struct	s_object
+{
+	t_typeobj	typeobject;
+	size_t		sector;
+
+	t_fvector	pos;
+	t_fvector	rotate;
+	t_fvector	velosity;
+
+	float		width;
+
+	int			health;
+	float		maxhealth;
+
+	int			ismoveble;
+	float		movespeed;
+
+	int			isagression;
+	int			agressionarea;
+}				t_object;
+
 typedef struct	s_sector
 {
 	size_t			start;
@@ -133,8 +161,15 @@ typedef struct	s_map
 	size_t		sectorcount;
 	t_fvector	*walls;
 	size_t		wallcount;
+
+	t_object	*obj;
+	size_t		objcount;
+
 	t_player	startplayer;
 }				t_map;
+
+void		moveenemy(t_player play, t_map *map, t_object *obj, float delta);
+void		agressionememy(t_player *player, t_object *obj);
 
 typedef struct	s_wall
 {

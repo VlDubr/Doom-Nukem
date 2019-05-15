@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/14 13:21:49 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/15 16:47:08 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
 			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
 		// printf ("%zu - %f\n", c, offset[0]);
-	
+
 	pos1 = tmpp[0].z;
 	tmpp[0] = p[0];
 	tmpp[1] = p[1];
@@ -272,32 +272,6 @@ void	cleartexture(t_window *win)
 	}
 }
 
-void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
-{
-	t_fvector	p1;
-	t_fvector	p2;
-	t_rgb		color;
-	size_t		c;
-
-	c = 0;
-	while (c < count)
-	{
-		p1 = setfvector(w[c].x, w[c].y, 0, 1);
-		p2 = setfvector(w[c + 1 >= count ? 0 : c + 1].x,
-		w[c + 1 >= count ? 0 : c + 1].y, 0, 1);
-		p1 = subfvector(p1, play.pos.x, play.pos.z, 0);
-		p2 = subfvector(p2, play.pos.x, play.pos.z, 0);
-		p1 = addfvector(p1, 400, 300, 0);
-		p2 = addfvector(p2, 400, 300, 0);
-		if (w[c].z == -1)
-			color = setrgb(255, 255, 255);
-		else
-			color = setrgb(255, 0, 0);
-		drawline(p, p1, p2, color);
-		c++;
-	}
-}
-
 void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i)
 {
 	t_wall		wa;
@@ -353,7 +327,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
-			
+
 			drow_wall(p, wa, *tga, offset );
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);
@@ -362,6 +336,51 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		}
 
 		c++;
+	}
+}
+
+void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
+{
+	t_fvector	p1;
+	t_fvector	p2;
+	t_rgb		color;
+	size_t		c;
+
+	c = 0;
+	while (c < count)
+	{
+		p1 = setfvector(w[c].x, w[c].y, 0, 1);
+		p2 = setfvector(w[c + 1 >= count ? 0 : c + 1].x,
+		w[c + 1 >= count ? 0 : c + 1].y, 0, 1);
+		p1 = subfvector(p1, play.pos.x, play.pos.z, 0);
+		p2 = subfvector(p2, play.pos.x, play.pos.z, 0);
+		p1 = addfvector(p1, 400, 300, 0);
+		p2 = addfvector(p2, 400, 300, 0);
+		if (w[c].z == -1)
+			color = setrgb(255, 255, 255);
+		else
+			color = setrgb(255, 0, 0);
+		drawline(p, p1, p2, color);
+		c++;
+	}
+}
+
+void	drawenemy(uint32_t *p, t_player play, t_map *map)
+{
+	t_fvector	e;
+	t_rgb		color;
+	size_t		count;
+
+	count = 0;
+	color = setrgb(255, 0, 0);
+	while (count < map->objcount)
+	{
+		e = setfvector(map->obj[count].pos.x, map->obj[count].pos.z, 0, 1);
+		e = subfvector(e, play.pos.x, play.pos.z, 0);
+		e = addfvector(e, 400, 300, 0);
+		if (e.x >= 0 && e.x < 800 && e.y >= 0 && e.y < 800)
+			p[(int)e.x + ((int)e.y * 800)] = ((((((255 << 8) | color.red) << 8) | color.green) << 8) | color.blue);
+		count++;
 	}
 }
 
@@ -412,17 +431,18 @@ void	draw(t_doom *doom)
 	// 	doom->thismap.sectors[i].height, colorfloor, colorceil, i);
 	// 	i--;
 	// }
-	colorfloor = setrgb(0, 0, 255);
-	colorceil = setrgb(150, 150, 150);
-	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[doom->player.sector].start,
-	doom->thismap.sectors[doom->player.sector].count,
-	doom->thismap.sectors[doom->player.sector].floor,
-	doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
+	// colorfloor = setrgb(0, 0, 255);
+	// colorceil = setrgb(150, 150, 150);
+	// drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	// doom->thismap.sectors[doom->player.sector].start,
+	// doom->thismap.sectors[doom->player.sector].count,
+	// doom->thismap.sectors[doom->player.sector].floor,
+	// doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
 
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,
 	doom->thismap.sectors[doom->player.sector].count);
+	drawenemy(doom->win->pixels, doom->player, &doom->thismap);
 	drawplayer(doom->win->pixels, doom->player);
 
 	drawui(doom);

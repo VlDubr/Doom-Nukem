@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/23 16:50:37 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/15 18:21:11 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,18 @@ void	checkkeyboard(t_doom *doom, double delta)
 
 void	update(t_doom *doom, double delta)
 {
+	size_t c;
+
+	c = 0;
 	checkkeyboard(doom, delta);
 	playerrotate(&doom->player);
 	gravity(&doom->player,
 	doom->thismap.sectors[doom->player.sector].floor, delta);
 	checkswaplevel(doom, doom->player.sector);
+	while (c < doom->thismap.objcount)
+	{
+		agressionememy(&doom->player, &doom->thismap.obj[c]);
+		moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
+		c++;
+	}
 }

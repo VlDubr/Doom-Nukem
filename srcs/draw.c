@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/14 13:21:49 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/15 19:14:59 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ t_fvector2d angle)
 	tmpp = *p1;
 	p1->x = ret.x;
 	p1->z = ret.y;
-	if (p1->z > p2->z)
-			return (0);
+	// if (p1->z > p2->z)
+	// 		return (0);
 	t2 = sqrt((fabs(p2->x - p1->x) * fabs(p2->x - p1->x))
 	+ (fabs(p2->z - p1->z) * fabs(p2->z - p1->z)));
 	*offset = t2/t1;
@@ -163,57 +163,48 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	l.p[3].x = p[1].z;
 	l.p[3].y = p[1].x;
 	peresechenie = collideline(l);
-	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-		// printf ("%zu - %f\n", c, offset[0]);
-	
-	pos1 = tmpp[0].z;
-	tmpp[0] = p[0];
-	tmpp[1] = p[1];
-	switchcordwall(&tmpp[1], &tmpp[0], &offset[1], setfvector2d(
-			cos(1.047197551) * 100, sin(1.047197551) * 100));
 	// printf ("%zu - %d\n", c, peresechenie);
-	pos2 = tmpp[1].z;
-	tmpp[0] = p[0];
-	tmpp[1] = p[1];
-	if (((p[0].z < pos1 || p[2].z < pos1) && offset[0] < 1))
+
+
+	// offset[0] = 1;
+	if (peresechenie == 1)
 	{
-		if (p[0].z <= pos1 && offset[0] < 1)
-			if (!switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
-				{printf("tyt1 \n");
-					return (0);		}
+		switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
+			
 
-		if (p[2].z <= pos1 && offset[0] < 1)
-			if (!switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-				cos(-1.047197551) * 100, sin(-1.047197551) * 100)))
-				{printf("tyt2\n");
-					return (0);}
-		return(1);
+		switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
+			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
+		// printf ("%zu - %f\n", c, offset[1]);
+	
 	}
-	p[0] = tmpp[0];
-	p[1] = tmpp[1];
-	 if ( (p[1].z < pos2 || p[3].z < pos2) && offset[1] < 1)
-	 {
-
-		 if (p[1].z < pos2)
-				if (!switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-				cos(1.049) * 100, sin(1.049) * 100)))
-				{printf("tyt3\n");
-					return (0);
-				}
-		if (p[3].z < pos2)
-				if (!switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-				cos(1.049) * 100, sin(1.049) * 100)))
-				{printf("tyt4\n");
-					return (0);
-				}
-
-		return (1);
+	
+	// p[0] = tmpp[0];
+	// p[1] = tmpp[1];
+	// p[2] = tmpp[2];
+	// p[3] = tmpp[3];
+	l.p[0].x = 0;
+	l.p[0].y = 0;
+	l.p[1].x = cos(1.048) * 100;
+	l.p[1].y = sin(1.048) * 100;
+	l.p[2].x = p[0].x;
+	l.p[2].y = p[0].z;
+	l.p[3].x = p[1].x;
+	l.p[3].y = p[1].z;
+	peresechenie = collideline(l);
+	// printf ("%zu - %d\n", c, peresechenie);
+	 if (peresechenie == 1)
+	 {		
+		switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
+			cos(1.048) * 100, sin(1.048) * 100));
+		switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
+			cos(1.048) * 100, sin(1.048) * 100));
+		// printf ("%zu - %f\n", c, offset[1]);
+	
 	 }
-	if (tmpp[1].z > 10 && tmpp[0].z > 10)
-		return (1);
-	return (0);
+	 if (p[0].z <= 0 || p[1].z <= 0 || p[2].z <= 0 || p[3].z <= 0)
+		return (0);
+	return (1);
 }
 
 void	initdrawwall(t_fvector *view)
@@ -311,7 +302,10 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	size_t		c;
 	t_fvector2d	r;
 	int x;
-
+	int stop;
+	int start;
+	
+	start = 0;
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -331,6 +325,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 
 		if (clip(&play, wa.p, offset, c))
 		{
+			// printf ("%zu\n", c);
 			multmatrixdrawwall(wa.p, projec);
 			tmpp[0] = wa.p[0];
 			tmpp[1] = wa.p[1];
@@ -353,14 +348,13 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
-			
-			drow_wall(p, wa, *tga, offset );
+			// if (w[c].z == -1)
+			drow_wall(p, wa, *tga, offset);
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);
 			drawline(p, wa.p[2], wa.p[3], color);
 			drawline(p, wa.p[1], wa.p[3], color);
 		}
-
 		c++;
 	}
 }

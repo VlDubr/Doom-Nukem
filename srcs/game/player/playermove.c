@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/14 14:13:18 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:31:35 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 
 	doom->player.velosity = newvec;
 	
-		printf ("%f \n", doom->player.velosity.x);
 	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
 		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
 		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,

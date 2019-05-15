@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   playermove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/15 14:31:35 by vmcclure         ###   ########.fr       */
+=======
+/*   Updated: 2019/05/15 15:02:47 by gdaniel          ###   ########.fr       */
+>>>>>>> 8c4d2c60d2e66213cf79d16e0bb499b5abd3e1b7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +21,12 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 	size_t		lastsector;
 
 	doom->player.velosity = newvec;
+<<<<<<< HEAD
 	
+=======
+
+	printf ("%f \n", doom->player.velosity.x);
+>>>>>>> 8c4d2c60d2e66213cf79d16e0bb499b5abd3e1b7
 	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
 		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
 		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,

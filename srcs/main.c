@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/24 15:41:33 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/15 17:35:03 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int				main(int agrc, char **argv)
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata();
 	switchlevel(doom, doom->level);
+	doom->thismap.obj[1].agression = 1;
 	doom->currentframe = SDL_GetPerformanceCounter();
 	tga = tga_reader(argv[1]);
 	while (doom->win->state)

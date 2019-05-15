@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/14 16:21:35 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/15 13:46:16 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int main (int argc, char **argv)
 	sdl.ren = SDL_CreateRenderer(sdl.win, -1, 0);
 	SDL_RenderClear(sdl.ren);
 
-	editor("file.txt");
+	editor("map.map");
 
     SDL_RenderPresent(sdl.ren);
 	SDL_RenderClear(sdl.ren);

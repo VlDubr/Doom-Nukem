@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/14 17:19:24 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/15 14:48:22 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,39 +46,48 @@ typedef struct		s_sdl
 	SDL_Event		e;
 }					t_sdl;
 
-typedef struct	s_wall
+typedef struct		s_wall
 {
-	int start;
-	int point_count;
-	int next_sec;
-	int text_type;
-}				t_wall;
+	int				xy[2];
+	int				next_sec;
+	int				next_type;
+}					t_wall;
 
-typedef struct	s_player
+typedef struct		s_player
 {
-	int	coords[2];
-	int	cam[3];
-}				t_player;
+	int				coords[2];
+	int				cam[3];
+}					t_player;
 
-typedef struct	s_sector
+typedef struct		s_sector
 {
-	int start_pos;
-	int w_count;
-	int floor_h;
-	int roof_h;
-	int sec_type;
-}				t_sector;
+	int				start_pos;
+	int				w_count;
+	int				floor_h;
+	int				roof_h;
+	int				sec_type;
+}					t_sector;
 
-typedef struct	s_map
+typedef struct		s_map
 {
-	t_player	player;
-	t_sector	*sector;
-	t_wall		*walls;
-	int			sec_count;
-	int			wall_count;
+	t_player		player;
+	t_sector		*sector;
+	t_wall			*walls;
+	int				sec_count;
+	int				wall_count;
 
-}				t_map;
+}					t_map;
+
+typedef struct		s_service
+{
+	int		i;
+	int		j;
+	int		w_c;
+	int		s_c;
+}					t_service;
 
 
-void	editor(char *path);
+void				editor(char *path);
+void				map_parser(t_service *s, char *str, t_map *map);
+
 #endif

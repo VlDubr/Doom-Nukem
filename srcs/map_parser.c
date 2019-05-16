@@ -6,13 +6,13 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/15 14:57:28 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/16 16:14:20 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-int		ft_str_chr_cpy(char *temp, char *str, int i, char *chr)
+static int	ft_str_chr_cpy(char *temp, char *str, int i, char *chr)
 {
 	int		j;
 
@@ -23,82 +23,83 @@ int		ft_str_chr_cpy(char *temp, char *str, int i, char *chr)
 		i++;
 		j++;
 	}
+	if (str[i] == chr[2] && chr[3] != 49)
+		ft_error("Map not valid");
 	temp[j] = '\0';
 	return (i + 1);
 }
 
-int		wall_p(t_map *map, char *str, int i, int w_c)
+static int	wall_p(t_map *map, char *str, int i, int w_c)
 {
 	char	*temp;
 
 	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->walls[w_c].xy[0] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->walls[w_c].xy[1] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->walls[w_c].next_sec = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->walls[w_c].next_type = ft_atoi(temp);
 
 	free(temp);
 	return (i);
 }
 
-int		sec_p(t_map *map, char *str, int i, int s_c)
+static int	sec_p(t_map *map, char *str, int i, int s_c)
 {
 	char	*temp;
 
 	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].start_pos = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].w_count = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].floor_h = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].roof_h = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].sec_type = ft_atoi(temp);
 
 	free(temp);
 	return (i);
 }
 
-int		pl_p(t_map *map, char *str, int i)
+static int	pl_p(t_map *map, char *str, int i)
 {
 	char	*temp;
 
 	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->player.coords[0] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->player.coords[1] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->player.cam[0] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, ",\n\0");
+	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->player.cam[1] = ft_atoi(temp);
 
-	i = ft_str_chr_cpy(temp, str, i, " \n\0");
+	i = ft_str_chr_cpy(temp, str, i, " \n\01");
 	map->player.cam[2] = ft_atoi(temp);
 
 	free(temp);
 	return (i);
 }
 
-void	map_parser(t_service *s, char *str, t_map *map)
+void		map_parser(t_service *s, char *str, t_map *map)
 {
-	s->i = 0;
 	while (str[s->i] != '\0')
 	{
 		if (str[s->i] == 'w')
@@ -107,11 +108,11 @@ void	map_parser(t_service *s, char *str, t_map *map)
 			map->sec_count++;
 		s->i++;
 	}
-	map->sector = (t_sector	*)malloc(sizeof(t_sector) * map->sec_count);
-	map->walls = (t_wall *)malloc(sizeof(t_wall) * map->wall_count);
-
+	if (!(map->sector = (t_sector *)malloc(sizeof(t_sector) * map->sec_count)))
+		ft_error("Malloc error!");
+	if (!(map->walls = (t_wall *)malloc(sizeof(t_wall) * map->wall_count)))
+		ft_error("Malloc error!");
 	s->i = 0;
-	s->j = 0;
 	while (str[s->i] != '\0')
 	{
 		if (str[s->i] == 'w' && s->w_c < map->wall_count)
@@ -123,4 +124,5 @@ void	map_parser(t_service *s, char *str, t_map *map)
 		else
 			s->i++;
 	}
+	s->parse_flag = 1;
 }

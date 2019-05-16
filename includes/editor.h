@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/15 14:48:22 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/16 16:23:51 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
 # include "../lib/ft_graphics/includes/color.h"
 # include "../lib/ft_graphics/includes/vector.h"
@@ -41,7 +42,7 @@
 typedef struct		s_sdl
 {
 	SDL_Surface		*sur;
-	SDL_Renderer	*ren;
+	SDL_Renderer	*r;
 	SDL_Window		*win;
 	SDL_Event		e;
 }					t_sdl;
@@ -75,19 +76,26 @@ typedef struct		s_map
 	t_wall			*walls;
 	int				sec_count;
 	int				wall_count;
-
 }					t_map;
 
 typedef struct		s_service
 {
-	int		i;
-	int		j;
-	int		w_c;
-	int		s_c;
+	int				i;
+	int				j;
+	int				w_c;
+	int				s_c;
+	int				quit;
+	int				fd;
+	int				parse_flag;
+	int				coord_x;
+	int				coord_y;
+	SDL_Event		e;
 }					t_service;
 
-
-void				editor(char *path);
+void				line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_service *s);
 void				map_parser(t_service *s, char *str, t_map *map);
-
+void				map_writer(t_sdl *sdl, t_service *s, t_map *map);
+void				background(t_service *s, t_sdl *sdl);
+void				ft_error(const char *str);
+int					ft_max(int x, int y);
 #endif

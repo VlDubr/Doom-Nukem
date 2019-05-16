@@ -9,14 +9,13 @@ INC = /usr/local/include
 LIB = /usr/local/lib/
 FLAG = -Wall -Wextra -Werror
 SDL_H = -I ./lib/SDL/include/SDL2/
-SDL_F = -F ./lib/SDL/Frameworks/ -framework SDL2
-SDL_IMG = -F ./lib/SDL/Frameworks/ -framework SDL2_image
+SDL_F = -F ./lib/SDL/Frameworks -framework SDL2
 WIN_SDL_INCL = -I C:/MinGW/msys/1.0/include
 WIN_LIB = -L C:/MinGW/msys/1.0/lib
 
 all: $(NAME)
 $(NAME): clean
-	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F) $(SDL_IMG)
+	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
 
 linux:
 	gcc $(FLAG) -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lm -lSDL2 -lSDL2_image

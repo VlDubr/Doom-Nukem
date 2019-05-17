@@ -66,8 +66,8 @@ void		line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_service *s)
 	}
 	xy[2] = (finish.xy[0] - start.xy[0]) / (xy[4] - 1);
 	xy[3] = (finish.xy[1] - start.xy[1]) / (xy[4] - 1);
-	xy[0] = start.xy[0] + 500 + s->coord_x;
-	xy[1] = start.xy[1] + 500 + s->coord_y;
+	xy[0] = start.xy[0] + (s->wh_screen[0] / 2) + s->coord_x;
+	xy[1] = start.xy[1] + (s->wh_screen[1] / 2) + s->coord_y;
 	line_put(xy, sdl);
 }
 

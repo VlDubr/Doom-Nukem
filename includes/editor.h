@@ -29,8 +29,6 @@
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>
-#  include <SDL2/SDL_image.h>
-#  include <SDL2/SDL_ttf.h>
 # elif __WIN32__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <C:\MinGW\msys\1.0\include\SDL2\SDL.h>
@@ -89,6 +87,8 @@ typedef struct		s_service
 	int				parse_flag;
 	int				coord_x;
 	int				coord_y;
+	int				mouse_xy[2];
+	int				wh_screen[2];
 	SDL_Event		e;
 }					t_service;
 
@@ -98,4 +98,6 @@ void				map_writer(t_sdl *sdl, t_service *s, t_map *map);
 void				background(t_service *s, t_sdl *sdl);
 void				ft_error(const char *str);
 int					ft_max(int x, int y);
+void				add_wall_to_map(t_map *map, t_service *s);
+void   				delete_wall(t_map *map, t_service *s);
 #endif

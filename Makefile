@@ -4,7 +4,7 @@ HEAD = ./includes/*.h
 INC = /usr/local/include
 SRCS = ./srcs/*.c
 GRAPH = ./lib/ft_graphics/libftgraphics.a
-LIBFT = ./lib/Libft/libft.a
+LIBFT = ./lib/libft/libft.a
 INC = /usr/local/include
 LIB = /usr/local/lib/
 FLAG = -Wall -Wextra -Werror
@@ -18,7 +18,7 @@ $(NAME): clean
 	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
 
 linux:
-	gcc $(FLAG) -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lm -lSDL2 -lSDL2_image
+	gcc -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lm -lSDL2
 
 win:
 	gcc $(FLAG) -I $(INC) $(WIN_SDL_INCL) $(WIN_LIB) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lmingw32 -lSDL2main -lSDL2

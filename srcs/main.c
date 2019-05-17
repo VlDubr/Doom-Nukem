@@ -47,10 +47,10 @@ char	*file_read(int fd)
 
 void	writer(t_service *s, t_sdl sdl, t_map *map)
 {
+	SDL_RenderClear(sdl.r);
 	background(s, &sdl);
 	map_writer(&sdl, s, map);
 	SDL_RenderPresent(sdl.r);
-	SDL_RenderClear(sdl.r);
 }
 
 void	event(t_service *s, t_sdl sdl, t_map *map)
@@ -88,6 +88,19 @@ void	event(t_service *s, t_sdl sdl, t_map *map)
 					writer(s, sdl, map);
 				}
 			}
+			if (s->e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				if (s->e.button.button == 1)
+				{
+					add_wall_to_map(map, s);
+					writer(s, sdl, map);
+				}
+				if (s->e.button.button == 3 || s->e.button.button == 2)
+				{
+					delete_wall(map, s);
+					writer(s, sdl, map);
+				}
+			}
 		}
 	}
 }
@@ -105,6 +118,8 @@ void	init(t_map *map, t_service *s)
 	s->parse_flag = 0;
 	s->coord_x = 0;
 	s->coord_y = 0;
+	s->wh_screen[0] = 1000;
+	s->wh_screen[1] = 1000;
 }
 
 int		main(int argc, char **argv)
@@ -114,10 +129,6 @@ int		main(int argc, char **argv)
 	t_service	*s;
 	t_map		*map;
 
-	SDL_Init(SDL_INIT_VIDEO);
-	sdl.win = SDL_CreateWindow("TGA Reader", 0, 0, 1000, 1000, 0);
-	sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
-	SDL_RenderClear(sdl.r);
 	if (!(map = (t_map *)malloc(sizeof(t_map))))
 		ft_error("Malloc error!");
 	if (!(s = (t_service *)malloc(sizeof(t_service))))
@@ -127,6 +138,10 @@ int		main(int argc, char **argv)
 	str = file_read(s->fd);
 	if (ft_strlen(str) >= 39)
 		map_parser(s, str, map);
+	SDL_Init(SDL_INIT_VIDEO);
+	sdl.win = SDL_CreateWindow("TGA Reader", 0, 0, s->wh_screen[0], s->wh_screen[1], 0);
+	sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
+	SDL_RenderClear(sdl.r);
 	background(s, &sdl);
 	if (s->parse_flag == 1)
 		map_writer(&sdl, s, map);

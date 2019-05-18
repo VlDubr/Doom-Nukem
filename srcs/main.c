@@ -6,25 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/16 16:40:51 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/18 18:16:17 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
-
-void	ft_error(const char *str)
-{
-	ft_putendl(str);
-	exit(-1);
-}
-
-int		ft_max(int x, int y)
-{
-	if (x > y)
-		return (x);
-	else
-		return (y);
-}
 
 char	*file_read(int fd)
 {
@@ -87,6 +73,12 @@ void	event(t_service *s, t_sdl sdl, t_map *map)
 					s->coord_x -= 25;
 					writer(s, sdl, map);
 				}
+				if (s->e.key.keysym.scancode == SDL_SCANCODE_RETURN)
+				{
+					s->fd = open("map1.map", O_TRUNC | O_RDWR);
+					save_map(map, s);
+					close(s->fd);
+				}
 			}
 			if (s->e.type == SDL_MOUSEBUTTONDOWN)
 			{
@@ -148,8 +140,5 @@ int		main(int argc, char **argv)
 	SDL_RenderPresent(sdl.r);
 	SDL_RenderClear(sdl.r);
 	event(s, sdl, map);
-	close(s->fd);
 	return (0);
 }
-
-//write(fd, str, sizeof(char) * ft_strlen(str));

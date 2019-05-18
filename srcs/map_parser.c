@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/16 16:14:20 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/18 17:34:46 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,5 @@ void		map_parser(t_service *s, char *str, t_map *map)
 			s->i++;
 	}
 	s->parse_flag = 1;
+	close(s->fd);
 }

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/16 16:23:51 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/18 15:31:40 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,5 @@ void				ft_error(const char *str);
 int					ft_max(int x, int y);
 void				add_wall_to_map(t_map *map, t_service *s);
 void   				delete_wall(t_map *map, t_service *s);
+void				save_map(t_map *map, t_service *s);
 #endif

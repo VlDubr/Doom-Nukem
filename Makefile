@@ -50,8 +50,8 @@ debugmacos: $(OBJ)
 	$(MAKE) -C $(LIBFTFOLDER)
 	$(MAKE) -C $(GRAPHICSFOLDER)
 	$(MAKE) -C $(TGAREADERFOLDER)
-	mkdir $(BUILDFOLDER)
-	mkdir $(BUILDFOLDER)config
+	@mkdir $(BUILDFOLDER)
+	@mkdir $(BUILDFOLDER)config
 	cp -r $(ASSETSFOLDER) $(BUILDFOLDER)
 	gcc -g $(FLAG) $(OBJ) $(SDL2LINKMACOS) $(GRAPHICSLINK) $(LIBFTLINK) $(TGAREADERLINK) -o $(BUILDFOLDER)$(NAME)
 
@@ -59,8 +59,8 @@ debuglinux: $(OBJ)
 	$(MAKE) -C $(LIBFTFOLDER)
 	$(MAKE) -C $(GRAPHICSFOLDER)
 	$(MAKE) -C $(TGAREADERFOLDER)
-	mkdir $(BUILDFOLDER)
-	mkdir $(BUILDFOLDER)config
+	@mkdir $(BUILDFOLDER)
+	@mkdir $(BUILDFOLDER)config
 	cp -r $(ASSETSFOLDER) $(BUILDFOLDER)
 	gcc -g $(FLAG) $(OBJ) $(SDL2LINKLINUX) $(GRAPHICSLINK) $(LIBFTLINK) $(TGAREADERLINK) -o $(BUILDFOLDER)$(NAME)
 
@@ -81,17 +81,17 @@ $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	gcc -g -I $(INCLUDES) -o $@ -c $<
 
 folder:
-	mkdir -p $(OBJDIR)engine/draw
-	mkdir -p $(OBJDIR)engine/core
-	mkdir -p $(OBJDIR)engine/filesystem
-	mkdir -p $(OBJDIR)engine/input
-	mkdir -p $(OBJDIR)engine/serialize
-	mkdir -p $(OBJDIR)engine/sound
-	mkdir -p $(OBJDIR)game/map
-	mkdir -p $(OBJDIR)game/object/decore
-	mkdir -p $(OBJDIR)game/object/enemy
-	mkdir -p $(OBJDIR)game/player
-	mkdir -p $(OBJDIR)game/ui
+	@mkdir -p $(OBJDIR)engine/draw
+	@mkdir -p $(OBJDIR)engine/core
+	@mkdir -p $(OBJDIR)engine/filesystem
+	@mkdir -p $(OBJDIR)engine/input
+	@mkdir -p $(OBJDIR)engine/serialize
+	@mkdir -p $(OBJDIR)engine/sound
+	@mkdir -p $(OBJDIR)game/map
+	@mkdir -p $(OBJDIR)game/object/decore
+	@mkdir -p $(OBJDIR)game/object/enemy
+	@mkdir -p $(OBJDIR)game/player
+	@mkdir -p $(OBJDIR)game/ui
 
 re:	fclean $(NAME)
 

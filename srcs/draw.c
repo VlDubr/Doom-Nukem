@@ -6,11 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/05/15 19:14:59 by vmcclure         ###   ########.fr       */
-=======
-/*   Updated: 2019/05/15 16:47:08 by gdaniel          ###   ########.fr       */
->>>>>>> 8c4d2c60d2e66213cf79d16e0bb499b5abd3e1b7
+/*   Updated: 2019/05/20 12:44:29 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,18 +163,6 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	l.p[3].x = p[1].z;
 	l.p[3].y = p[1].x;
 	peresechenie = collideline(l);
-<<<<<<< HEAD
-=======
-	switchcordwall(&tmpp[0], &tmpp[1], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-		// printf ("%zu - %f\n", c, offset[0]);
-
-	pos1 = tmpp[0].z;
-	tmpp[0] = p[0];
-	tmpp[1] = p[1];
-	switchcordwall(&tmpp[1], &tmpp[0], &offset[1], setfvector2d(
-			cos(1.047197551) * 100, sin(1.047197551) * 100));
->>>>>>> 8c4d2c60d2e66213cf79d16e0bb499b5abd3e1b7
 	// printf ("%zu - %d\n", c, peresechenie);
 
 
@@ -338,13 +322,8 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
-<<<<<<< HEAD
 			// if (w[c].z == -1)
 			drow_wall(p, wa, *tga, offset);
-=======
-
-			drow_wall(p, wa, *tga, offset );
->>>>>>> 8c4d2c60d2e66213cf79d16e0bb499b5abd3e1b7
 			drawline(p, wa.p[0], wa.p[1], color);
 			drawline(p, wa.p[0], wa.p[2], color);
 			drawline(p, wa.p[2], wa.p[3], color);
@@ -417,35 +396,35 @@ void	draw(t_doom *doom)
 
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-	// i = doom->thismap.sectorcount - 1;
-	// while (i > -1)
-	// {
-	// 	switch (i)
-	// 	{
-	// 		case 0:
-	// 			colorfloor = setrgb(0, 0, 255);
-	// 			colorceil = setrgb(150, 150, 150);
-	// 			break;
-	// 		case 1:
-	// 			colorfloor = setrgb(0, 255, 0);
-	// 			colorceil = setrgb(0, 150, 150);
-	// 			break;
-	// 		case 2:
-	// 			colorfloor = setrgb(255, 0, 0);
-	// 			colorceil = setrgb(0, 0, 150);
-	// 			break;
-	// 		default:
-	// 			colorfloor = setrgb(255, 255, 255);
-	// 			colorceil = setrgb(50, 50, 50);
-	// 			break;
-	// 	}
-	// 	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	// 	doom->thismap.sectors[i].start,
-	// 	doom->thismap.sectors[i].count,
-	// 	doom->thismap.sectors[i].floor,
-	// 	doom->thismap.sectors[i].height, colorfloor, colorceil, i);
-	// 	i--;
-	// }
+	i = doom->thismap.sectorcount - 1;
+	while (i > -1)
+	{
+		switch (i)
+		{
+			case 0:
+				colorfloor = setrgb(0, 0, 255);
+				colorceil = setrgb(150, 150, 150);
+				break;
+			case 1:
+				colorfloor = setrgb(0, 255, 0);
+				colorceil = setrgb(0, 150, 150);
+				break;
+			case 2:
+				colorfloor = setrgb(255, 0, 0);
+				colorceil = setrgb(0, 0, 150);
+				break;
+			default:
+				colorfloor = setrgb(255, 255, 255);
+				colorceil = setrgb(50, 50, 50);
+				break;
+		}
+		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+		doom->thismap.sectors[i].start,
+		doom->thismap.sectors[i].count,
+		doom->thismap.sectors[i].floor,
+		doom->thismap.sectors[i].height, colorfloor, colorceil, i);
+		i--;
+	}
 	// colorfloor = setrgb(0, 0, 255);
 	// colorceil = setrgb(150, 150, 150);
 	// drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +

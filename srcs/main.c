@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 12:41:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/20 13:15:20 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int				main(int agrc, char **argv)
 	doom->thismap.obj[1].isagression = 1;
 	doom->currentframe = SDL_GetPerformanceCounter();
 	tga = tga_reader(argv[1]);
+	tgafloor = tga_reader("pol.tga");
 	while (doom->win->state)
 	{
 		doom->lastframe = doom->currentframe;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 12:44:29 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/20 13:17:46 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_mat4x4	matprojection(t_camera cam)
 	float		fovrad;
 	t_mat4x4	m;
 
-	fovrad = 1.0 / tan(degrtorad(cam.fov/2));
+	fovrad = 1.0 / tan(degrtorad(cam.fov/2.0));
 	m = initmat(0);
 	m.mat[0][0] = fovrad/cam.aspectratio;
 	m.mat[1][1] = fovrad;
@@ -62,7 +62,7 @@ t_mat4x4	matcam(t_player *player)
 	cammat = multipmattomat(mattranslate(-player->pos.x,
 	-player->pos.y, -player->pos.z), matpointat(player->pos, target, up));
 	cammat = multipmattomat(cammat, matrotx(player->rotate.x));
-	//cammat = matinverse(cammat);
+	cammat = matinverse(cammat);
 	return (cammat);
 }
 
@@ -150,33 +150,30 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	peresechenie = 1;
 	if (p[0].z <= 0 && p[1].z <= 0 && p[2].z <= 0 && p[3].z <= 0)
 		return (0);
-	tmpp[0] = p[0];
-	tmpp[1] = p[1];
-	tmpp[2] = p[2];
-	tmpp[3] = p[3];
+	// tmpp[0] = p[0];
+	// tmpp[1] = p[1];
+	// tmpp[2] = p[2];
+	// tmpp[3] = p[3];
 	l.p[0].x = 0;
 	l.p[0].y = 0;
-	l.p[1].x = cos(-1.047197551/2) * 100;
-	l.p[1].y = sin(-1.047197551/2) * 100;
+	l.p[1].x = cos(-1.047197551/2.0) * 1000;
+	l.p[1].y = sin(-1.047197551/2.0) * 1000;
 	l.p[2].x = p[0].z;
 	l.p[2].y = p[0].x;
 	l.p[3].x = p[1].z;
 	l.p[3].y = p[1].x;
 	peresechenie = collideline(l);
-	// printf ("%zu - %d\n", c, peresechenie);
-
+	
 
 	// offset[0] = 1;
 	if (peresechenie == 1)
-	{
-		switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-			
+	{	
 
-		switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-			cos(-1.047197551) * 100, sin(-1.047197551) * 100));
-		// printf ("%zu - %f\n", c, offset[1]);
-	
+			switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
+				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
+			switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
+				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
+		// printf ("%zu - %f - %f - %f - %f\n", c, offset[0], p[0].z,  p[0].x,  p[0].y);
 	}
 	
 	// p[0] = tmpp[0];
@@ -185,8 +182,8 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	// p[3] = tmpp[3];
 	l.p[0].x = 0;
 	l.p[0].y = 0;
-	l.p[1].x = cos(1.048) * 100;
-	l.p[1].y = sin(1.048) * 100;
+	l.p[1].x = cos(1.048) * 1000;
+	l.p[1].y = sin(1.048) * 1000;
 	l.p[2].x = p[0].x;
 	l.p[2].y = p[0].z;
 	l.p[3].x = p[1].x;
@@ -195,17 +192,21 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	// printf ("%zu - %d\n", c, peresechenie);
 	 if (peresechenie == 1)
 	 {		
-		switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-			cos(1.048) * 100, sin(1.048) * 100));
-		switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-			cos(1.048) * 100, sin(1.048) * 100));
-		// printf ("%zu - %f\n", c, offset[1]);
+
+			switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
+				cos(1.048) * 1000, sin(1.048) * 1000));
+			switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
+				cos(1.048) * 1000, sin(1.048) * 1000));
+		
+		// printf ("%zu - %f - %f - %f - %f - %zu\n", c, offset[1], p[1].x,  p[0].x,   p[0].y, player->sector);
+		// printf ("%zu - %f - %f - %f - %f\n", c, offset[1], p[1].z,  p[1].x,  p[1].y);
 	
 	 }
 	 if (p[0].z <= 0 || p[1].z <= 0 || p[2].z <= 0 || p[3].z <= 0)
 		return (0);
 	return (1);
 }
+
 
 void	initdrawwall(t_fvector *view)
 {
@@ -263,76 +264,6 @@ void	cleartexture(t_window *win)
 	}
 }
 
-void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i)
-{
-	t_wall		wa;
-	float		vec;
-	t_fvector	delta;
-	t_fvector	tmpp[4];
-	float		offset[4];
-	t_rgb		color;
-	t_mat4x4	cammat;
-	t_mat4x4	projec;
-	size_t		c;
-	t_fvector2d	r;
-	int x;
-	int stop;
-	int start;
-	
-	start = 0;
-	x = 0;
-	c = 0;
-	cammat = matcam(&play);
-	projec = matprojection(initcam(setivector2d(800, 800)));
-	printf ("\n");
-	while (c < count)
-	{
-		wa.p[0] = setfvector(w[c].x, floor, w[c].y, 1);
-		wa.p[1] = setfvector(w[c + 1 >= count ? 0 : c + 1].x, floor, w[c + 1 >= count ? 0 : c + 1].y, 1);
-		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
-		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
-		multmatrixdrawwall(wa.p, cammat);
-		offset[0] = 1;
-		offset[1] = 1;
-		offset[2] = 1;
-		offset[3] = 1;
-
-		if (clip(&play, wa.p, offset, c))
-		{
-			// printf ("%zu\n", c);
-			multmatrixdrawwall(wa.p, projec);
-			tmpp[0] = wa.p[0];
-			tmpp[1] = wa.p[1];
-			tmpp[2] = wa.p[2];
-			tmpp[3] = wa.p[3];
-			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
-			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
-			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
-			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
-
-			adddrawwall(wa.p, 1, 1, 0);
-			multdrawwall(wa.p, 400, 400, 1);
-			if (w[c].z == -1)
-				color = setrgb(255, 255, 255);
-			else
-				color = setrgb(255, 0, 0);
-			if (wa.p[0].x > wa.p[1].x)
-			{
-				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
-				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
-				ft_swap((void**)&offset[1], (void**)&offset[0]);
-			}
-			// if (w[c].z == -1)
-			drow_wall(p, wa, *tga, offset);
-			drawline(p, wa.p[0], wa.p[1], color);
-			drawline(p, wa.p[0], wa.p[2], color);
-			drawline(p, wa.p[2], wa.p[3], color);
-			drawline(p, wa.p[1], wa.p[3], color);
-		}
-		c++;
-	}
-}
-
 void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 {
 	t_fvector	p1;
@@ -358,7 +289,6 @@ void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
 		c++;
 	}
 }
-
 void	drawenemy(uint32_t *p, t_player play, t_map *map)
 {
 	t_fvector	e;
@@ -376,6 +306,77 @@ void	drawenemy(uint32_t *p, t_player play, t_map *map)
 			p[(int)e.x + ((int)e.y * 800)] = ((((((255 << 8) | color.red) << 8) | color.green) << 8) | color.blue);
 		count++;
 	}
+}
+
+void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i)
+{
+	t_wall		wa;
+	float		vec;
+	t_fvector	delta;
+	t_fvector	tmpp[4];
+	float		offset[4];
+	t_rgb		color;
+	t_mat4x4	cammat;
+	t_mat4x4	projec;
+	size_t		c;
+	t_fvector2d	r;
+	int x;
+	t_rgb color1;
+	
+	x = 0;
+	c = 0;
+	cammat = matcam(&play);
+	projec = matprojection(initcam(setivector2d(800, 800)));
+
+	
+	while (c < count)
+	{
+		wa.p[0] = setfvector(w[c].x, floor, w[c].y, 1);
+		wa.p[1] = setfvector(w[c + 1 >= count ? 0 : c + 1].x, floor, w[c + 1 >= count ? 0 : c + 1].y, 1);
+		wa.p[2] = addfvector(wa.p[0], 0, ceil, 0);
+		wa.p[3] = addfvector(wa.p[1], 0, ceil, 0);
+		multmatrixdrawwall(wa.p, cammat);
+		offset[0] = 1;
+		offset[1] = 1;
+		offset[2] = 1;
+		offset[3] = 1;
+		
+		if (clip(&play, wa.p, offset, c))
+		{
+			multmatrixdrawwall(wa.p, projec);
+			tmpp[0] = wa.p[0];
+			tmpp[1] = wa.p[1];
+			tmpp[2] = wa.p[2];
+			tmpp[3] = wa.p[3];
+			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
+			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
+			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
+			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
+			adddrawwall(wa.p, 1, 1, 0);
+			multdrawwall(wa.p, 400, 400, 1);
+			if (w[c].z == -1)
+				color = setrgb(255, 255, 255);
+			else
+				color = setrgb(255, 0, 0);
+			if (wa.p[0].x > wa.p[1].x)
+			{
+				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
+				ft_swap((void**)&offset[1], (void**)&offset[0]);
+			}
+			color1 = setrgb(255, 0, 255);
+			
+			if (w[c].z == -1)
+				drow_wall(p, wa, *tga, offset);;
+			drawfloor(p, wa, color1,play);
+			drawline(p, wa.p[0], wa.p[1], color);
+			drawline(p, wa.p[0], wa.p[2], color);
+			drawline(p, wa.p[2], wa.p[3], color);
+			drawline(p, wa.p[1], wa.p[3], color);
+		}
+		c++;
+	}
+	
 }
 
 void	drawplayer(uint32_t *p, t_player play)
@@ -418,13 +419,18 @@ void	draw(t_doom *doom)
 				colorceil = setrgb(50, 50, 50);
 				break;
 		}
+		// if (doom->thismap.sectors[i].floor == 3)
+		// doom->thismap.sectors[i].floor = 1;
 		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
 		doom->thismap.sectors[i].start,
 		doom->thismap.sectors[i].count,
 		doom->thismap.sectors[i].floor,
 		doom->thismap.sectors[i].height, colorfloor, colorceil, i);
+		// printf ("%d \n", doom->thismap.sectors[i].floor);
 		i--;
+		
 	}
+	// printf ("\n");
 	// colorfloor = setrgb(0, 0, 255);
 	// colorceil = setrgb(150, 150, 150);
 	// drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
@@ -436,8 +442,10 @@ void	draw(t_doom *doom)
 	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
 	doom->thismap.sectors[doom->player.sector].start,
 	doom->thismap.sectors[doom->player.sector].count);
-	drawenemy(doom->win->pixels, doom->player, &doom->thismap);
 	drawplayer(doom->win->pixels, doom->player);
+
+	drawenemy(doom->win->pixels, doom->player, &doom->thismap);
+
 
 	drawui(doom);
 

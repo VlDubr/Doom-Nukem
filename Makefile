@@ -2,9 +2,9 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
-		game/object/enemy/moveenemy.c game/object/enemy/agression.c \
-		game/map/switchlevel.c \
-		game/player/playermove.c game/player/playerjump.c game/player/stamina.c game/player/defaultplayerdata.c \
+		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c \
+		game/map/switchlevel.c game/map/minimap.c \
+		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c \
 		game/ui/bar.c game/ui/drawui.c \
 		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \

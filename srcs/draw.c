@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 18:44:35 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:04:10 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,13 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	peresechenie = collideline(l);
 
 	if (peresechenie == 1)
-	{	
+	{
 
 			switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
 				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
 			switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
 				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
-		}	
+		}
 	l.p[0].x = 0;
 	l.p[0].y = 0;
 	l.p[1].x = cos(1.048) * 1000;
@@ -180,7 +180,7 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	peresechenie = collideline(l);
 	// printf ("%zu - %d\n", c, peresechenie);
 	 if (peresechenie == 1)
-	 {		
+	 {
 
 			switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
 				cos(1.048) * 1000, sin(1.048) * 1000));
@@ -249,79 +249,6 @@ void	cleartexture(t_window *win)
 	}
 }
 
-void	drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count)
-{
-	t_fvector	p1;
-	t_fvector	p2;
-	t_rgb		color;
-	size_t		c;
-
-	c = 0;
-
-	t_wall wa;
-	t_fvector2d min;
-	t_fvector2d max;
-	min = setfvector2d(w[0].x, w[0].y);
-	max = setfvector2d(w[0].x, w[0].y);
-	while (c < count)
-	{
-		min.x = ft_fmin(min.x, w[c].x);
-		min.y = ft_fmin(min.y, w[c].y);
-		max.x = ft_fmax(max.x, w[c].x);
-		max.y = ft_fmax(max.y, w[c].y);
-		c++;
-	}
-	wa.p[0] = subfvector(setfvector(min.x, min.y, 0, 1), play.pos.x, play.pos.z, 0);
-	wa.p[1] = subfvector(setfvector(min.x, max.y, 0, 1), play.pos.x, play.pos.z, 0);
-	wa.p[2] = subfvector(setfvector(max.x, max.y, 0, 1), play.pos.x, play.pos.z, 0);
-	wa.p[3] = subfvector(setfvector(max.x, min.y, 0, 1), play.pos.x, play.pos.z, 0);
-
-	wa.p[0] = addfvector(wa.p[0], 400, 300, 0);
-	wa.p[1] = addfvector(wa.p[1], 400, 300, 0);
-	wa.p[2] = addfvector(wa.p[2], 400, 300, 0);
-	wa.p[3] = addfvector(wa.p[3], 400, 300, 0);
-	color = setrgb(255, 255, 255);
-	drawline(p, wa.p[0], wa.p[1], color);
-	drawline(p, wa.p[1], wa.p[2], color);
-	drawline(p, wa.p[2], wa.p[3], color);
-	drawline(p, wa.p[3], wa.p[0], color);
-
-	c = 0;
-	while (c < count)
-	{
-		p1 = setfvector(w[c].x, w[c].y, 0, 1);
-		p2 = setfvector(w[c + 1 >= count ? 0 : c + 1].x,
-		w[c + 1 >= count ? 0 : c + 1].y, 0, 1);
-		p1 = subfvector(p1, play.pos.x, play.pos.z, 0);
-		p2 = subfvector(p2, play.pos.x, play.pos.z, 0);
-		p1 = addfvector(p1, 400, 300, 0);
-		p2 = addfvector(p2, 400, 300, 0);
-		if (w[c].z == -1)
-			color = setrgb(255, 255, 255);
-		else
-			color = setrgb(255, 0, 0);
-		drawline(p, p1, p2, color);
-		c++;
-	}
-}
-void	drawenemy(uint32_t *p, t_player play, t_map *map)
-{
-	t_fvector	e;
-	t_rgb		color;
-	size_t		count;
-
-	count = 0;
-	color = setrgb(255, 0, 0);
-	while (count < map->objcount)
-	{
-		e = setfvector(map->obj[count].pos.x, map->obj[count].pos.z, 0, 1);
-		e = subfvector(e, play.pos.x, play.pos.z, 0);
-		e = addfvector(e, 400, 300, 0);
-		if (e.x >= 0 && e.x < 800 && e.y >= 0 && e.y < 800)
-			p[(int)e.x + ((int)e.y * 800)] = ((((((255 << 8) | color.red) << 8) | color.green) << 8) | color.blue);
-		count++;
-	}
-}
 int	clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_t c)
 {
 	float		t1;
@@ -405,7 +332,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_fvector2d	r;
 	int x;
 	t_rgb color1;
-	
+
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -448,7 +375,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		offset[1] = 1;
 		offset[2] = 1;
 		offset[3] = 1;
-		
+
 		if (clip(&play, wa.p, offset, c))
 		{
 			multmatrixdrawwall(wa.p, projec);
@@ -469,7 +396,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
 			color1 = setrgb(255, 0, 255);
-			
+
 			if (w[c].z == -1)
 				drow_wall(p, wa, *tga, offset);;
 			drawfloor(p, wa, color1,play);
@@ -480,27 +407,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		}
 		c++;
 	}
-	
-}
 
-void	drawplayer(uint32_t *p, t_player play)
-{
-	t_fvector	dir;
-
-	t_fvector2d ray1;
-
-	dir.x = cos(play.rotate.z) * 5;
-	dir.y = sin(play.rotate.z) * 5;
-	drawline(p, setfvector(400, 300, 0, 1),
-	setfvector(400 + dir.x, 300 + dir.y, 0, 1), setrgb(255, 255, 0));
-	ray1.x = cos(play.rotate.z + 1.57) * 100;
-	ray1.y = sin(play.rotate.z + 1.57) * 100;
-	drawline(p, setfvector(400, 300, 0, 1),
-	setfvector(400 + ray1.x, 300 + ray1.y, 0, 1), setrgb(0, 0, 255));
-	ray1.x = cos(play.rotate.z - 1.57) * 100;
-	ray1.y = sin(play.rotate.z - 1.57) * 100;
-	drawline(p, setfvector(400, 300, 0, 1),
-	setfvector(400 + ray1.x, 300 + ray1.y, 0, 1), setrgb(0, 0, 255));
 }
 
 void	draw(t_doom *doom)
@@ -542,7 +449,7 @@ void	draw(t_doom *doom)
 		doom->thismap.sectors[i].height, colorfloor, colorceil, i);
 		// printf ("%d \n", doom->thismap.sectors[i].floor);
 		i--;
-		
+
 	}
 	// printf ("\n");
 	// colorfloor = setrgb(0, 0, 255);
@@ -553,12 +460,8 @@ void	draw(t_doom *doom)
 	// doom->thismap.sectors[doom->player.sector].floor,
 	// doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
 
-	drawsector(doom->win->pixels, doom->player, doom->thismap.walls +
-	doom->thismap.sectors[doom->player.sector].start,
-	doom->thismap.sectors[doom->player.sector].count);
-	drawplayer(doom->win->pixels, doom->player);
-
-	drawenemy(doom->win->pixels, doom->player, &doom->thismap);
+	drawminimap(doom->win->pixels, doom, doom->player.sector,
+	setivector2d(400, 300));
 
 
 	drawui(doom);

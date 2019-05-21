@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 13:16:51 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:24:10 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ typedef struct	s_map
 
 void		moveenemy(t_player play, t_map *map, t_object *obj, float delta);
 void		agressionememy(t_player *player, t_object *obj);
+void		damageenemy(t_player *player, t_object *obj, double delta);
 
 typedef struct	s_wall
 {
@@ -207,6 +208,8 @@ void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
 void		drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player);
 void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
 
+void		drawminimap(uint32_t *p, t_doom *doom, size_t sector, t_ivector2d cord);
+
 void		destrotwindow(t_doom *doom);
 
 void		updateevent(t_doom *doom);
@@ -218,6 +221,11 @@ void		quitprogram(t_doom *doom);
 t_player	defaultplayerdata(void);
 void		addstamina(t_player *p, float addvalue);
 void		minusstamina(t_player *p, float minusvalue);
+
+void		addhealth(t_player *p, float addvalue);
+void		minushealth(t_player *p, float minusvalue);
+void		playerdeath(t_player *p);
+
 void		playermove(t_doom *doom, double delta);
 void		playerjump(t_doom *doom, t_player *player);
 

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 13:24:10 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/21 15:08:30 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ typedef struct	s_doom
 
 t_tga		*tga;
 t_tga		*tgafloor;
+t_tga		*tgaenemy;
 
 void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);

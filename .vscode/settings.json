@@ -8,6 +8,7 @@
 		"__bit_reference": "c",
 		"bitset": "c",
 		"chrono": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"rotate.h": "c"
 	}
 }

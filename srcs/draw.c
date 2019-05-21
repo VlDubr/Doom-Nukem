@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 13:04:10 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/21 17:56:54 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,12 +216,28 @@ void	multmatrixdrawwall(t_fvector *view, t_mat4x4 mat)
 	view[3] = multipmatrix(view[3], mat);
 }
 
+void	divdrawwall(t_fvector *view, float x, float y, float z)
+{
+	view[0] = divfvector(view[0], x, y, z);
+	view[1] = divfvector(view[1], x, y, z);
+	view[2] = divfvector(view[2], x, y, z);
+	view[3] = divfvector(view[3], x, y, z);
+}
+
 void	adddrawwall(t_fvector *view, float x, float y, float z)
 {
 	view[0] = addfvector(view[0], x, y, z);
 	view[1] = addfvector(view[1], x, y, z);
 	view[2] = addfvector(view[2], x, y, z);
 	view[3] = addfvector(view[3], x, y, z);
+}
+
+void	subdrawwall(t_fvector *view, float x, float y, float z)
+{
+	view[0] = subfvector(view[0], x, y, z);
+	view[1] = subfvector(view[1], x, y, z);
+	view[2] = subfvector(view[2], x, y, z);
+	view[3] = subfvector(view[3], x, y, z);
 }
 
 void	multdrawwall(t_fvector *view, float x, float y, float z)
@@ -410,6 +426,111 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 
 }
 
+void	drawobj(t_doom *doom)
+{
+	t_wall		wa;
+	t_mat4x4	cammat;
+	t_mat4x4	projec;
+	t_fvector	dir;
+	float		offset[4];
+	float		rotz;
+	size_t		c;
+
+	cammat = matcam(&doom->player);
+	projec = matprojection(initcam(setivector2d(800, 800)));
+
+	c = 0;
+	while (c < doom->thismap.objcount)
+	{
+		dir = subfvtofv(doom->player.pos, doom->thismap.obj[c].pos);
+		dir = normfvector(dir);
+		rotz = atan2(dir.z, dir.x);
+		wa.p[0] = setfvector(doom->thismap.obj[c].pos.x,
+		doom->thismap.sectors[doom->thismap.obj[c].sector].floor,
+		doom->thismap.obj[c].pos.z - (doom->thismap.obj[c].width / 2), 1);
+		wa.p[1] = setfvector(doom->thismap.obj[c].pos.x,
+		doom->thismap.sectors[doom->thismap.obj[c].sector].floor,
+		doom->thismap.obj[c].pos.z + (doom->thismap.obj[c].width / 2), 1);
+		wa.p[2] = addfvector(wa.p[0], 0, doom->thismap.sectors[doom->thismap.obj[c].sector].height, 0);
+		wa.p[3] = addfvector(wa.p[1], 0, doom->thismap.sectors[doom->thismap.obj[c].sector].height, 0);
+
+		subdrawwall(wa.p, doom->thismap.obj[c].pos.x,
+		doom->thismap.obj[c].pos.y, doom->thismap.obj[c].pos.z);
+
+		multmatrixdrawwall(wa.p, matroty(rotz));
+
+		adddrawwall(wa.p, doom->thismap.obj[c].pos.x,
+		doom->thismap.obj[c].pos.y, doom->thismap.obj[c].pos.z);
+
+		multmatrixdrawwall(wa.p, cammat);
+		offset[0] = 1;
+		offset[1] = 1;
+		offset[2] = 1;
+		offset[3] = 1;
+		if (clip(&doom->player, wa.p, offset, c))
+		{
+			multmatrixdrawwall(wa.p, projec);
+			wa.p[0] = divfvector(wa.p[0], wa.p[0].w, wa.p[0].w, wa.p[0].w);
+			wa.p[1] = divfvector(wa.p[1], wa.p[1].w, wa.p[1].w, wa.p[1].w);
+			wa.p[2] = divfvector(wa.p[2], wa.p[2].w, wa.p[2].w, wa.p[2].w);
+			wa.p[3] = divfvector(wa.p[3], wa.p[3].w, wa.p[3].w, wa.p[3].w);
+			adddrawwall(wa.p, 1, 1, 0);
+			multdrawwall(wa.p, 400, 400, 1);
+
+			if (wa.p[0].x > wa.p[1].x)
+			{
+				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
+				ft_swap((void**)&offset[1], (void**)&offset[0]);
+			}
+			drow_wall(doom->win->pixels, wa, *tgaenemy, offset);
+			// drawline(doom->win->pixels, wa.p[0], wa.p[1], setrgb(0, 0, 255));
+			// drawline(doom->win->pixels, wa.p[0], wa.p[2], setrgb(0, 0, 255));
+			// drawline(doom->win->pixels, wa.p[2], wa.p[3], setrgb(0, 0, 255));
+			// drawline(doom->win->pixels, wa.p[1], wa.p[3], setrgb(0, 0, 255));
+		}
+		c++;
+	}
+}
+
+void	drawrect(t_doom *doom)
+{
+	float xtex;
+	float ytex;
+	int a;
+	int r;
+	int g;
+	int b;
+	t_fvector2d dir;
+
+	dir = setfvector2d(cos(0.785398), sin(0.785398));
+	for(int x = 0; x < 200; x++)
+	{
+		xtex = 0;
+		ytex = 0;
+		for(int y = 0; y < 200; y++)
+		{
+			if (ytex >= 0 && ytex < tgafloor->height && xtex >= 0 && xtex < tgafloor->width)
+			{
+				r = tgafloor->pic[(int)ytex][(int)xtex].red;
+				g = tgafloor->pic[(int)ytex][(int)xtex].green;
+				b = tgafloor->pic[(int)ytex][(int)xtex].blue;
+				a = tgafloor->pic[(int)ytex][(int)xtex].alpha;
+			}
+			if (x >= 0 && x < 800 && y >= 0 && y < 800)
+			{
+				if (a != 0)
+				{
+					doom->win->pixels[x + (y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+				}
+			}
+			ytex += dir.y;
+			xtex += dir.x;
+		}
+
+	}
+}
+
 void	draw(t_doom *doom)
 {
 	t_rgb	colorfloor;
@@ -418,39 +539,40 @@ void	draw(t_doom *doom)
 
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-	i = doom->thismap.sectorcount - 1;
-	while (i > -1)
-	{
-		switch (i)
-		{
-			case 0:
-				colorfloor = setrgb(0, 0, 255);
-				colorceil = setrgb(150, 150, 150);
-				break;
-			case 1:
-				colorfloor = setrgb(0, 255, 0);
-				colorceil = setrgb(0, 150, 150);
-				break;
-			case 2:
-				colorfloor = setrgb(255, 0, 0);
-				colorceil = setrgb(0, 0, 150);
-				break;
-			default:
-				colorfloor = setrgb(255, 255, 255);
-				colorceil = setrgb(50, 50, 50);
-				break;
-		}
-		// if (doom->thismap.sectors[i].floor == 3)
-		// doom->thismap.sectors[i].floor = 1;
-		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-		doom->thismap.sectors[i].start,
-		doom->thismap.sectors[i].count,
-		doom->thismap.sectors[i].floor,
-		doom->thismap.sectors[i].height, colorfloor, colorceil, i);
-		// printf ("%d \n", doom->thismap.sectors[i].floor);
-		i--;
+	// i = doom->thismap.sectorcount - 1;
+	// while (i > -1)
+	// {
+	// 	switch (i)
+	// 	{
+	// 		case 0:
+	// 			colorfloor = setrgb(0, 0, 255);
+	// 			colorceil = setrgb(150, 150, 150);
+	// 			break;
+	// 		case 1:
+	// 			colorfloor = setrgb(0, 255, 0);
+	// 			colorceil = setrgb(0, 150, 150);
+	// 			break;
+	// 		case 2:
+	// 			colorfloor = setrgb(255, 0, 0);
+	// 			colorceil = setrgb(0, 0, 150);
+	// 			break;
+	// 		default:
+	// 			colorfloor = setrgb(255, 255, 255);
+	// 			colorceil = setrgb(50, 50, 50);
+	// 			break;
+	// 	}
+	// 	// if (doom->thismap.sectors[i].floor == 3)
+	// 	// doom->thismap.sectors[i].floor = 1;
+	// 	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+	// 	doom->thismap.sectors[i].start,
+	// 	doom->thismap.sectors[i].count,
+	// 	doom->thismap.sectors[i].floor,
+	// 	doom->thismap.sectors[i].height, colorfloor, colorceil, i);
+	// 	// printf ("%d \n", doom->thismap.sectors[i].floor);
+	// 	i--;
 
-	}
+	// }
+	// drawobj(doom);
 	// printf ("\n");
 	// colorfloor = setrgb(0, 0, 255);
 	// colorceil = setrgb(150, 150, 150);
@@ -459,12 +581,12 @@ void	draw(t_doom *doom)
 	// doom->thismap.sectors[doom->player.sector].count,
 	// doom->thismap.sectors[doom->player.sector].floor,
 	// doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
+	// drawminimap(doom->win->pixels, doom, doom->player.sector,
+	// setivector2d(400, 300));
 
-	drawminimap(doom->win->pixels, doom, doom->player.sector,
-	setivector2d(400, 300));
 
-
-	drawui(doom);
+	// drawui(doom);
+	drawrect(doom);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,
 	doom->win->size.x * sizeof(uint32_t));

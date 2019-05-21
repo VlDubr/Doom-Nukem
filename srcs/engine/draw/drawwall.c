@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/05/15 19:27:26 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/21 15:18:03 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		}
 		if (x >= 0 && x < 800 && y >= 0 && y < 800)
 				{
-					if (y < y0 && y > y1 && x > 0)
-						p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+					if (a != 0)
+					{
+						if (y < y0 && y > y1 && x > 0)
+							p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+						p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+					}
 
 				}
 		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -164,14 +167,14 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	float kef[2];
 	kef[0] = 0;
 	m[0] = ((float)maxdist) / (float)(image.width);
-	
-	
+
+
 	// printf ("1 - %f\n", offset[1]);
 	// printf ("1 - %f\n", offset[1]);
-	
+
 	if (offset[1] < 1)
 	{
-		
+
 		kef[0] = 0;//(float)maxdist/offset[1] - (float)maxdist;
 		m[0] = (((float)maxdist/offset[1])) / (float)(image.width);
 	}

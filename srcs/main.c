@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 13:15:20 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/21 15:14:23 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int				main(int agrc, char **argv)
 	doom->currentframe = SDL_GetPerformanceCounter();
 	tga = tga_reader(argv[1]);
 	tgafloor = tga_reader("pol.tga");
+	tgaenemy = tga_reader("monster.tga");
 	while (doom->win->state)
 	{
 		doom->lastframe = doom->currentframe;

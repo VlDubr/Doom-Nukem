@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 15:27:33 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/15 18:43:54 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/21 16:05:12 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	agressionememy(t_player *player, t_object *obj)
 
 	dist.x = obj->pos.x - player->pos.x;
 	dist.y = obj->pos.y - player->pos.y;
-	if (dist.x <= 15 && dist.x >= -15 && dist.y <= 15 && dist.y >= -15)
+	if (dist.x <= 15 && dist.x >= -15 && dist.y <= 15 && dist.y >= -15 &&
+	!(dist.x >= -5 && dist.x <= 5 && dist.y >= -5 && dist.y <= 5))
 		obj->isagression = 1;
 	else
 		obj->isagression = 0;

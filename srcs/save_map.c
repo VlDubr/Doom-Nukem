@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/18 18:08:57 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/21 18:32:09 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char *save_p(t_map *map, int i, char *str_old)
     return (str);
 }
 
-void save_map(t_map *map, t_service *s)
+void save_map(t_map *map, t_serv *s)
 {
 	int i;
     char *str;

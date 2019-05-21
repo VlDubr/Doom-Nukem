@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/18 15:31:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/21 18:56:27 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "../lib/ft_graphics/includes/color.h"
 # include "../lib/ft_graphics/includes/vector.h"
 # include "../lib/libft/includes/libft.h"
+# include "../lib/TGA-Reader/include/tga.h"
 
 # ifdef __APPLE__
 #  define CREATEFLAG S_IWRITE | S_IREAD
@@ -76,7 +77,7 @@ typedef struct		s_map
 	int				wall_count;
 }					t_map;
 
-typedef struct		s_service
+typedef struct		s_serv
 {
 	int				i;
 	int				j;
@@ -89,16 +90,20 @@ typedef struct		s_service
 	int				coord_y;
 	int				mouse_xy[2];
 	int				wh_screen[2];
+	int				sec_edit;
 	SDL_Event		e;
-}					t_service;
+	t_ivector2d		text_wh;
+	t_tga			**text;
+}					t_serv;
 
-void				line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_service *s);
-void				map_parser(t_service *s, char *str, t_map *map);
-void				map_writer(t_sdl *sdl, t_service *s, t_map *map);
-void				background(t_service *s, t_sdl *sdl);
+void				line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_serv *s);
+void				map_parser(t_serv *s, char *str, t_map *map);
+void				map_writer(t_sdl *sdl, t_serv *s, t_map *map);
+void				background(t_sdl *sdl);
 void				ft_error(const char *str);
 int					ft_max(int x, int y);
-void				add_wall_to_map(t_map *map, t_service *s);
-void   				delete_wall(t_map *map, t_service *s);
-void				save_map(t_map *map, t_service *s);
+void				add_wall_to_map(t_map *map, t_serv *s);
+void   				delete_wall(t_map *map, t_serv *s);
+void				save_map(t_map *map, t_serv *s);
+void				gui(t_serv *s, t_sdl *sdl);
 #endif

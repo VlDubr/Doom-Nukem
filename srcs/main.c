@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/18 18:16:17 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/21 19:23:04 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*file_read(int fd)
 	str = malloc(0);
 
 	if (fd == -1)
-		ft_error("error");
+		ft_error("Read file error!");
 	while ((j = read(fd, buf, 1000)) > 0)
 	{
 		buf[j] = '\0';
@@ -31,15 +31,16 @@ char	*file_read(int fd)
 	return (str);
 }
 
-void	writer(t_service *s, t_sdl sdl, t_map *map)
+void	writer(t_serv *s, t_sdl sdl, t_map *map)
 {
 	SDL_RenderClear(sdl.r);
-	background(s, &sdl);
+	background(&sdl);
+	gui(s, &sdl);
 	map_writer(&sdl, s, map);
 	SDL_RenderPresent(sdl.r);
 }
 
-void	event(t_service *s, t_sdl sdl, t_map *map)
+void	event(t_serv *s, t_sdl sdl, t_map *map)
 {
 	while (s->quit == 0)
 	{
@@ -82,22 +83,37 @@ void	event(t_service *s, t_sdl sdl, t_map *map)
 			}
 			if (s->e.type == SDL_MOUSEBUTTONDOWN)
 			{
-				if (s->e.button.button == 1)
+				SDL_GetMouseState(&s->mouse_xy[0], &s->mouse_xy[1]);
+				if (s->mouse_xy[0] > 1000)
 				{
-					add_wall_to_map(map, s);
-					writer(s, sdl, map);
+					if (s->mouse_xy[1] < 500)
+					{
+						if (s->e.button.button == 1 && s->sec_edit < map->sec_count)
+							s->sec_edit++;
+						else if (s->e.button.button == 3 && s->sec_edit > 0)
+							s->sec_edit--;
+						gui(s, &sdl);
+					}
 				}
-				if (s->e.button.button == 3 || s->e.button.button == 2)
+				else
 				{
-					delete_wall(map, s);
-					writer(s, sdl, map);
+					if (s->e.button.button == 1)
+					{
+						add_wall_to_map(map, s);
+						writer(s, sdl, map);
+					}
+					if (s->e.button.button == 3 || s->e.button.button == 2)
+					{
+						delete_wall(map, s);
+						writer(s, sdl, map);
+					}
 				}
 			}
 		}
 	}
 }
 
-void	init(t_map *map, t_service *s)
+void	init(t_map *map, t_serv *s)
 {
 	map->sec_count = 0;
 	map->wall_count = 0;
@@ -112,29 +128,36 @@ void	init(t_map *map, t_service *s)
 	s->coord_y = 0;
 	s->wh_screen[0] = 1000;
 	s->wh_screen[1] = 1000;
+	s->sec_edit = 0;
+	s->text_wh.x = 7;
+	s->text_wh.y = 9;
+	s->text = bitmap("assets/img/charmap.tga", s->text_wh);
+	s->text_wh.x = 1100;
+	s->text_wh.y = 200;
 }
 
 int		main(int argc, char **argv)
 {
 	t_sdl		sdl;
 	char		*str;
-	t_service	*s;
+	t_serv		*s;
 	t_map		*map;
 
 	if (!(map = (t_map *)malloc(sizeof(t_map))))
 		ft_error("Malloc error!");
-	if (!(s = (t_service *)malloc(sizeof(t_service))))
+	if (!(s = (t_serv *)malloc(sizeof(t_serv))))
 		ft_error("Malloc error!");
 	init(map, s);
-	s->fd = open("map.map", O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
+	s->fd = open("map1.map", O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
 	str = file_read(s->fd);
 	if (ft_strlen(str) >= 39)
 		map_parser(s, str, map);
 	SDL_Init(SDL_INIT_VIDEO);
-	sdl.win = SDL_CreateWindow("TGA Reader", 0, 0, s->wh_screen[0], s->wh_screen[1], 0);
+	sdl.win = SDL_CreateWindow("TGA Reader", 0, 0, s->wh_screen[0] + 400, s->wh_screen[1], 0);
 	sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
 	SDL_RenderClear(sdl.r);
-	background(s, &sdl);
+	background(&sdl);
+	gui(s, &sdl);
 	if (s->parse_flag == 1)
 		map_writer(&sdl, s, map);
 	SDL_RenderPresent(sdl.r);

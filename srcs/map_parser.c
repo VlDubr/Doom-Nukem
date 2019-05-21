@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/18 17:34:46 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/21 18:31:43 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	pl_p(t_map *map, char *str, int i)
 	return (i);
 }
 
-void		map_parser(t_service *s, char *str, t_map *map)
+void		map_parser(t_serv *s, char *str, t_map *map)
 {
 	while (str[s->i] != '\0')
 	{

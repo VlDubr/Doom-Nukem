@@ -3,6 +3,7 @@ NAME = editor
 HEAD = ./includes/*.h
 INC = /usr/local/include
 SRCS = ./srcs/*.c
+TGA = ./lib/TGA-Reader/libtga.a
 GRAPH = ./lib/ft_graphics/libftgraphics.a
 LIBFT = ./lib/libft/libft.a
 INC = /usr/local/include
@@ -15,13 +16,13 @@ WIN_LIB = -L C:/MinGW/msys/1.0/lib
 
 all: $(NAME)
 $(NAME): clean
-	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
+	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
 
 linux:
-	gcc -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lm -lSDL2
+	gcc -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) -lm -lSDL2
 
 win:
-	gcc $(FLAG) -I $(INC) $(WIN_SDL_INCL) $(WIN_LIB) -g -o $(NAME) $(SRCS) $(GRAPH) $(LIBFT) -L $(LIB) -lmingw32 -lSDL2main -lSDL2
+	gcc $(FLAG) -I $(INC) $(WIN_SDL_INCL) $(WIN_LIB) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) -lmingw32 -lSDL2main -lSDL2
 
 clean:
 	@/bin/rm -f *.o

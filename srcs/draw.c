@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 17:56:54 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/21 19:59:55 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -503,13 +503,23 @@ void	drawrect(t_doom *doom)
 	int b;
 	t_fvector2d dir;
 
-	dir = setfvector2d(cos(0.785398), sin(0.785398));
-	for(int x = 0; x < 200; x++)
+	// dir = setfvector2d(cos(1.57), sin(1.57));
+	// dir = setfvector2d(cos(0), sin(0));
+	dir = setfvector2d(cos( 0.523599), sin( 0.523599));
+	printf("%f %f\n", dir.x, dir.y);
+	for(int x = 0; x < 180; x++)
 	{
-		xtex = 0;
-		ytex = 0;
-		for(int y = 0; y < 200; y++)
+		
+		// ytex = y;
+		// xtex = x;
+		
+		for(int y = 0; y < 180; y++)
 		{
+			xtex = (int)(((float)y * dir.y) + (dir.x * (float)x)) % (int)tgafloor->width;
+			ytex = (int)(((float)x * dir.y) - (dir.x * (float)y)) % (int)tgafloor->height;
+			// xtex = x ;//+ (dir.y * (float)y);
+			xtex = fabsf(xtex);
+			ytex = fabsf(ytex);
 			if (ytex >= 0 && ytex < tgafloor->height && xtex >= 0 && xtex < tgafloor->width)
 			{
 				r = tgafloor->pic[(int)ytex][(int)xtex].red;
@@ -524,8 +534,8 @@ void	drawrect(t_doom *doom)
 					doom->win->pixels[x + (y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
 				}
 			}
-			ytex += dir.y;
-			xtex += dir.x;
+			// ytex += dir.y;
+			// xtex += dir.x;
 		}
 
 	}

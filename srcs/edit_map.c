@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 12:36:22 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 17:15:28 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ t_sector	*zero_sec(t_map *map)
 		sec[i] = map->sector[i];
 	map->sec_count++;
 	sec[i].floor_h = 0;
-	sec[i].roof_h = 0;
+	sec[i].roof_h = 3;
 	sec[i].sec_type = 0;
 	sec[i].w_count = 0;
+	sec[i].r_visibility = 1;
 	if (i == 0)
 		sec[i].start_pos = 0;
 	else

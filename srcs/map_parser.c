@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 13:13:58 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 16:55:55 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	sec_p(t_map *map, char *str, int i, int s_c)
 	map->sector[s_c].floor_h = ft_atoi(temp);
 
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].roof_h = ft_atoi(temp);
+	map->sector[s_c].roof_h = roof_vis(map, temp, s_c);
 
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].sec_type = ft_atoi(temp);

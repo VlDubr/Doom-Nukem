@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:28:48 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 12:37:15 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 17:30:09 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,12 @@ void		background(t_sdl *sdl)
 			if (x % 25 == 0 && y % 25 == 0)
 				SDL_SetRenderDrawColor(sdl->r, 230, 184, 255, 255);
 			else
-				SDL_SetRenderDrawColor(sdl->r, 37, 0, 65, 255);
+				SDL_SetRenderDrawColor(sdl->r, 0, 0, 0, 255);
 			SDL_RenderDrawPoint(sdl->r, x, y);
 			x++;
 		}
 		y++;
 	}
-}
-
-void		gui(t_serv *s, t_sdl *sdl)
-{
-	int		y;
-	int		x;
-	char	*temp;
-	char	*temp2;
-
-	y = 0;
-	while (y < 1000)
-	{
-		x = 1000;
-		while (x < 1400)
-		{
-			if (y < 500)
-				SDL_SetRenderDrawColor(sdl->r, 92, 92, 92, 255);
-			else
-				SDL_SetRenderDrawColor(sdl->r, 123, 2, 43, 255);
-			SDL_RenderDrawPoint(sdl->r, x, y);
-			x++;
-		}
-		y++;
-	}
-	temp2 = ft_itoa(s->sec_edit);
-	temp = ft_strjoin("sector: ", temp2);
-	bitmap_write(sdl->r, s->text, s->text_wh, temp);
-	free(temp);
-	free(temp2);
 }
 
 static void	line_put(double xy[5], t_sdl *sdl)

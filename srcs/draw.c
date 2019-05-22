@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/22 13:04:35 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/22 14:13:13 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,7 +378,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	//calculate wall
 	// if (i == 0)
 		// printf ("x %f y %f z %f\n", wa.p[0].x,  wa.p[0].y,  wa.p[0].z);
-	printf("\n");
+	// printf("\n");
 	c = 0;
 	while (c < count)
 	{

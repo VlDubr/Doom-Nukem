@@ -6,28 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/21 18:31:43 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 13:13:58 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
-
-static int	ft_str_chr_cpy(char *temp, char *str, int i, char *chr)
-{
-	int		j;
-
-	j = 0;
-	while (str[i] != chr[0] && str[i] != chr[1] && str[i] != chr[2])
-	{
-		temp[j] = str[i];
-		i++;
-		j++;
-	}
-	if (str[i] == chr[2] && chr[3] != 49)
-		ft_error("Map not valid");
-	temp[j] = '\0';
-	return (i + 1);
-}
 
 static int	wall_p(t_map *map, char *str, int i, int w_c)
 {
@@ -98,7 +81,7 @@ static int	pl_p(t_map *map, char *str, int i)
 	return (i);
 }
 
-void		map_parser(t_serv *s, char *str, t_map *map)
+void		counter(t_serv *s, char *str, t_map *map)
 {
 	while (str[s->i] != '\0')
 	{
@@ -108,6 +91,11 @@ void		map_parser(t_serv *s, char *str, t_map *map)
 			map->sec_count++;
 		s->i++;
 	}
+}
+
+void		map_parser(t_serv *s, char *str, t_map *map)
+{
+	counter(s, str, map);
 	if (!(map->sector = (t_sector *)malloc(sizeof(t_sector) * map->sec_count)))
 		ft_error("Malloc error!");
 	if (!(map->walls = (t_wall *)malloc(sizeof(t_wall) * map->wall_count)))

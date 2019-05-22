@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:28:48 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/21 19:05:35 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 12:37:15 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void		background(t_sdl *sdl)
 
 void		gui(t_serv *s, t_sdl *sdl)
 {
-	int	y;
-	int	x;
-	char *temp;
-	char *temp2;;
+	int		y;
+	int		x;
+	char	*temp;
+	char	*temp2;
 
 	y = 0;
 	while (y < 1000)
@@ -111,7 +111,7 @@ void		map_writer(t_sdl *sdl, t_serv *s, t_map *map)
 		{
 			if (map->walls[s->w_c].next_sec == -1)
 				SDL_SetRenderDrawColor(sdl->r, 255, 255, 255, 255);
-			else 
+			else
 				SDL_SetRenderDrawColor(sdl->r, 255, 0, 0, 255);
 			if (s->w_c + 1 >= map->sector[s->s_c].w_count
 							+ map->sector[s->s_c].start_pos)

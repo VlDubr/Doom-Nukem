@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/21 18:56:27 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/22 13:11:11 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,20 @@ typedef struct		s_serv
 	t_tga			**text;
 }					t_serv;
 
-void				line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_serv *s);
-void				map_parser(t_serv *s, char *str, t_map *map);
-void				map_writer(t_sdl *sdl, t_serv *s, t_map *map);
-void				background(t_sdl *sdl);
 void				ft_error(const char *str);
 int					ft_max(int x, int y);
-void				add_wall_to_map(t_map *map, t_serv *s);
-void   				delete_wall(t_map *map, t_serv *s);
-void				save_map(t_map *map, t_serv *s);
+int					ft_str_chr_cpy(char *temp, char *str, int i, char *chr);
+
+void				writer(t_serv *s, t_sdl sdl, t_map *map);
+void				background(t_sdl *sdl);
 void				gui(t_serv *s, t_sdl *sdl);
+void				map_writer(t_sdl *sdl, t_serv *s, t_map *map);
+void				line_dda(t_wall st, t_wall f, t_sdl *sd, t_serv *s);
+
+void				event(t_serv *s, t_sdl sdl, t_map *map);
+void				add_wall_to_map(t_map *map, t_serv *s);
+void				delete_wall(t_map *map, t_serv *s);
+void				save_map(t_map *map, t_serv *s);
+
+void				map_parser(t_serv *s, char *str, t_map *map);
 #endif

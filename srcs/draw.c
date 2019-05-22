@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/22 13:04:35 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/22 14:15:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -591,7 +591,7 @@ void	draw(t_doom *doom)
 	clock_t end = clock();
 	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
 	printf("The time: %f seconds\n", seconds);
-	// drawobj(doom);
+	drawobj(doom);
 	// printf ("\n");
 	// colorfloor = setrgb(0, 0, 255);
 	// colorceil = setrgb(150, 150, 150);
@@ -600,11 +600,12 @@ void	draw(t_doom *doom)
 	// doom->thismap.sectors[doom->player.sector].count,
 	// doom->thismap.sectors[doom->player.sector].floor,
 	// doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
-	// drawminimap(doom->win->pixels, doom, doom->player.sector,
-	// setivector2d(400, 300));
+	
+	drawminimap(doom->win->pixels, doom, doom->player.sector,
+	setivector2d(400, 300));
 
 
-	// drawui(doom);
+	drawui(doom);
 	// drawrect(doom);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,

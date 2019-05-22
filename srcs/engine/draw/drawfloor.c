@@ -8,8 +8,8 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player)
 	int		i;
 	float m;
 	float k;
-	int xp;
-	int yp;
+	float xp;
+	float yp;
 	int startxp;
 	int startyp;
 
@@ -22,8 +22,8 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player)
 	i = 0;
 	m = ((float)1000) / (float)(tgafloor->width);
 	y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
-	dir.x = cos (player.rotate.z);
-	dir.y = sin(player.rotate.z);
+	dir.x = cos(-player.rotate.z);
+	dir.y = sin(-player.rotate.z);
 	while (x < wa.p[1].x)
 	{		
 		y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
@@ -32,13 +32,13 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player)
 		{
 			xp = (int)(((float)y * dir.y) +  (dir.x * (float)x)) % (int)tgafloor->width;
 			yp = (int)(((float)x * dir.y) -  (dir.x * (float)y)) % (int)tgafloor->height;
-			xp = abs(xp);
-			yp = abs(yp);
+			xp = fabsf(xp);
+			yp = fabsf(yp);
 			if (yp >= 0 && yp < tgafloor->height && xp >= 0 && xp < tgafloor->width)
 			{
-				color.red = tgafloor->pic[yp][xp].red;
-				color.green = tgafloor->pic[yp][xp].green;
-				color.blue = tgafloor->pic[yp][xp].blue;
+				color.red = tgafloor->pic[(int)yp][(int)xp].red;
+				color.green = tgafloor->pic[(int)yp][(int)xp].green;
+				color.blue = tgafloor->pic[(int)yp][(int)xp].blue;
 				//a = image.pic[yp][xp].alpha;
 			}
 			if (x >= 0 && x < 800 && y >= 0 && y < 800)

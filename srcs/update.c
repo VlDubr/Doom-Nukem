@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 16:20:43 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/22 14:15:30 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,12 @@ void	update(t_doom *doom, double delta)
 	gravity(&doom->player,
 	doom->thismap.sectors[doom->player.sector].floor, delta);
 	checkswaplevel(doom, doom->player.sector);
-	// while (c < doom->thismap.objcount)
-	// {
-	// 	agressionememy(&doom->player, &doom->thismap.obj[c]);
-	// 	damageenemy(&doom->player, &doom->thismap.obj[c], delta);
-	// 	moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
-	// 	c++;
-	// }
-	//playerdeath(&doom->player);
+	while (c < doom->thismap.objcount)
+	{
+		agressionememy(&doom->player, &doom->thismap.obj[c]);
+		damageenemy(&doom->player, &doom->thismap.obj[c], delta);
+		moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
+		c++;
+	}
+	// playerdeath(&doom->player);
 }

@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/22 14:13:13 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:39:31 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,6 +337,7 @@ int	clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_t c)
 void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i)
 {
 	t_wall		wa;
+	double		offloor[4];
 	float		vec;
 	t_fvector	delta;
 	t_fvector	tmpp[4];
@@ -348,7 +349,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_fvector2d	r;
 	int x;
 	t_rgb color1;
-
+	float dx;
+	float dy;
+	
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -368,16 +371,25 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		max.y = ft_fmax(max.y, w[c].y);
 		c++;
 	}
-	wa.p[0] = setfvector(min.x, floor, min.y, 1);
-	wa.p[1] = setfvector(min.x, floor, max.y, 1);
-	wa.p[2] = setfvector(max.x, floor, max.y, 1);
-	wa.p[3] = setfvector(max.x, floor, min.y, 1);
-	multmatrixdrawwall(wa.p, cammat);
+	// if (i == 0)
+	
+	// wa.p[0] = setfvector(min.x, floor, min.y, 1);
+	// wa.p[1] = setfvector(min.x, floor, max.y, 1);
+	// wa.p[2] = setfvector(max.x, floor, max.y, 1);
+	// wa.p[3] = setfvector(max.x, floor, min.y, 1);
+	// multmatrixdrawwall(wa.p, cammat);
 	c = 0;
 	// clipforfloor(&play, wa.p, offset, i);
+	dx = max.x - min.x;
+	dy = max.y - min.y;
+	if (dx < dy)
+		dx = dy;
+	offloor[0] = (min.x - play.pos.x)/dx;
+	offloor[1] = (min.y - play.pos.z)/dx;
+	if (i == 0)
+	// printf ("x %f y %f \n ",offset[0], offset[1]);
 	//calculate wall
-	// if (i == 0)
-		// printf ("x %f y %f z %f\n", wa.p[0].x,  wa.p[0].y,  wa.p[0].z);
+		
 	// printf("\n");
 	c = 0;
 	while (c < count)
@@ -416,9 +428,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			if (w[c].z == -1)
 			
 				drow_wall(p, wa, *tga, offset);
-			if (i == 0)
+			// if (i == 0)
 			{
-				drawfloor(p, wa, color1,play);
+				drawfloor(p, wa, color1,play, offloor);
 			}
 			// drawline(p, wa.p[0], wa.p[1], color);
 			// drawline(p, wa.p[0], wa.p[2], color);

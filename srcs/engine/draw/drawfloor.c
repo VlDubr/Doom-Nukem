@@ -22,20 +22,16 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player)
 	i = 0;
 	m = ((float)1000) / (float)(tgafloor->width);
 	y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
-	startxp = (int)((400.0)/m)  ;
-	startyp = (int)(400.0)/k;
 	dir.x = cos (player.rotate.z);
 	dir.y = sin(player.rotate.z);
 	while (x < wa.p[1].x)
-	{
-		//xp = (int)((float)((float)x)/m);//  + (int)player.pos.z*19;; //* cos (player.rotate.z) 
+	{		
 		y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
 		endy = 800;
 		while (y < endy)
 		{
 			xp = (int)(((float)y * dir.y) +  (dir.x * (float)x)) % (int)tgafloor->width;
-			//yp = (int)(y)/k;// - (int)player.pos.x*10 ;  // * sin (player.rotate.z) 
-			yp = (int)(((float)x * dir.y) +  (dir.x * (float)y)) % (int)tgafloor->height;
+			yp = (int)(((float)x * dir.y) -  (dir.x * (float)y)) % (int)tgafloor->height;
 			xp = abs(xp);
 			yp = abs(yp);
 			if (yp >= 0 && yp < tgafloor->height && xp >= 0 && xp < tgafloor->width)

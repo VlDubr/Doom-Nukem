@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawwall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/05/21 15:18:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/22 13:26:48 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	float e;
 	char a;
 	float ey;
-
+	float dir;
 	e = 1;
 	x = x0;
 	y = y0;
+	int check; 
 	dx = fabs(x1 - x0);
 	dy = fabs(y1 - y0);
-	dy = fabs(y1 - y0);
+	check = 0;
 	d = 2* (dx - dy);
 	d1 = 2 * dx;
 	d2 = (dx - dy) *2.0;
@@ -54,6 +55,12 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 
 	while (y <= y0 && y >= y1)
 	{
+		if ((start == 2 && y >= 800) || (start == 1 && y < 0))
+            break ;
+		if ((start == 1 && y >= 800))
+			y = 800;		
+		if ((start == 2 && y < 0))
+			y = 0;
 		y += ey; ;
 		if (d < 0)
 			d +=d1;
@@ -71,15 +78,14 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 			a = image.pic[yp][xp].alpha;
 		}
 		if (x >= 0 && x < 800 && y >= 0 && y < 800)
-				{
-					if (a != 0)
-					{
-						if (y < y0 && y > y1 && x > 0)
-							p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-						p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-					}
-
-				}
+		{
+			if (a != 0)
+			{
+				if (y < y0 && y > y1 && x > 0)
+					p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+			}
+		}
 		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 		// 	SDL_RenderDrawPoint (renderer,x, y);
 	}

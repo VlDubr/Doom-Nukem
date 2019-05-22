@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 19:59:55 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/22 13:04:35 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,7 +374,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	wa.p[3] = setfvector(max.x, floor, min.y, 1);
 	multmatrixdrawwall(wa.p, cammat);
 	c = 0;
-	clipforfloor(&play, wa.p, offset, i);
+	// clipforfloor(&play, wa.p, offset, i);
 	//calculate wall
 	// if (i == 0)
 		// printf ("x %f y %f z %f\n", wa.p[0].x,  wa.p[0].y,  wa.p[0].z);
@@ -414,12 +414,16 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			color1 = setrgb(255, 0, 255);
 
 			if (w[c].z == -1)
-				drow_wall(p, wa, *tga, offset);;
-			drawfloor(p, wa, color1,play);
-			drawline(p, wa.p[0], wa.p[1], color);
-			drawline(p, wa.p[0], wa.p[2], color);
-			drawline(p, wa.p[2], wa.p[3], color);
-			drawline(p, wa.p[1], wa.p[3], color);
+			
+				drow_wall(p, wa, *tga, offset);
+			if (i == 0)
+			{
+				drawfloor(p, wa, color1,play);
+			}
+			// drawline(p, wa.p[0], wa.p[1], color);
+			// drawline(p, wa.p[0], wa.p[2], color);
+			// drawline(p, wa.p[2], wa.p[3], color);
+			// drawline(p, wa.p[1], wa.p[3], color);
 		}
 		c++;
 	}
@@ -549,39 +553,44 @@ void	draw(t_doom *doom)
 
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-	// i = doom->thismap.sectorcount - 1;
-	// while (i > -1)
-	// {
-	// 	switch (i)
-	// 	{
-	// 		case 0:
-	// 			colorfloor = setrgb(0, 0, 255);
-	// 			colorceil = setrgb(150, 150, 150);
-	// 			break;
-	// 		case 1:
-	// 			colorfloor = setrgb(0, 255, 0);
-	// 			colorceil = setrgb(0, 150, 150);
-	// 			break;
-	// 		case 2:
-	// 			colorfloor = setrgb(255, 0, 0);
-	// 			colorceil = setrgb(0, 0, 150);
-	// 			break;
-	// 		default:
-	// 			colorfloor = setrgb(255, 255, 255);
-	// 			colorceil = setrgb(50, 50, 50);
-	// 			break;
-	// 	}
-	// 	// if (doom->thismap.sectors[i].floor == 3)
-	// 	// doom->thismap.sectors[i].floor = 1;
-	// 	drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	// 	doom->thismap.sectors[i].start,
-	// 	doom->thismap.sectors[i].count,
-	// 	doom->thismap.sectors[i].floor,
-	// 	doom->thismap.sectors[i].height, colorfloor, colorceil, i);
-	// 	// printf ("%d \n", doom->thismap.sectors[i].floor);
-	// 	i--;
-
-	// }
+	i = doom->thismap.sectorcount - 1;
+	clock_t start = clock();
+	while (i > -1)
+	{
+		switch (i)
+		{
+			case 0:
+				colorfloor = setrgb(0, 0, 255);
+				colorceil = setrgb(150, 150, 150);
+				break;
+			case 1:
+				colorfloor = setrgb(0, 255, 0);
+				colorceil = setrgb(0, 150, 150);
+				break;
+			case 2:
+				colorfloor = setrgb(255, 0, 0);
+				colorceil = setrgb(0, 0, 150);
+				break;
+			default:
+				colorfloor = setrgb(255, 255, 255);
+				colorceil = setrgb(50, 50, 50);
+				break;
+		}
+		// if (doom->thismap.sectors[i].floor == 3)
+		// doom->thismap.sectors[i].floor = 1;
+		
+		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
+		doom->thismap.sectors[i].start,
+		doom->thismap.sectors[i].count,
+		doom->thismap.sectors[i].floor,
+		doom->thismap.sectors[i].height, colorfloor, colorceil, i);
+		
+		// printf ("%d \n", doom->thismap.sectors[i].floor);
+		i--;
+	}
+	clock_t end = clock();
+	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+	printf("The time: %f seconds\n", seconds);
 	// drawobj(doom);
 	// printf ("\n");
 	// colorfloor = setrgb(0, 0, 255);
@@ -596,7 +605,7 @@ void	draw(t_doom *doom)
 
 
 	// drawui(doom);
-	drawrect(doom);
+	// drawrect(doom);
 
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,
 	doom->win->size.x * sizeof(uint32_t));

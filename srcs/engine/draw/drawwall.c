@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/05/22 13:26:48 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/22 14:10:57 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	e = 1;
 	x = x0;
 	y = y0;
-	int check; 
 	dx = fabs(x1 - x0);
 	dy = fabs(y1 - y0);
-	check = 0;
 	d = 2* (dx - dy);
 	d1 = 2 * dx;
 	d2 = (dx - dy) *2.0;
@@ -52,7 +50,32 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	if (ey == 1)
 		e *=-1;
 	k = dy   / (image.height);
+	// if (y0 > 800)
+	// 	y0 = 800;
+	// if (y1 > 800)
+	// 	y1 = 800;
+	// if (y0 < 0)
+	// 	y0 = 0;
+	// if (y1 < 0)
+	// 	y1 = 0;
+	// if (y > 800)
+	// 	y = 800;
+	// if (y < 0)
+	// 	y = 0;
 
+	// if (start == 1 && y > 800)
+	// {
+	// 	y = 800;
+	// 	y0 = 800;
+	// 	y1 = 0;
+	// }
+	// else if (start == 2 && y < 0)
+	// {
+	// 	y = 0;
+	// 	y0 = 0;
+	// 	y1 = 800;
+	// }
+	
 	while (y <= y0 && y >= y1)
 	{
 		if ((start == 2 && y >= 800) || (start == 1 && y < 0))

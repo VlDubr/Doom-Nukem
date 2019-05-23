@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/22 18:11:28 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/23 20:34:29 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
-void		drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player, double *offloor);
+void		drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player, double *offloor, t_fvector	*fl);
 void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
 
 void		drawminimap(uint32_t *p, t_doom *doom, size_t sector, t_ivector2d cord);

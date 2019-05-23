@@ -9,6 +9,7 @@
 		"bitset": "c",
 		"chrono": "c",
 		"algorithm": "c",
-		"rotate.h": "c"
+		"rotate.h": "c",
+		"ratio": "c"
 	}
 }

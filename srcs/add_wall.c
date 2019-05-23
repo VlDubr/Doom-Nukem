@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   edit_map.c                                         :+:      :+:    :+:   */
+/*   add_wall.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 17:15:28 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/23 16:20:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,15 @@ void		add_wall_to_map(t_map *map, t_serv *s)
 	t_wall	*wl;
 	int		i;
 
-	wl = (t_wall *)malloc(sizeof(t_wall) * (map->wall_count + 1));
+	wl = (t_wall *)malloc(sizeof(t_wall) * (map->wall_count + 2));
 	if (map->sec_count == s->sec_edit)
 		map->sector = zero_sec(map);
+	else
+	{
+		i = s->sec_edit;
+		while (++i < map->sec_count)
+			map->sector[i].start_pos++;
+	}
 	map->wall_count++;
 	i = -1;
 	while (++i < map->sector[s->sec_edit].start_pos
@@ -70,49 +76,8 @@ void		add_wall_to_map(t_map *map, t_serv *s)
 	wl[i].next_type = 0;
 	map->sector[s->sec_edit].w_count++;
 	while (++i < map->wall_count)
-		wl[i] = map->walls[i];
+		wl[i] = map->walls[i - 1];
 	if (map->wall_count > 1)
 		free(map->walls);
 	map->walls = wl;
-}
-
-void		w_del(t_map *map, int j, int i)
-{
-	if (map->sector[j].start_pos == i)
-	{
-		map->sector[j].start_pos++;
-		map->sector[j].w_count--;
-	}
-	else if (map->sector[j].start_pos <= i &&
-			i < (map->sector[j].start_pos + map->sector[j].w_count))
-		map->sector[j].w_count--;
-}
-
-void		delete_wall(t_map *map, t_serv *s)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < map->wall_count)
-	{
-		if (map->walls[i].xy[0] == (m_align(s->mouse_xy[0])
-					- (s->wh_screen[0] / 2) - s->coord_x) &&
-			map->walls[i].xy[1] == (m_align(s->mouse_xy[1])
-					- (s->wh_screen[1] / 2) - s->coord_y))
-		{
-			while (++i < map->wall_count)
-				map->walls[i - 1] = map->walls[i];
-			i--;
-			map->wall_count--;
-			j = 0;
-			while (j < map->sec_count)
-			{
-				w_del(map, j, i);
-				j++;
-			}
-			break ;
-		}
-		i++;
-	}
 }

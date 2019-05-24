@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 17:38:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 13:27:58 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void				event(t_serv *s, t_sdl sdl, t_map *map);
 int					check_wall(t_serv *s, t_map *map);
 void				add_wall_to_map(t_map *map, t_serv *s);
 void				delete_wall(t_map *map, t_serv *s);
+void				del_sec(t_serv *s, t_map *map);
 int					m_align(int coord);
 void				sec_e(t_serv *s, t_map *map);
 void				floor_e(t_serv *s, t_map *map);

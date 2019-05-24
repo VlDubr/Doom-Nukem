@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/23 16:18:52 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 14:06:36 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,12 @@ static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 		if (s->e.button.button == 1 && check_wall(s, map) == 1)
 			add_wall_to_map(map, s);
 		if (s->e.button.button == 3)
-			delete_wall(map, s);
+		{
+			if (map->sector[s->sec_edit].w_count == 3)
+				del_sec(s, map);
+			else
+				delete_wall(map, s);
+		}
 	}
 	writer(s, sdl, map);
 }

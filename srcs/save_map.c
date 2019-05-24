@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 15:10:59 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 14:33:32 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ void		save_map(t_map *map, t_serv *s)
 	int		i;
 	char	*str;
 	char	*del;
-
-	str = s_m_w(map);
-	str = s_m_s(map, str, &i);
-	del = str;
-	str = save_p(map, i, str);
-	free(del);
-	write(s->fd, str, sizeof(char) * ft_strlen(str));
+	if (map->wall_count > 0)
+	{
+		str = s_m_w(map);
+		str = s_m_s(map, str, &i);
+		del = str;
+		str = save_p(map, i, str);
+		free(del);
+		write(s->fd, str, sizeof(char) * ft_strlen(str));
+	}
 }

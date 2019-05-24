@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 16:20:01 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 16:02:44 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 16:10:37 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void		delete_wall(t_map *map, t_serv *s)
 	int i;
 	int wall;
 
-	i = 0;
-	while (i < map->wall_count)
+	i = -1;
+	while (++i < map->wall_count)
 	{
 		if (map->walls[i].xy[0] == m_align(s->mouse_xy[0])
 			- (s->wh_screen[0] / 2) - s->coord_x
@@ -65,6 +65,5 @@ void		delete_wall(t_map *map, t_serv *s)
 				break ;
 			}
 		}
-		i++;
 	}
 }

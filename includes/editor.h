@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 15:54:28 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 17:05:02 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <math.h>
 
-# include "../lib/ft_graphics/includes/color.h"
+//# include "../lib/ft_graphics/includes/color.h"
 # include "../lib/ft_graphics/includes/vector.h"
 # include "../lib/libft/includes/libft.h"
 # include "../lib/TGA-Reader/include/tga.h"
@@ -111,7 +111,9 @@ void				line_dda(t_wall st, t_wall f, t_sdl *sd, t_serv *s);
 
 void				event(t_serv *s, t_sdl sdl, t_map *map);
 int					check_wall(t_serv *s, t_map *map);
+int					check_double_wall(t_serv *s, t_map *map);
 void				add_wall_to_map(t_map *map, t_serv *s);
+void				add_port(t_serv *s, t_map *map);
 void				delete_wall(t_map *map, t_serv *s);
 void				del_sec(t_serv *s, t_map *map);
 int					m_align(int coord);
@@ -125,7 +127,6 @@ char				*save_unit(int i, char *delim);
 char				*save_w(t_map *map, int i, char *str_old);
 char				*save_s(t_map *map, int i, char *str_old);
 char				*save_p(t_map *map, int i, char *str_old);
-
 
 void				map_parser(t_serv *s, char *str, t_map *map);
 int					roof_vis(t_map *map, char *temp, int s_c);

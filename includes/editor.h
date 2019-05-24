@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 13:27:58 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 15:54:28 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct		s_map
 
 typedef struct		s_serv
 {
+	char			*file;
 	int				i;
 	int				j;
 	int				w_c;

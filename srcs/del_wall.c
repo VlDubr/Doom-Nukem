@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 16:20:01 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/23 16:56:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 16:02:44 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,18 @@ void		delete_wall(t_map *map, t_serv *s)
 			&& map->walls[i].xy[1] == m_align(s->mouse_xy[1])
 			- (s->wh_screen[1] / 2) - s->coord_y)
 		{
-			if (check_sec(map, s, i) == 0)
+			if (check_sec(map, s, i) == 1)
+			{
+				wall = i;
+				while (++i < map->wall_count)
+					map->walls[i - 1] = map->walls[i];
+				map->wall_count--;
+				w_del(map, s->sec_edit, wall);
+				i = s->sec_edit;
+				while (++i < map->sec_count)
+					map->sector[i].start_pos--;
 				break ;
-			wall = i;
-			while (++i < map->wall_count)
-				map->walls[i - 1] = map->walls[i];
-			map->wall_count--;
-			w_del(map, s->sec_edit, wall);
-			i = s->sec_edit;
-			while (++i < map->sec_count)
-				map->sector[i].start_pos--;
-			break ;
+			}
 		}
 		i++;
 	}

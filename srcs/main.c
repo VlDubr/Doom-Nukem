@@ -6,19 +6,20 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 15:27:56 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 15:57:19 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-char	*file_read(t_serv *s)
+char	*file_read(t_serv *s, char *file)
 {
 	char	*buf;
 	char	*str;
 	int		j;
 
-	s->fd = open("map1.map", O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
+	s->file = file;
+	s->fd = open(file, O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
 	buf = (char *)malloc(sizeof(char) * 1000);
 	str = malloc(0);
 
@@ -41,7 +42,7 @@ void	writer(t_serv *s, t_sdl sdl, t_map *map)
 	SDL_RenderPresent(sdl.r);
 }
 
-void	init(t_map *map, t_serv *s)
+char	*init(t_map *map, t_serv *s, char *file)
 {
 	map->sec_count = 0;
 	map->wall_count = 0;
@@ -67,33 +68,33 @@ void	init(t_map *map, t_serv *s)
 	s->text = bitmap("assets/img/charmap4.tga", s->text_wh);
 	s->text_c.x = 980;
 	s->text_c.y = 10;
+	return (file_read(s, file));
 }
 
 int		main(int argc, char **argv)
 {
 	t_sdl		sdl;
-	char		*str;
 	t_serv		*s;
+	char		*str;
 	t_map		*map;
 
-	if (!(map = (t_map *)malloc(sizeof(t_map))))
-		ft_error("Malloc error!");
-	if (!(s = (t_serv *)malloc(sizeof(t_serv))))
-		ft_error("Malloc error!");
-	init(map, s);
-	str = file_read(s);
-	if (ft_strlen(str) >= 39)
-		map_parser(s, str, map);
-	SDL_Init(SDL_INIT_VIDEO);
-	sdl.win = SDL_CreateWindow("TGA Reader", 0, 0,
-		s->wh_screen[0] + 400, s->wh_screen[1], 0);
-	sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
-	background(&sdl);
-	gui(s, &sdl, map);
-	if (s->parse_flag == 1)
-		map_writer(&sdl, s, map);
-	SDL_RenderPresent(sdl.r);
-	SDL_RenderClear(sdl.r);
-	event(s, sdl, map);
+	if (argc == 2)
+	{
+		if (!(map = (t_map *)malloc(sizeof(t_map))))
+			ft_error("Malloc error!");
+		if (!(s = (t_serv *)malloc(sizeof(t_serv))))
+			ft_error("Malloc error!");
+		str = init(map, s, argv[1]);
+		if (ft_strlen(str) >= 39)
+			map_parser(s, str, map);
+		SDL_Init(SDL_INIT_VIDEO);
+		sdl.win = SDL_CreateWindow("DOOM-Nukem Map Editor", 0, 0,
+			s->wh_screen[0] + 400, s->wh_screen[1], 0);
+		sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
+		writer(s, sdl, map);
+		event(s, sdl, map);
+	}
+	else
+		ft_error("Need file path!");
 	return (0);
 }

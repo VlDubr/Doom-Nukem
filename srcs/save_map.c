@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 14:33:32 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/24 15:47:36 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		save_map(t_map *map, t_serv *s)
 	int		i;
 	char	*str;
 	char	*del;
+
 	if (map->wall_count > 0)
 	{
 		str = s_m_w(map);

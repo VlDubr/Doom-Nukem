@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/24 15:43:27 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:26:54 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 		(*map)[y] = loadmap(ft_strjoin(path, tmp[y]));
 		y++;
 	}
+	ft_strdel(&path);
 }
 
 void	loadassets(char *path, t_doom *doom)
@@ -71,4 +72,6 @@ void	loadassets(char *path, t_doom *doom)
 			&doom->maps, &doom->mapcount);
 		y++;
 	}
+	free2dstring(tmp);
+	ft_strdel(&path);
 }

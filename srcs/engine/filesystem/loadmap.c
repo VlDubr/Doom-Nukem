@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/15 18:28:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:07:49 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	initwall(char *str, t_fvector **wall, int y2)
 
 	tmp = ft_strsplit(str, ' ');
 	tmp2 = ft_strsplit(tmp[1], ',');
-	(*wall)[y2] = setfvector(ft_atoi(tmp2[0]), ft_atoi(tmp2[1]),
-	ft_atoi(tmp2[2]), 0);
+	(*wall)[y2].x = ft_atoi(tmp2[0]);
+	(*wall)[y2].y = ft_atoi(tmp2[1]);
+	(*wall)[y2].z = ft_atoi(tmp2[2]);
+	(*wall)[y2].w = 0;
 	free2dstring(tmp);
 	free2dstring(tmp2);
 }

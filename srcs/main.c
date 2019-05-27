@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/21 15:14:23 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:03:10 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_doom			*initdoom(char *argv0)
 
 int				main(int agrc, char **argv)
 {
+	char	*file[3];
 	t_doom	*doom;
 
 	doom = initdoom(argv[0]);
@@ -45,9 +46,9 @@ int				main(int agrc, char **argv)
 	switchlevel(doom, doom->level);
 	doom->thismap.obj[1].isagression = 1;
 	doom->currentframe = SDL_GetPerformanceCounter();
-	tga = tga_reader(argv[1]);
-	tgafloor = tga_reader("pol.tga");
-	tgaenemy = tga_reader("monster.tga");
+	tga = tga_reader(ft_strjoin(doom->path, "640x400.tga"));
+	tgafloor = tga_reader(ft_strjoin(doom->path, "pol.tga"));
+	tgaenemy = tga_reader(ft_strjoin(doom->path, "monster.tga"));
 	while (doom->win->state)
 	{
 		doom->lastframe = doom->currentframe;

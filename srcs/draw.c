@@ -6,7 +6,7 @@
 /*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/23 20:34:35 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/27 12:18:20 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,35 +300,11 @@ t_fvector	*clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_
 			chek[0] = setfvector(ret.y, p[i].y, ret.x, p[i].w);
 			// printf("%d\n", i);
 			// printf("a\n");
-			break ;
+			
 			// return (setfvector(0, p[i].y, ret.x, 1));
 		}
 		i++;
 	}
-	l.p[0].x = 0;
-	l.p[0].y = 0;
-	l.p[1].x = 0;
-	l.p[1].y = 1000;
-	i = 0;
-	while (i < 4)
-	{
-		l.p[2].x = p[i].z;
-		l.p[2].y = p[i].x;
-		l.p[3].x = p[i+1 == 4 ? 0 : i+1].z;
-		l.p[3].y = p[i+1 == 4 ? 0 : i+1].x;
-		peresechenie = collideline(l);
-		if (peresechenie == 1)
-		{
-			crossline(l, &ret);
-			printf("%d\n", i);
-			chek[1] = setfvector(ret.x, p[i].y, ret.y, p[i].w);
-			break ;
-			// return (setfvector(0, p[i].y, ret.x, 1));
-		}
-		i++;
-	}
-	// if (c == 0)
-	// 	printf ("x %f y %f\n", x, y);
 	return (chek);
 }
 
@@ -351,7 +327,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	t_rgb color1;
 	float dx;
 	float dy;
-	
+	float maxdelt;
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
@@ -377,7 +353,18 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	wa.p[1] = setfvector(min.x, floor, max.y, 1);
 	wa.p[2] = setfvector(max.x, floor, max.y, 1);
 	wa.p[3] = setfvector(max.x, floor, min.y, 1);
+	maxdelt = fabsf (wa.p[2].x - wa.p[0].x);
+	if (fabsf(wa.p[2].z - wa.p[0].z) > fabsf(wa.p[2].x - wa.p[0].x))
+		maxdelt = fabsf (wa.p[2].z - wa.p[0].z);
 	multmatrixdrawwall(wa.p, cammat);
+	dx = wa.p[2].x - wa.p[0].x;
+	// dy = wa.p[2].z - wa.p[0].z;
+	// dx = sqrt((dx * dx) + (dy * dy));
+	offloor[0] = ((wa.p[0].x)/ dx) * -1;
+	
+	// offloor[1] = (( wa.p[0].z)/ dy) * -1;
+	// if (i == 0)
+	// 	printf ("%f \n", offloor[0] );
 	c = 0;
 	fl = clipforfloor(&play, wa.p, offset, i);
 	fl[0] = multipmatrix(fl[0], projec);
@@ -385,10 +372,9 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	fl[0] = addfvector(fl[0], 1, 1, 0);
 	fl[0] = multfvector(fl[0], 400, 400, 1);
 
-	fl[1] = multipmatrix(fl[1], projec);
-	fl[1] = divfvector(fl[1], fl[1].w, fl[1].w, fl[1].w);
-	fl[1] = addfvector(fl[1], 1, 1, 0);
-	fl[1] = multfvector(fl[1], 400, 400, 1);
+	fl[1].x = 800.0*dx/maxdelt*2;
+	if (i == 0)
+		printf ("%f %f %f\n", fl[1].x , maxdelt, offloor[0] );
 	//calculate wall
 		
 	c = 0;
@@ -428,7 +414,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			if (w[c].z == -1)			
 				drow_wall(p, wa, *tga, offset);
 			// printf ("%f %f %f %f\n", fl.x, fl.y, fl.z, fl.w);
-			if (i == 0 || i == 2)
+			if (i == 0 || i == 1)
 				drawfloor(p, wa, color1,play, offloor, fl);
 			// drawline(p, wa.p[0], wa.p[1], color);
 			// drawline(p, wa.p[0], wa.p[2], color);

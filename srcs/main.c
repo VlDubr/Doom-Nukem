@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/27 17:03:10 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:53:33 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int				main(int agrc, char **argv)
 {
 	char	*file[3];
 	t_doom	*doom;
-
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata();
 	switchlevel(doom, doom->level);

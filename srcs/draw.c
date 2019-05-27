@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/27 17:23:47 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 19:55:38 by vmcclure         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,25 +328,26 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	float dx;
 	float dy;
 	float maxdelt;
+	int kef;
 	x = 0;
 	c = 0;
 	cammat = matcam(&play);
 	projec = matprojection(initcam(setivector2d(800, 800)));
 
 	//calculate floor
-	// t_fvector2d min;
-	// t_fvector2d max;
+	t_fvector2d min;
+	t_fvector2d max;
 
-	// min = setfvector2d(w[0].x, w[0].y);
-	// max = setfvector2d(w[0].x, w[0].y);
-	// while (c < count)
-	// {
-	// 	min.x = ft_fmin(min.x, w[c].x);
-	// 	min.y = ft_fmin(min.y, w[c].y);
-	// 	max.x = ft_fmax(max.x, w[c].x);
-	// 	max.y = ft_fmax(max.y, w[c].y);
-	// 	c++;
-	// }
+	min = setfvector2d(w[0].x, w[0].y);
+	max = setfvector2d(w[0].x, w[0].y);
+	while (c < count)
+	{
+		min.x = ft_fmin(min.x, w[c].x);
+		min.y = ft_fmin(min.y, w[c].y);
+		max.x = ft_fmax(max.x, w[c].x);
+		max.y = ft_fmax(max.y, w[c].y);
+		c++;
+	}
 	// if (i == 0)
 	
 	wa.p[0] = setfvector(-500, floor, -500, 1);
@@ -360,8 +361,8 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	dx = wa.p[2].x - wa.p[0].x;
 	dy = wa.p[2].z - wa.p[0].z;
 	// dx = sqrt((dx * dx) + (dy * dy));
-	offloor[0] = fabsf((wa.p[0].x) / dx);
-	offloor[1] = 1.0 -  fabsf(( wa.p[0].z) / dy);
+	// offloor[0] = fabsf((wa.p[0].x) / dx);
+	// offloor[1] = 1 - fabsf(( wa.p[0].z) / dy);
 	// if (i == 0)
 	// 	printf ("%f \n", offloor[0] );
 	c = 0;
@@ -370,12 +371,12 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	fl[0] = divfvector(fl[0], fl[0].w, fl[0].w, fl[0].w);
 	fl[0] = addfvector(fl[0], 1, 1, 0);
 	fl[0] = multfvector(fl[0], 400, 400, 1);
-	// offloor[0] = (500 + play.pos.z)/1000;
-	// offloor[1] = (500 + play.pos.x)/1000;
+	offloor[0] = (play.pos.z - min.y)/(max.y - min.y);
+	offloor[1] = 1.0-(play.pos.x - min.x)/(max.x - min.x);
 	fl[1].x = 800.0 * dx / 1000 * 20;
 	fl[1].y = 800.0 * dy / 500;
-	if (i == 0)
-		printf ("%f %f %f dy %f\n", fl[1].y , offloor[1], offloor[0], dy );
+	// if (i == 0)
+	// 	printf ("%f %f %f dy %f\n", fl[0].y , offloor[1], offloor[0], max.x - min.x );
 	//calculate wall
 		
 	c = 0;
@@ -410,12 +411,11 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
-			color1 = setrgb(255, 0, 255);
 
 			if (w[c].z == -1)			
 				drow_wall(p, wa, *tga, offset);
 			// printf ("%f %f %f %f\n", fl.x, fl.y, fl.z, fl.w);
-			if (i == 0 )
+			// if (i == 0 )
 				drawfloor(p, wa, color1,play, offloor, fl);
 			// drawline(p, wa.p[0], wa.p[1], color);
 			// drawline(p, wa.p[0], wa.p[2], color);
@@ -423,6 +423,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 			// drawline(p, wa.p[1], wa.p[3], color);
 		}
 		c++;
+		color1 = setrgb(255, 0, 255);
 	}
 	if (fl[0].x < 800 && fl[0].x > 0 && fl[0].y > 0 && fl[0].y < 800)
 		p[(int)fl[0].x + ((int)fl[0].y * 800)] = ((((((255 << 8) | 255) << 8) | 0) << 8) | 243);

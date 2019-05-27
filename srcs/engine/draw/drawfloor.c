@@ -27,8 +27,8 @@ void	drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player, double *off
 		endy = 800;
 		while (y < endy)
 		{
-			xp = (int)((((y -800 -  fl[0].y) * dir.y) +  (dir.x * (x -400 + offloor[0] * fl[1].x )))) % (int)tgafloor->width;
-			yp = (int)((((x -400 + offloor[0] * fl[1].x ) * dir.y) -  (dir.x * (y - 800 -  fl[0].y )))) % (int)tgafloor->height;
+			xp = (int)((((y -800 + fl[1].y * offloor[1]) * dir.y) +  (dir.x * (x -400 + (offloor[0]) * fl[1].x  )))) % (int)tgafloor->width;
+			yp = (int)((((x -400 + ( offloor[0]) * fl[1].x ) * dir.y) -  (dir.x * (y - 800 + fl[1].y * offloor[1])))) % (int)tgafloor->height;
 			// fl[1].x задаёт скорость в зависимости ширины сектора
 			xp = fabsf(xp);
 			yp = fabsf(yp);

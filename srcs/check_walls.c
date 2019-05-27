@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 13:21:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 16:36:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 15:41:34 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	check_wall(t_serv *s, t_map *map)
 			j = 0;
 			while (j < map->sec_count)
 			{
-				if (i >= map->sector[j].start_pos &&
-					i < map->sector[j].start_pos + map->sector[j].w_count
-					&& j == s->sec_edit)
+				if (check_w_entry(map->sector, j, i) == 1 && j == s->sec_edit)
 					return (0);
 				j++;
 			}

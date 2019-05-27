@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 17:05:02 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 18:04:21 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@ typedef struct		s_serv
 	t_ivector2d		text_wh;
 	t_ivector2d		text_c;
 	t_tga			**text;
+	t_ivector2d		pl_c;
+	t_tga			*player;
+	int				p_add;
+	int				p_flag;
 }					t_serv;
 
 void				ft_error(const char *str);
@@ -120,7 +124,9 @@ int					m_align(int coord);
 void				sec_e(t_serv *s, t_map *map);
 void				floor_e(t_serv *s, t_map *map);
 void				roof_e(t_serv *s, t_map *map);
+void				add_pl(t_serv *s, t_map *map);
 void				r_vis_e(t_serv *s, t_map *map);
+int					check_w_entry(t_sector *s, int count, int comp);
 
 void				save_map(t_map *map, t_serv *s);
 char				*save_unit(int i, char *delim);

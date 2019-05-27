@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 17:32:47 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 17:38:00 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 18:07:00 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,15 @@ void	r_vis_e(t_serv *s, t_map *map)
 		map->sector[s->sec_edit].r_visibility = 1;
 	else if (s->e.button.button == 3)
 		map->sector[s->sec_edit].r_visibility = 0;
+}
+
+void	add_pl(t_serv *s, t_map *map)
+{
+	if (s->e.button.button == 1)
+		s->p_add = 1;
+	else if (s->e.button.button == 3)
+	{
+		s->p_add = 0;
+		s->p_flag = 0;
+	}
 }

@@ -6,31 +6,38 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 16:44:38 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 17:06:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 15:40:32 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-void	check_s(t_serv *s, t_map *map, int i, int j)
+int		check_s(t_serv *s, t_map *map, int i, int j)
 {
-	int	sec;
-	int	sec1;
-	int	sec2;
+	int	sec[3];
 
-	sec = 0;
-	while (sec < map->sec_count)
+	sec[0] = 0;
+	while (sec[0] < map->sec_count)
 	{
-		if ((map->sector[sec].start_pos < i &&
-			i <= (map->sector[sec].start_pos + map->sector[sec].w_count)))
-			sec1 = sec;
-		if ((map->sector[sec].start_pos < j &&
-			j <= (map->sector[sec].start_pos + map->sector[sec].w_count)))
-			sec2 = sec;
-		sec++;
+		if (check_w_entry(map->sector, sec[0], i) == 1)
+		{
+			sec[1] = sec[0];
+			sec[0]++;
+			while (sec[0] < map->sec_count)
+			{
+				if (check_w_entry(map->sector, sec[0], j) == 1)
+				{
+					sec[2] = sec[0];
+					map->walls[i].next_sec = sec[2];
+					map->walls[j].next_sec = sec[1];
+					return (1);
+				}
+				sec[0]++;
+			}
+		}
+		sec[0]++;
 	}
-	map->walls[i].next_sec = sec2;
-	map->walls[j].next_sec = sec1;
+	return (0);
 }
 
 void	add_port(t_serv *s, t_map *map)
@@ -54,6 +61,7 @@ void	add_port(t_serv *s, t_map *map)
 					check_s(s, map, i, j);
 				j++;
 			}
+			break ;
 		}
 		i++;
 	}

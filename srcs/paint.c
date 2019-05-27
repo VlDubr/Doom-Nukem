@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:28:48 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/23 17:50:38 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 14:59:48 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ void		color_ch(t_sdl *sdl, t_serv *s, t_map *map)
 		SDL_SetRenderDrawColor(sdl->r, 255, 255, 255, 255);
 	else
 		SDL_SetRenderDrawColor(sdl->r, 128, 0, 0, 255);
-	if (map->walls[s->w_c].next_sec != -1
+	if ((map->walls[s->w_c].next_sec != -1
 		&& map->walls[s->w_c + 1].next_sec != -1
 		&& map->walls[s->w_c].next_sec == map->walls[s->w_c + 1].next_sec)
+		||
+		(s->w_c + 1 >= map->sector[s->s_c].w_count
+					+ map->sector[s->s_c].start_pos
+		&& map->walls[map->sector[s->s_c].start_pos].next_sec != -1
+		&& map->walls[s->w_c].next_sec != -1
+		&& map->walls[map->sector[s->s_c].start_pos].next_sec
+			== map->walls[s->w_c].next_sec))
 		SDL_SetRenderDrawColor(sdl->r, 0, 128, 128, 255);
 }
 

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:11:21 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/21 18:06:07 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 17:01:10 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ typedef struct		s_tga
 }					t_tga;
 
 t_rgba				**malloc_pic(t_rgba **pix, int width, int height);
-void 				free_pic(t_tga *img);
+void				free_pic(t_tga *img);
 
-void    			bitmap_write(SDL_Renderer *r,
-	t_tga	**images, t_ivector2d wh, char *str);
+void				bitmap_write(SDL_Renderer *r,
+					t_tga	**images, t_ivector2d wh, char *str);
+void				img_write(SDL_Renderer *r, t_tga *img, t_ivector2d wh);
 
 t_tga				**bitmap(char *path, t_ivector2d wh);
 t_tga				*tga_reader(char *path);

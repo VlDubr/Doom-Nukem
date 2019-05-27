@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 15:58:27 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 15:37:49 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/27 18:07:37 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,14 @@ void		text_wr(t_serv *s, t_sdl *sdl, t_map *map)
 	temp = ret_str(2, map, s->sec_edit);
 	str_wr(s, sdl, "roof vis:", temp);
 	free(temp);
-
-	s->text_c.y += 690;
-	s->text_c.x += 80;
+	s->text_c.x += 60;
+	s->text_c.y += 60;
+	bitmap_write(sdl->r, s->text, s->text_c, "Add player");
+	s->text_c.x += 20;
+	s->text_c.y += 620;
 	bitmap_write(sdl->r, s->text, s->text_c, "SAVE MAP");
 	s->text_c.x -= 80;
-
-	s->text_c.y -= 870;
+	s->text_c.y -= 860;
 }
 
 static void	gui_colors(t_sdl *sdl, int x, int y)
@@ -73,6 +74,8 @@ static void	gui_colors(t_sdl *sdl, int x, int y)
 		SDL_SetRenderDrawColor(sdl->r, 139, 69, 19, 255);
 	else if (y < 240)
 		SDL_SetRenderDrawColor(sdl->r, 123, 2, 43, 255);
+	else if (y < 300)
+		SDL_SetRenderDrawColor(sdl->r, 128, 128, 0, 255);
 	else if (y > 800)
 		SDL_SetRenderDrawColor(sdl->r, 139, 69, 19, 255);
 	else

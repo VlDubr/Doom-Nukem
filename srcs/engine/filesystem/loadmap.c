@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/27 17:07:49 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/27 17:31:26 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 	}
 	cord.x = 0;
 	cord.y = 0;
-	*wall = (t_fvector*)malloc(sizeof(t_fvector) * (*count));
+	*wall = (t_fvector*)malloc(sizeof(t_fvector) * (*count + 1));
 	while (str[cord.x] != NULL)
 	{
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')

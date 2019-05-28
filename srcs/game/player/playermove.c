@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/20 12:43:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/28 10:58:28 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ t_fvector2d	retdir(t_doom *doom)
 	t_fvector2d	dir;
 
 	dir = setfvector2d(0, 0);
-	if (doom->input.keystate[doom->input.moveforward])
+	if (doom->setting.input.keystate[doom->setting.input.moveforward])
 		dir = addfvector2d(dir, cos(doom->player.rotate.z),
 		sin(doom->player.rotate.z));
-	if (doom->input.keystate[doom->input.movebackward])
+	if (doom->setting.input.keystate[doom->setting.input.movebackward])
 		dir = addfvector2d(dir, -cos(doom->player.rotate.z),
 		-sin(doom->player.rotate.z));
-	if (doom->input.keystate[doom->input.moveright])
+	if (doom->setting.input.keystate[doom->setting.input.moveright])
 		dir = addfvector2d(dir, cos(doom->player.rotate.z + 1.57f),
 		sin(doom->player.rotate.z + 1.57f));
-	if (doom->input.keystate[doom->input.moveleft])
+	if (doom->setting.input.keystate[doom->setting.input.moveleft])
 		dir = addfvector2d(dir, -cos(doom->player.rotate.z + 1.57f),
 		-sin(doom->player.rotate.z + 1.57f));
 	return (dir);

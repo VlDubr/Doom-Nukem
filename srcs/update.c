@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/22 14:15:30 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/28 12:23:21 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	playerrotate(t_player *p)
 
 void	rotate(t_doom *doom, double delta)
 {
-	if (doom->input.keystate[doom->input.rotright])
+	if (doom->setting.input.keystate[doom->setting.input.rotright])
 		doom->player.rotate.z += 0.005f * delta;
-	else if (doom->input.keystate[doom->input.rotleft])
+	else if (doom->setting.input.keystate[doom->setting.input.rotleft])
 		doom->player.rotate.z -= 0.005f * delta;
-	else if (doom->input.keystate[doom->input.rotup])
+	else if (doom->setting.input.keystate[doom->setting.input.rotup])
 		doom->player.rotate.x += 0.005f * delta;
 	else
 		doom->player.rotate.x -= 0.005f * delta;
@@ -60,38 +60,38 @@ void	rotate(t_doom *doom, double delta)
 
 void	checkkeyboard(t_doom *doom, double delta)
 {
-	if (doom->input.keystate[SDL_SCANCODE_RSHIFT] ||
-	doom->input.keystate[SDL_SCANCODE_LSHIFT])
+	if (doom->setting.input.keystate[SDL_SCANCODE_RSHIFT] ||
+	doom->setting.input.keystate[SDL_SCANCODE_LSHIFT])
 		doom->player.run = 1;
 	else
 		doom->player.run = 0;
 
-	if (doom->input.keystate[SDL_SCANCODE_RCTRL] ||
-	doom->input.keystate[SDL_SCANCODE_LCTRL])
+	if (doom->setting.input.keystate[SDL_SCANCODE_RCTRL] ||
+	doom->setting.input.keystate[SDL_SCANCODE_LCTRL])
 		doom->player.height = 2;
 	else
 		doom->player.height = 5;
 
-	if (doom->input.keystate[doom->input.moveforward] ||
-		doom->input.keystate[doom->input.movebackward] ||
-		doom->input.keystate[doom->input.moveleft] ||
-		doom->input.keystate[doom->input.moveright])
+	if (doom->setting.input.keystate[doom->setting.input.moveforward] ||
+		doom->setting.input.keystate[doom->setting.input.movebackward] ||
+		doom->setting.input.keystate[doom->setting.input.moveleft] ||
+		doom->setting.input.keystate[doom->setting.input.moveright])
 		playermove(doom, delta);
 
-	if (doom->input.keystate[doom->input.rotleft] ||
-	doom->input.keystate[doom->input.rotright] ||
-	doom->input.keystate[doom->input.rotup] ||
-	doom->input.keystate[doom->input.rotdown])
+	if (doom->setting.input.keystate[doom->setting.input.rotleft] ||
+	doom->setting.input.keystate[doom->setting.input.rotright] ||
+	doom->setting.input.keystate[doom->setting.input.rotup] ||
+	doom->setting.input.keystate[doom->setting.input.rotdown])
 		rotate(doom, delta);
 
-	if ((!doom->player.jump) && doom->input.keystate[doom->input.jump] &&
+	if ((!doom->player.jump) && doom->setting.input.keystate[doom->setting.input.jump] &&
 	doom->player.stamina > 0)
 		playerjump(doom, &doom->player);
 
-	if (doom->input.keystate[SDL_SCANCODE_ESCAPE])
+	if (doom->setting.input.keystate[SDL_SCANCODE_ESCAPE])
 		doom->win->state = 0;
 
-	if (doom->input.keystate[SDL_SCANCODE_P])
+	if (doom->setting.input.keystate[SDL_SCANCODE_P])
 		printf("pos: %f %f %f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
 
 	if (doom->player.velosity.x == 0 || doom->player.velosity.y == 0 ||
@@ -117,5 +117,6 @@ void	update(t_doom *doom, double delta)
 		moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
 		c++;
 	}
+	updateui(doom);
 	// playerdeath(&doom->player);
 }

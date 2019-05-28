@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/27 17:31:26 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/28 14:18:39 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	initsector(char *str, t_sector **sector, int y2)
 	(*sector)[y2].floor = ft_atoi(tmp[3]);
 	(*sector)[y2].height = ft_atoi(tmp[4]);
 	(*sector)[y2].type = ft_atoi(tmp[5]);
+	(*sector)[y2].walltexture = ft_atoi(tmp[6]);
 	free2dstring(tmp);
 }
 
@@ -115,6 +116,7 @@ void	initobj(char **str, t_object **obj, int y)
 	(*obj)[y].ismoveble = ft_atoi(str[6]);
 	(*obj)[y].movespeed = ft_atof(str[7]);
 	(*obj)[y].agressionarea = ft_atof(str[8]);
+	(*obj)[y].texture = ft_atoi(str[9]);
 }
 
 void	loadobj(char **str, t_object **obj, size_t *count)

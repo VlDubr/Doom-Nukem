@@ -5,13 +5,14 @@ SRCS = main.c \
 		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c \
 		game/map/switchlevel.c game/map/minimap.c \
 		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c \
-		game/ui/bar.c game/ui/drawui.c \
+		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
+		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
 		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/filesystem/loadassets.c engine/filesystem/loadmap.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c \
-		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c
+		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/
@@ -81,6 +82,7 @@ $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	gcc -g -I $(INCLUDES) -o $@ -c $<
 
 folder:
+	@mkdir -p $(OBJDIR)engine/setting/
 	@mkdir -p $(OBJDIR)engine/draw
 	@mkdir -p $(OBJDIR)engine/core
 	@mkdir -p $(OBJDIR)engine/filesystem

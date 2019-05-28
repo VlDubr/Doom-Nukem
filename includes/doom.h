@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/23 20:34:29 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/28 14:59:14 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # ifdef __APPLE__
 #  define CREATEFLAG S_IWRITE | S_IREAD
 #  include "../lib/SDL/include/SDL2/SDL.h"
+#  include "../lib/SDL/include/SDL2/SDL_mixer.h"
 # elif __linux__
 #  define CREATEFLAG __S_IWRITE | __S_IREAD
 #  include <SDL2/SDL.h>
@@ -93,6 +94,8 @@ typedef struct	s_input
 	int			rotup;
 	int			rotdown;
 	int			jump;
+	t_ivector2d	mousepos;
+	int			mousekey[3];
 }				t_input;
 
 typedef struct	s_player
@@ -144,6 +147,8 @@ typedef struct	s_object
 
 	int			isagression;
 	int			agressionarea;
+
+	size_t		texture;
 }				t_object;
 
 typedef struct	s_sector
@@ -153,6 +158,7 @@ typedef struct	s_sector
 	int				floor;
 	int				height;
 	int				type;
+	size_t			walltexture;
 }				t_sector;
 
 typedef struct	s_map
@@ -175,8 +181,30 @@ void		damageenemy(t_player *player, t_object *obj, double delta);
 typedef struct	s_wall
 {
 	t_fvector	p[4];
-	t_tga		texture;
+	float		offset[4];
 }				t_wall;
+
+typedef struct	s_setting
+{
+	t_input		input;
+	t_ivector2d	resolution;
+	float		soundvolume;
+	float		musicvolume;
+}				t_setting;
+
+typedef struct	s_button
+{
+	t_tga		texture;
+	t_irect		rect;
+}				t_button;
+
+typedef struct	s_settingui
+{
+	t_button	plussound;
+	t_button	minussound;
+	t_button	plusmusic;
+	t_button	minusmusic;
+}				t_settingui;
 
 typedef struct	s_doom
 {
@@ -188,7 +216,12 @@ typedef struct	s_doom
 	Uint64		currentframe;
 	double		delta;
 
-	t_input		input;
+	t_setting	setting;
+	t_settingui	settingui;
+
+	t_tga		*texture;
+	size_t		texturecount;
+	t_tga		*font;
 
 	t_player	player;
 
@@ -202,7 +235,11 @@ t_tga		*tga;
 t_tga		*tgafloor;
 t_tga		*tgaenemy;
 
+void		initsettingui(t_doom *doom);
+void		initsetting(t_setting *s);
+
 void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord, t_rgba color);
+void		drawrect(t_doom *doom, t_irect rect, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
@@ -210,11 +247,18 @@ void		drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player, double *of
 void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
 
 void		drawminimap(uint32_t *p, t_doom *doom, size_t sector, t_ivector2d cord);
+void		drawoptionmenu(t_doom *doom);
+
+void		addmusic(t_setting *s);
+void		submusic(t_setting *s);
+void		addsound(t_setting *s);
+void		subsound(t_setting *s);
 
 void		destrotwindow(t_doom *doom);
 
 void		updateevent(t_doom *doom);
 void		update(t_doom *doom, double delta);
+void		updateui(t_doom *doom);
 void		draw(t_doom *doom);
 void		drawui(t_doom *doom);
 void		quitprogram(t_doom *doom);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/27 17:53:33 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/05/28 13:19:21 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ t_doom			*initdoom(char *argv0)
 	d->path = getpath(argv0);
 	loadassets(ft_strjoin(d->path, "assets/assets.cfg"), d);
 	d->level = 0;
-	loadinput(d->path, &d->input);
+	loadinput(d->path, &d->setting.input);
+	initsettingui(d);
+	initsetting(&d->setting);
 	initsdl(SDL_INIT_EVERYTHING);
 	d->win = createwindow(setivector2d(800, 800), "DOOM", SDL_WINDOW_RESIZABLE);
 	d->win->texture = SDL_CreateTexture(d->win->renderer,

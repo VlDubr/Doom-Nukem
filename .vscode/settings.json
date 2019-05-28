@@ -10,6 +10,14 @@
 		"chrono": "c",
 		"algorithm": "c",
 		"rotate.h": "c",
-		"ratio": "c"
+		"ratio": "c",
+		"__split_buffer": "c",
+		"initializer_list": "c",
+		"iterator": "c",
+		"memory": "c",
+		"string": "c",
+		"string_view": "c",
+		"utility": "c",
+		"vector": "c"
 	}
 }

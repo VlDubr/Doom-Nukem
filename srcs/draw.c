@@ -6,65 +6,11 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 15:07:00 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/28 15:20:32 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
-
-typedef struct	s_camera
-{
-	float		near;
-	float		far;
-	float		fov;
-	float		aspectratio;
-}				t_camera;
-
-t_camera	initcam(t_ivector2d sizewin)
-{
-	t_camera cam;
-
-	cam.near = 0.1;
-	cam.far = 1000;
-	cam.fov = 60;
-	cam.aspectratio = (float)sizewin.x / (float)sizewin.y;
-	return (cam);
-}
-
-
-t_mat4x4	matprojection(t_camera cam)
-{
-	float		fovrad;
-	t_mat4x4	m;
-
-	fovrad = 1.0 / tan(degrtorad(cam.fov/2.0));
-	m = initmat(0);
-	m.mat[0][0] = fovrad/cam.aspectratio;
-	m.mat[1][1] = fovrad;
-	m.mat[2][2] = (cam.near + cam.far) / (cam.far - cam.near);
-	m.mat[3][2] = (-2.0*(cam.far * cam.near) )/ (cam.far - cam.near);
-	m.mat[2][3] = 1;
-	m.mat[3][3] = 0;
-	return (m);
-}
-
-t_mat4x4	matcam(t_player *player)
-{
-	t_fvector	up;
-	t_fvector	target;
-	t_fvector	lookdir;
-	t_mat4x4	cammat;
-
-	up = setfvector(0, -1, 0, 1);
-	target = setfvector(0, 0, 1, 1);
-	lookdir = multipmatrix(target, matroty(player->rotate.z - 1.57f));
-	target = addfvtofv(player->pos, lookdir);
-	cammat = multipmattomat(mattranslate(-player->pos.x,
-	-player->pos.y, -player->pos.z), matpointat(player->pos, target, up));
-	cammat = multipmattomat(cammat, matrotx(player->rotate.x));
-	cammat = matinverse(cammat);
-	return (cammat);
-}
 
 t_fvector	inspectplane(t_fvector planep, t_fvector planen,
 t_fvector linestart, t_fvector lineend)
@@ -190,73 +136,6 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	 if (p[0].z <= 0 || p[1].z <= 0 || p[2].z <= 0 || p[3].z <= 0)
 		return (0);
 	return (1);
-}
-
-
-void	initdrawwall(t_fvector *view)
-{
-	int			y;
-
-	y = 0;
-	while (y < 4)
-	{
-		view[y].x = 0;
-		view[y].y = 0;
-		view[y].z = 0;
-		view[y].w = 1;
-		y++;
-	}
-}
-
-void	multmatrixdrawwall(t_fvector *view, t_mat4x4 mat)
-{
-	view[0] = multipmatrix(view[0], mat);
-	view[1] = multipmatrix(view[1], mat);
-	view[2] = multipmatrix(view[2], mat);
-	view[3] = multipmatrix(view[3], mat);
-}
-
-void	divdrawwall(t_fvector *view, float x, float y, float z)
-{
-	view[0] = divfvector(view[0], x, y, z);
-	view[1] = divfvector(view[1], x, y, z);
-	view[2] = divfvector(view[2], x, y, z);
-	view[3] = divfvector(view[3], x, y, z);
-}
-
-void	adddrawwall(t_fvector *view, float x, float y, float z)
-{
-	view[0] = addfvector(view[0], x, y, z);
-	view[1] = addfvector(view[1], x, y, z);
-	view[2] = addfvector(view[2], x, y, z);
-	view[3] = addfvector(view[3], x, y, z);
-}
-
-void	subdrawwall(t_fvector *view, float x, float y, float z)
-{
-	view[0] = subfvector(view[0], x, y, z);
-	view[1] = subfvector(view[1], x, y, z);
-	view[2] = subfvector(view[2], x, y, z);
-	view[3] = subfvector(view[3], x, y, z);
-}
-
-void	multdrawwall(t_fvector *view, float x, float y, float z)
-{
-	view[0] = multfvector(view[0], x, y, z);
-	view[1] = multfvector(view[1], x, y, z);
-	view[2] = multfvector(view[2], x, y, z);
-	view[3] = multfvector(view[3], x, y, z);
-}
-
-void	wallproj(t_fvector *view, t_mat4x4 proj)
-{
-	multmatrixdrawwall(view, proj);
-	view[0] = divfvector(view[0], view[0].w, view[0].w, view[0].w);
-	view[1] = divfvector(view[1], view[1].w, view[1].w, view[1].w);
-	view[2] = divfvector(view[2], view[2].w, view[2].w, view[2].w);
-	view[3] = divfvector(view[3], view[3].w, view[3].w, view[3].w);
-	adddrawwall(view, 1, 1, 0);
-	multdrawwall(view, 400, 400, 1);
 }
 
 void	cleartexture(t_window *win)
@@ -433,54 +312,6 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	if (fl[0].x < 800 && fl[0].x > 0 && fl[0].y > 0 && fl[0].y < 800)
 		p[(int)fl[0].x + ((int)fl[0].y * 800)] = ((((((255 << 8) | 255) << 8) | 0) << 8) | 243);
 	free(fl);
-}
-
-void	initwallobj(t_doom *doom, t_map map, t_wall *wa, size_t c)
-{
-	wa->p[0] = setfvector(map.obj[c].pos.x,
-	map.sectors[map.obj[c].sector].floor, map.obj[c].pos.z - (map.obj[c].width / 2), 1);
-	wa->p[1] = setfvector(map.obj[c].pos.x,
-	map.sectors[map.obj[c].sector].floor, map.obj[c].pos.z + (map.obj[c].width / 2), 1);
-	wa->p[2] = addfvector(wa->p[0], 0, map.sectors[map.obj[c].sector].height, 0);
-	wa->p[3] = addfvector(wa->p[1], 0, map.sectors[map.obj[c].sector].height, 0);
-	subdrawwall(wa->p, map.obj[c].pos.x, map.obj[c].pos.y, map.obj[c].pos.z);
-}
-
-void	drawobj(t_doom *doom, t_map map)
-{
-	t_wall		wa;
-	t_mat4x4	cammat;
-	t_mat4x4	projec;
-	t_fvector	dir;
-	size_t		c;
-
-	cammat = matcam(&doom->player);
-	projec = matprojection(initcam(setivector2d(800, 800)));
-	c = -1;
-	while (++c < doom->thismap.objcount)
-	{
-		dir = subfvtofv(doom->player.pos, map.obj[c].pos);
-		dir = normfvector(dir);
-		initwallobj(doom, doom->thismap, &wa, c);
-		multmatrixdrawwall(wa.p, matroty(atan2(dir.z, dir.x)));
-		adddrawwall(wa.p, map.obj[c].pos.x, map.obj[c].pos.y, map.obj[c].pos.z);
-		multmatrixdrawwall(wa.p, cammat);
-		wa.offset[0] = 1;
-		wa.offset[1] = 1;
-		wa.offset[2] = 1;
-		wa.offset[3] = 1;
-		if (clip(&doom->player, wa.p, wa.offset, c))
-		{
-			wallproj(wa.p, projec);
-			if (wa.p[0].x > wa.p[1].x)
-			{
-				ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
-				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
-				ft_swap((void**)&wa.offset[1], (void**)&wa.offset[0]);
-			}
-			drow_wall(doom->win->pixels, wa, doom->texture[doom->thismap.obj[c].texture], wa.offset);
-		}
-	}
 }
 
 void	draw(t_doom *doom)

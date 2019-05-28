@@ -2,10 +2,11 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
-		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c \
+		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c game/object/drawobj.c \
 		game/map/switchlevel.c game/map/minimap.c \
 		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c \
 		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
+		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
 		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
@@ -82,6 +83,7 @@ $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	gcc -g -I $(INCLUDES) -o $@ -c $<
 
 folder:
+	@mkdir -p $(OBJDIR)engine/utils/
 	@mkdir -p $(OBJDIR)engine/setting/
 	@mkdir -p $(OBJDIR)engine/draw
 	@mkdir -p $(OBJDIR)engine/core

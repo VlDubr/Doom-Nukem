@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 14:59:14 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/28 15:36:13 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@
 #  include <C:\MinGW\msys\1.0\include\SDL2\SDL.h>
 #  include <C:\MinGW\msys\1.0\include\SDL2\SDL_mixer.h>
 # endif
+
+typedef struct	s_camera
+{
+	float		near;
+	float		far;
+	float		fov;
+	float		aspectratio;
+}				t_camera;
 
 typedef struct	s_window
 {
@@ -246,6 +254,8 @@ void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
 void		drawfloor(uint32_t *p, t_wall wa, t_rgb color, t_player player, double *offloor, t_fvector	*fl);
 void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
 
+void		drawobj(t_doom *doom, t_map map);
+
 void		drawminimap(uint32_t *p, t_doom *doom, size_t sector, t_ivector2d cord);
 void		drawoptionmenu(t_doom *doom);
 
@@ -284,6 +294,20 @@ size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
 void		loadassets(char *path, t_doom *doom);
 t_map		loadmap(char *path);
 void		switchlevel(t_doom *doom, size_t level);
+
+t_mat4x4	matcam(t_player *player);
+t_mat4x4	matprojection(t_camera cam);
+t_camera	initcam(t_ivector2d sizewin);
+
+int			clip(t_player *player, t_fvector p[4], float offset[4], size_t c);
+
+void		initdrawwall(t_fvector *view);
+void		multmatrixdrawwall(t_fvector *view, t_mat4x4 mat);
+void		wallproj(t_fvector *view, t_mat4x4 proj);
+void		divdrawwall(t_fvector *view, float x, float y, float z);
+void		adddrawwall(t_fvector *view, float x, float y, float z);
+void		subdrawwall(t_fvector *view, float x, float y, float z);
+void		multdrawwall(t_fvector *view, float x, float y, float z);
 
 void		free2dstring(char **str);
 size_t		stringcount(char **str);

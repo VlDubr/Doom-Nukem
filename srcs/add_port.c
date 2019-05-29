@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 16:44:38 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/27 15:40:32 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 17:55:42 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		check_s(t_serv *s, t_map *map, int i, int j)
 				{
 					sec[2] = sec[0];
 					map->walls[i].next_sec = sec[2];
-					map->walls[j].next_sec = sec[1];
+					map->walls[j - 1].next_sec = sec[1];
 					return (1);
 				}
 				sec[0]++;

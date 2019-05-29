@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 14:56:55 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 15:47:49 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 18:09:29 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ char	*save_w(t_map *map, int i, char *str_old)
 	str = ft_strjoin(str, save_unit(map->walls[i].xy[1], ","));
 	free(del);
 	del = str;
-	str = ft_strjoin(str, save_unit(map->walls[i].next_sec, ","));
-	free(del);
-	del = str;
-	str = ft_strjoin(str, save_unit(map->walls[i].next_type, "\n"));
+	str = ft_strjoin(str, save_unit(map->walls[i].next_sec, "\n"));
 	free(del);
 	return (str);
 }
@@ -72,7 +69,10 @@ char	*save_s(t_map *map, int i, char *str_old)
 	str = ft_strjoin(str, save_unit(roof_c(i, map), " "));
 	free(del);
 	del = str;
-	str = ft_strjoin(str, save_unit(map->sector[i].sec_type, "\n"));
+	str = ft_strjoin(str, save_unit(map->sector[i].sec_type, " "));
+	free(del);
+	del = str;
+	str = ft_strjoin(str, save_unit(map->sector[i].texture, "\n"));
 	free(del);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 17:28:48 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/27 14:59:48 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 17:46:42 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,33 @@ void		line_dda(t_wall start, t_wall finish, t_sdl *sdl, t_serv *s)
 	line_put(xy, sdl);
 }
 
+int			search_sec(t_map *map, t_serv *s)
+{
+	int sect;
+	int i;
+
+	sect = map->walls[s->w_c].next_sec;
+	i = map->sector[sect].start_pos;
+	while (i < map->sector[sect].w_count +
+			map->sector[sect].start_pos)
+	{
+		if (map->walls[i].next_sec != -1
+		&& map->walls[i + 1].xy[0] == map->walls[s->w_c].xy[0]
+		&& map->walls[i + 1].xy[1] == map->walls[s->w_c].xy[1])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void		color_ch(t_sdl *sdl, t_serv *s, t_map *map)
 {
 	if (s->s_c == s->sec_edit)
 		SDL_SetRenderDrawColor(sdl->r, 255, 255, 255, 255);
 	else
 		SDL_SetRenderDrawColor(sdl->r, 128, 0, 0, 255);
-	if ((map->walls[s->w_c].next_sec != -1
-		&& map->walls[s->w_c + 1].next_sec != -1
-		&& map->walls[s->w_c].next_sec == map->walls[s->w_c + 1].next_sec)
-		||
-		(s->w_c + 1 >= map->sector[s->s_c].w_count
-					+ map->sector[s->s_c].start_pos
-		&& map->walls[map->sector[s->s_c].start_pos].next_sec != -1
-		&& map->walls[s->w_c].next_sec != -1
-		&& map->walls[map->sector[s->s_c].start_pos].next_sec
-			== map->walls[s->w_c].next_sec))
+	if (map->walls[s->w_c].next_sec != -1
+		&& search_sec(map, s) == 1)
 		SDL_SetRenderDrawColor(sdl->r, 0, 128, 128, 255);
 }
 

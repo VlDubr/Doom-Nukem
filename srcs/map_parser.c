@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/22 16:55:55 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 18:08:00 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ static int	wall_p(t_map *map, char *str, int i, int w_c)
 
 	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->walls[w_c].next_sec = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->walls[w_c].next_type = ft_atoi(temp);
-
 	free(temp);
 	return (i);
 }
@@ -52,6 +48,9 @@ static int	sec_p(t_map *map, char *str, int i, int s_c)
 
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].sec_type = ft_atoi(temp);
+
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->sector[s_c].texture = ft_atoi(temp);
 
 	free(temp);
 	return (i);
@@ -111,6 +110,12 @@ void		map_parser(t_serv *s, char *str, t_map *map)
 			s->i = pl_p(map, str, s->i + 3);
 		else
 			s->i++;
+	}
+	if (map->player.coords[0] != 0 || map->player.coords[1] != 0)
+	{
+		s->p_flag = 1;
+		s->pl_c.x = map->player.coords[0] + (s->wh_screen[0] / 2);
+		s->pl_c.y = map->player.coords[1] + (s->wh_screen[1] / 2);
 	}
 	s->parse_flag = 1;
 	close(s->fd);

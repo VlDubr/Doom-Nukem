@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/23 16:20:24 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 19:08:38 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_sector	*zero_sec(t_map *map)
 	sec[i].roof_h = 3;
 	sec[i].sec_type = 0;
 	sec[i].w_count = 0;
+	sec[i].texture = 0;
 	sec[i].r_visibility = 1;
 	if (i == 0)
 		sec[i].start_pos = 0;
@@ -73,7 +74,6 @@ void		add_wall_to_map(t_map *map, t_serv *s)
 	wl[i].xy[0] = m_align(s->mouse_xy[0]) - (s->wh_screen[0] / 2) - s->coord_x;
 	wl[i].xy[1] = m_align(s->mouse_xy[1]) - (s->wh_screen[1] / 2) - s->coord_y;
 	wl[i].next_sec = -1;
-	wl[i].next_type = 0;
 	map->sector[s->sec_edit].w_count++;
 	while (++i < map->wall_count)
 		wl[i] = map->walls[i - 1];

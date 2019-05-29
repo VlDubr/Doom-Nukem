@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/27 18:07:04 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/29 14:06:45 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ static void	keydown(t_serv *s, t_sdl sdl, t_map *map)
 static void	actions(t_serv *s, t_sdl sdl, t_map *map)
 {
 	SDL_GetMouseState(&s->mouse_xy[0], &s->mouse_xy[1]);
-	if (s->e.button.button == 1 && check_wall(s, map) == 1
+	if (s->p_add == 1)
+		pl_add(s, map);
+	else if (s->e.button.button == 1 && check_wall(s, map) == 1
 		&& check_double_wall(s, map) == 1)
 		add_wall_to_map(map, s);
-	if (s->e.button.button == 2)
+	else if (s->e.button.button == 2)
 		add_port(s, map);
-	if (s->e.button.button == 3)
+	else if (s->e.button.button == 3)
 	{
 		if (map->sector[s->sec_edit].w_count == 3)
 			del_sec(s, map);
@@ -58,7 +60,7 @@ static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 		else if (s->mouse_xy[1] < 240 && s->sec_edit < map->sec_count)
 			r_vis_e(s, map);
 		else if (s->mouse_xy[1] < 300)
-			add_pl(s, map);
+			act_pl(s, map);
 		else if (s->mouse_xy[1] > 800)
 		{
 			s->fd = open(s->file, O_TRUNC | O_RDWR);
@@ -66,12 +68,6 @@ static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 			close(s->fd);
 		}
 		gui(s, &sdl, map);
-	}
-	else if (s->p_add == 1)
-	{
-		s->pl_c.x = s->mouse_xy[0] - (s->wh_screen[0] / 2) - s->coord_x;
-		s->pl_c.y = s->mouse_xy[1] - (s->wh_screen[1] / 2) - s->coord_y;
-		s->p_flag = 1;
 	}
 	else
 		actions(s, sdl, map);

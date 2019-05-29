@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:47:39 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/15 18:26:57 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 18:58:56 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	moveenemy(t_player play, t_map *map, t_object *obj, float delta)
 	float		lenv;
 	size_t		lastsector;
 
-	if (obj->ismoveble && obj->isagression)
+	if (obj->ismoveble && obj->ismove)
 	{
 		dir = setfvector2d(obj->pos.x - play.pos.x, obj->pos.z - play.pos.z);
 		lenv = sqrt((dir.x * dir.x) + (dir.y * dir.y));

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 15:36:13 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 19:43:48 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,17 @@ typedef struct	s_object
 
 	float		width;
 
+	int			isdead;
 	int			health;
 	float		maxhealth;
 
+	int			ismove;
 	int			ismoveble;
 	float		movespeed;
+
+	int			dsc;
+	int			dscmax;
+	int			damage;
 
 	int			isagression;
 	int			agressionarea;
@@ -182,9 +188,17 @@ typedef struct	s_map
 	t_player	startplayer;
 }				t_map;
 
+typedef struct	s_sound
+{
+	Mix_Chunk	*jump;
+	Mix_Chunk	*run;
+	Mix_Chunk	*shot;
+}				t_sound;
+
 void		moveenemy(t_player play, t_map *map, t_object *obj, float delta);
 void		agressionememy(t_player *player, t_object *obj);
-void		damageenemy(t_player *player, t_object *obj, double delta);
+void		damageenemy(Mix_Chunk *s, t_player *player,
+t_object *obj, double delta);
 
 typedef struct	s_wall
 {
@@ -219,6 +233,8 @@ typedef struct	s_doom
 	char		*path;
 	t_window	*win;
 	SDL_Event	event;
+
+	t_sound		sound;
 
 	Uint64		lastframe;
 	Uint64		currentframe;
@@ -276,6 +292,8 @@ void		quitprogram(t_doom *doom);
 t_player	defaultplayerdata(void);
 void		addstamina(t_player *p, float addvalue);
 void		minusstamina(t_player *p, float minusvalue);
+
+void		shot(Mix_Chunk *s, t_player p, t_input i, t_object **obj);
 
 void		addhealth(t_player *p, float addvalue);
 void		minushealth(t_player *p, float minusvalue);

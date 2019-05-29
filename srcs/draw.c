@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 15:20:32 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 17:02:48 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				drow_wall(p, wa, texture, offset);
 			// printf ("%f %f %f %f\n", fl.x, fl.y, fl.z, fl.w);
 			// if (i == 0 )
-				drawfloor(p, wa, color1,play, offloor, fl);
+				//drawfloor(p, wa, color1,play, offloor, fl);
 			// drawline(p, wa.p[0], wa.p[1], color);
 			// drawline(p, wa.p[0], wa.p[2], color);
 			// drawline(p, wa.p[2], wa.p[3], color);

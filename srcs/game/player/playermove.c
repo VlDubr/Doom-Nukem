@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 10:58:28 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 17:30:51 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ t_fvector2d	retdir(t_doom *doom)
 
 void		playermove(t_doom *doom, double delta)
 {
-	int			i;
 	t_fvector2d	dir;
 	t_fvector	newvec;
 

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 12:23:21 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 19:44:06 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	checkkeyboard(t_doom *doom, double delta)
 	doom->setting.input.keystate[doom->setting.input.rotdown])
 		rotate(doom, delta);
 
-	if ((!doom->player.jump) && doom->setting.input.keystate[doom->setting.input.jump] &&
+	if (doom->setting.input.keystate[doom->setting.input.jump] &&
 	doom->player.stamina > 0)
 		playerjump(doom, &doom->player);
 
@@ -93,6 +93,9 @@ void	checkkeyboard(t_doom *doom, double delta)
 
 	if (doom->setting.input.keystate[SDL_SCANCODE_P])
 		printf("pos: %f %f %f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
+	
+	if (doom->setting.input.mousekey[0])
+		shot(doom->sound.shot, doom->player, doom->setting.input, &doom->thismap.obj);
 
 	if (doom->player.velosity.x == 0 || doom->player.velosity.y == 0 ||
 	doom->player.velosity.z == 0)
@@ -113,10 +116,12 @@ void	update(t_doom *doom, double delta)
 	while (c < doom->thismap.objcount)
 	{
 		agressionememy(&doom->player, &doom->thismap.obj[c]);
-		damageenemy(&doom->player, &doom->thismap.obj[c], delta);
+		damageenemy(doom->sound.run, &doom->player,
+		&doom->thismap.obj[c], delta);
 		moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
 		c++;
 	}
+	doom->player.targetid = 18446744073709551615u;
 	updateui(doom);
 	// playerdeath(&doom->player);
 }

@@ -4,7 +4,7 @@ SRCS = main.c \
 		error.c createwindow.c utils.c \
 		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c game/object/drawobj.c \
 		game/map/switchlevel.c game/map/minimap.c \
-		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c \
+		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c game/player/shot.c \
 		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
 		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
@@ -36,7 +36,7 @@ TGAREADERFOLDER = ./lib/TGA-Reader/
 TGAREADERINCLUDES = $(TGAREADERFOLDER)includes/
 TGAREADERLINK = -I $(TGAREADERINCLUDES) -L $(TGAREADERFOLDER) -ltga
 
-SDL2LINKMACOS = -I ./lib/SDL/include/SDL2/ -F ./lib/SDL/Frameworks/ -framework SDL2
+SDL2LINKMACOS = -I ./lib/SDL/include/SDL2/ -F ./lib/SDL/Frameworks/ -framework SDL2 -framework SDL2_mixer 
 SDL2LINKLINUX = -lm -lSDL2
 
 all: $(NAME)

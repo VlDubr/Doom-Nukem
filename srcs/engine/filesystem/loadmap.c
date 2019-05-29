@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 14:18:39 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 19:06:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,14 @@ void	initwall(char *str, t_fvector **wall, int y2)
 	char		**tmp;
 	char		**tmp2;
 
-	tmp = ft_strsplit(str, ' ');
-	tmp2 = ft_strsplit(tmp[1], ',');
-	(*wall)[y2].x = ft_atoi(tmp2[0]);
-	(*wall)[y2].y = ft_atoi(tmp2[1]);
-	(*wall)[y2].z = ft_atoi(tmp2[2]);
-	(*wall)[y2].w = 0;
-	free2dstring(tmp);
-	free2dstring(tmp2);
+	
 }
 
 void	loadwall(char **str, t_fvector **wall, size_t *count)
 {
 	t_ivector2d	cord;
+	char		**tmp;
+	char		**tmp2;
 
 	cord.x = 0;
 	(*count) = 0;
@@ -46,7 +41,14 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 	{
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')
 		{
-			initwall(str[cord.x], wall, cord.y);
+			tmp = ft_strsplit(str[cord.x], ' ');
+			tmp2 = ft_strsplit(tmp[1], ',');
+			(*wall)[cord.y].x = ft_atoi(tmp2[0]);
+			(*wall)[cord.y].y = ft_atoi(tmp2[1]);
+			(*wall)[cord.y].z = ft_atoi(tmp2[2]);
+			(*wall)[cord.y].w = 0;
+			free2dstring(tmp);
+			free2dstring(tmp2);
 			cord.y++;
 		}
 		cord.x++;
@@ -117,6 +119,9 @@ void	initobj(char **str, t_object **obj, int y)
 	(*obj)[y].movespeed = ft_atof(str[7]);
 	(*obj)[y].agressionarea = ft_atof(str[8]);
 	(*obj)[y].texture = ft_atoi(str[9]);
+	(*obj)[y].damage = ft_atoi(str[10]);
+	(*obj)[y].dscmax = 100;
+	(*obj)[y].dsc = (*obj)[y].dscmax;
 }
 
 void	loadobj(char **str, t_object **obj, size_t *count)

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:14:48 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/28 15:15:10 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/29 19:22:05 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ void	drawobj(t_doom *doom, t_map map)
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&wa.offset[1], (void**)&wa.offset[0]);
 			}
+			if (wa.p[0].x < 400 && wa.p[0].y > 400 && wa.p[1].x > 400 && wa.p[1].y > 400
+			&& wa.p[2].x < 400 && wa.p[2].y < 400 && wa.p[3].x > 400 && wa.p[3].y < 400)
+				doom->player.targetid = c;
 			drow_wall(doom->win->pixels, wa, doom->texture[doom->thismap.obj[c].texture], wa.offset);
 		}
 	}

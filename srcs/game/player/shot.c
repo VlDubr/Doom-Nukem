@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   health.c                                           :+:      :+:    :+:   */
+/*   shot.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/17 12:36:01 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 17:43:38 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/05/29 19:09:06 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/05/29 19:44:23 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	addhealth(t_player *p, float addvalue)
+void	shot(Mix_Chunk *s, t_player p, t_input i, t_object **obj)
 {
-	if (p->health < p->maxhealth)
-		p->health += addvalue;
-}
-
-void	minushealth(t_player *p, float minusvalue)
-{
-	if (p->health > 0)
-		p->health -= minusvalue;
-}
-
-void	playerdeath(t_player *p)
-{
-	if (p->health <= 0)
-		printf("Death\n");
+	if (i.mousekey[0])
+	{
+		if (p.targetid != 18446744073709551615u)
+		{
+			(*obj)[p.targetid].health -= 10;
+		}
+		Mix_PlayChannel(2, s, 0);
+	}
 }

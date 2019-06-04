@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/24 15:47:36 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/31 18:01:13 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@ static char	*s_m_w(t_map *map)
 	{
 		del = str;
 		str = save_w(map, i, str);
+		if ((i < map->wall_count - 1)
+		&& (map->walls[i + 1].sector != map->walls[i].sector))
+		{
+			free(del);
+			del = str;
+			str = ft_strjoin(str, "\n");
+		}
 		free(del);
 	}
 	del = str;

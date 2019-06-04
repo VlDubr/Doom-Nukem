@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/29 15:00:00 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 17:30:39 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	writer(t_serv *s, t_sdl sdl, t_map *map)
 	map_writer(&sdl, s, map);
 	if (s->p_flag == 1)
 		pl_write(s, sdl, map);
+	dot_write(s, &sdl, map);
 	SDL_RenderPresent(sdl.r);
 }
 
@@ -58,7 +59,7 @@ int		main(int argc, char **argv)
 		if (!(s = (t_serv *)malloc(sizeof(t_serv))))
 			ft_error("Malloc error!");
 		str = init(map, s, argv[1]);
-		if (ft_strlen(str) >= 39)
+		if (ft_strlen(str) >= 55)
 			map_parser(s, str, map);
 		SDL_Init(SDL_INIT_VIDEO);
 		sdl.win = SDL_CreateWindow("DOOM-Nukem Map Editor", 0, 0,

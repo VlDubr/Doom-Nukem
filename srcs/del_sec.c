@@ -6,16 +6,34 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 13:23:46 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/27 15:41:50 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 16:59:36 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-void	del_sec(t_serv *s, t_map *map)
+static void	clr_port(t_map *map, t_serv *s)
+{
+	int	j;
+
+	j = 0;
+	while (j < map->wall_count)
+	{
+		if (map->walls[j].next_sec == s->sec_edit)
+			map->walls[j].next_sec = -1;
+		if (map->walls[j].next_sec > s->sec_edit)
+			map->walls[j].next_sec--;
+		if (map->walls[j].sector > s->sec_edit)
+			map->walls[j].sector--;
+		j++;
+	}
+}
+
+void		del_sec(t_serv *s, t_map *map)
 {
 	int i;
 
+	clr_port(map, s);
 	i = map->sector[s->sec_edit].start_pos;
 	while (map->sector[s->sec_edit].w_count > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 14:56:55 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/29 18:09:29 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 15:41:59 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,13 @@ char	*save_s(t_map *map, int i, char *str_old)
 	str = ft_strjoin(str, save_unit(map->sector[i].sec_type, " "));
 	free(del);
 	del = str;
-	str = ft_strjoin(str, save_unit(map->sector[i].texture, "\n"));
+	str = ft_strjoin(str, save_unit(map->sector[i].texture, " "));
+	free(del);
+	del = str;
+	str = ft_strjoin(str, save_unit(map->sector[i].floor_tex, " "));
+	free(del);
+	del = str;
+	str = ft_strjoin(str, save_unit(map->sector[i].roof_tex, "\n"));
 	free(del);
 	return (str);
 }

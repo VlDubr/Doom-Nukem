@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/29 18:07:33 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 18:07:56 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct		s_wall
 {
 	int				xy[2];
 	int				next_sec;
+	int				sector;
 }					t_wall;
 
 typedef struct		s_player
@@ -62,9 +63,14 @@ typedef struct		s_sector
 {
 	int				start_pos;
 	int				w_count;
+
 	int				floor_h;
+	int				floor_tex;
+
 	int				roof_h;
+	int				roof_tex;
 	int				r_visibility;
+
 	int				sec_type;
 	int				texture;
 }					t_sector;
@@ -114,22 +120,28 @@ void				map_writer(t_sdl *sdl, t_serv *s, t_map *map);
 void				pl_write(t_serv *s, t_sdl sdl, t_map *map);
 void				line_dda(t_wall st, t_wall f, t_sdl *sd, t_serv *s);
 void				text_wr(t_serv *s, t_sdl *sdl, t_map *map);
+void				dot_write(t_serv *s, t_sdl *sdl, t_map *map);
 
 void				event(t_serv *s, t_sdl sdl, t_map *map);
 int					check_wall(t_serv *s, t_map *map);
 int					check_double_wall(t_serv *s, t_map *map);
 void				add_wall_to_map(t_map *map, t_serv *s);
-void				add_port(t_serv *s, t_map *map);
+int					add_port(t_serv *s, t_map *map);
 void				delete_wall(t_map *map, t_serv *s);
 void				del_sec(t_serv *s, t_map *map);
 int					m_align(int coord);
 void				sec_e(t_serv *s, t_map *map);
+void				sec_tex(t_serv *s, t_map *map);
 void				floor_e(t_serv *s, t_map *map);
 void				roof_e(t_serv *s, t_map *map);
 void				act_pl(t_serv *s, t_map *map);
 void				r_vis_e(t_serv *s, t_map *map);
 void				pl_add(t_serv *s, t_map *map);
 int					check_w_entry(t_sector *s, int count, int comp);
+void				wall_sector_wr(t_serv *s, t_map *map);
+void				pl_coords_init(t_map *map, t_serv *s);
+void				fl_texture(t_serv *s, t_map *map);
+void				roof_texture(t_serv *s, t_map *map);
 
 char				*init(t_map *map, t_serv *s, char *file);
 void				save_map(t_map *map, t_serv *s);
@@ -137,6 +149,7 @@ char				*save_unit(int i, char *delim);
 char				*save_w(t_map *map, int i, char *str_old);
 char				*save_s(t_map *map, int i, char *str_old);
 char				*save_p(t_map *map, int i, char *str_old);
+void				clr_map(t_map *map, t_serv *s);
 
 void				map_parser(t_serv *s, char *str, t_map *map);
 char				*file_read(t_serv *s, char *file);

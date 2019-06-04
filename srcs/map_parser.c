@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/29 18:08:00 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 15:41:14 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,20 @@ static int	sec_p(t_map *map, char *str, int i, int s_c)
 	temp = (char *)malloc(sizeof(char) * 10);
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].start_pos = ft_atoi(temp);
-
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].w_count = ft_atoi(temp);
-
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].floor_h = ft_atoi(temp);
-
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].roof_h = roof_vis(map, temp, s_c);
-
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].sec_type = ft_atoi(temp);
-
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->sector[s_c].texture = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->sector[s_c].floor_tex = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->sector[s_c].roof_tex = ft_atoi(temp);
 
 	free(temp);
 	return (i);
@@ -111,12 +110,8 @@ void		map_parser(t_serv *s, char *str, t_map *map)
 		else
 			s->i++;
 	}
-	if (map->player.coords[0] != 0 || map->player.coords[1] != 0)
-	{
-		s->p_flag = 1;
-		s->pl_c.x = map->player.coords[0] + (s->wh_screen[0] / 2);
-		s->pl_c.y = map->player.coords[1] + (s->wh_screen[1] / 2);
-	}
+	pl_coords_init(map, s);
 	s->parse_flag = 1;
+	wall_sector_wr(s, map);
 	close(s->fd);
 }

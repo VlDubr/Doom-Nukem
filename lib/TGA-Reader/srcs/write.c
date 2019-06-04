@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 16:23:46 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/27 18:31:28 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:07:41 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	draw_text(t_tga **img, SDL_Renderer *r, t_ivector2d wh, int nixy[4])
 	wh.x + nixy[2] + (img[nixy[0]]->width * (nixy[1] + 1)), nixy[3] + wh.y);
 }
 
-void	bitmap_write(SDL_Renderer *r, t_tga **img, t_ivector2d wh, char *str)
+void		bitmap_write(SDL_Renderer *r, t_tga **img,
+		t_ivector2d wh, char *str)
 {
 	int	nixy[4];
 
@@ -57,7 +58,7 @@ static void	draw_img(t_tga *img, SDL_Renderer *r, t_ivector2d wh, int *xy)
 	SDL_RenderDrawPoint(r, xy[0] + wh.x, xy[1] + wh.y);
 }
 
-void	img_write(SDL_Renderer *r, t_tga *img, t_ivector2d wh)
+void		img_write(SDL_Renderer *r, t_tga *img, t_ivector2d wh)
 {
 	int	xy[2];
 

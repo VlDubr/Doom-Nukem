@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstaddback.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 12:18:50 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/03/18 12:18:50 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/04 19:08:52 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_lstaddback(t_list **alst, t_list *new)
 {
 	t_list	*tmp;
+
 	if (!new || !alst)
 		return ;
 	tmp = *alst;

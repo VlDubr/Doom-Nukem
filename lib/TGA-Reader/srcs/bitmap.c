@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 18:23:09 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/18 15:01:04 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:06:52 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ static void	trim(t_tga **images, t_tga *img, int numb, t_ivector2d wh)
 		s.y = 0;
 		while (s.y < wh.y)
 		{
-			s.x = 0;
-			while (s.x < wh.x)
-			{
+			s.x = -1;
+			while (++s.x < wh.x)
 				images[s.i]->pic[s.y][s.x] = img->pic[s.y + s.yy][s.x + s.xx];
-				s.x++;
-			}
 			s.y++;
 		}
 		s.xx += wh.x;
@@ -66,7 +63,7 @@ t_tga		**images_mall(t_tga *img, int numb, t_ivector2d wh)
 	return (images);
 }
 
-t_tga	**bitmap(char *path, t_ivector2d wh)
+t_tga		**bitmap(char *path, t_ivector2d wh)
 {
 	t_tga	*img;
 	t_tga	**images;

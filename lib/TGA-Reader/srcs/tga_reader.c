@@ -6,13 +6,13 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:28:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/18 12:37:57 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:07:14 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/tga.h"
 
-static void	recorder(t_tga *img, unsigned char *buf, t_service *s)
+static void		recorder(t_tga *img, unsigned char *buf, t_service *s)
 {
 	if (img->data_type == 2)
 		rec(img, buf, s);
@@ -22,7 +22,7 @@ static void	recorder(t_tga *img, unsigned char *buf, t_service *s)
 		c_rec(img, buf, s);
 }
 
-static void	first_step(t_tga *img, unsigned char *buf, t_service *s, int fd)
+static void		first_step(t_tga *img, unsigned char *buf, t_service *s, int fd)
 {
 	unsigned char	*del;
 
@@ -59,7 +59,7 @@ static t_tga	*reader(int fd, t_service *s)
 	return (img);
 }
 
-t_tga		*tga_reader(char *path)
+t_tga			*tga_reader(char *path)
 {
 	int			fd;
 	t_service	s;

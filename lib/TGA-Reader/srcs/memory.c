@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:24:19 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/18 14:48:31 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:05:42 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_rgba	**malloc_pic(t_rgba **pic, int width, int height)
 	return (pic);
 }
 
-void free_pic(t_tga *img)
+void	free_pic(t_tga *img)
 {
 	int	i;
 

@@ -6,13 +6,13 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 16:44:38 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 15:30:03 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 18:59:15 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-int		check_s(t_serv *s, t_map *map, int i, int j)
+int		check_s(t_map *map, int i, int j)
 {
 	int	sec[3];
 
@@ -75,7 +75,7 @@ int		add_port(t_serv *s, t_map *map)
 			while (j < map->wall_count)
 			{
 				if (check_sec_entry(map, i, j) == 1)
-					check_s(s, map, i, j);
+					check_s(map, i, j);
 				j++;
 			}
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 15:41:14 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:01:57 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ void		map_parser(t_serv *s, char *str, t_map *map)
 	}
 	pl_coords_init(map, s);
 	s->parse_flag = 1;
-	wall_sector_wr(s, map);
+	wall_sector_wr(map);
 	close(s->fd);
 }

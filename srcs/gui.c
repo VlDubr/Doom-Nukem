@@ -6,13 +6,13 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 15:58:27 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 18:03:03 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:01:10 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-static void	gui_colors(t_sdl *sdl, int x, int y)
+static void	gui_colors(t_sdl *sdl, int y)
 {
 	if (y < 60)
 		SDL_SetRenderDrawColor(sdl->r, 92, 92, 92, 255);
@@ -49,7 +49,7 @@ void		gui(t_serv *s, t_sdl *sdl, t_map *map)
 		x = 1000;
 		while (x < 1400)
 		{
-			gui_colors(sdl, x, y);
+			gui_colors(sdl, y);
 			SDL_RenderDrawPoint(sdl->r, x, y);
 			x++;
 		}

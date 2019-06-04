@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 18:11:33 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:00:52 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	keydown(t_serv *s, t_sdl sdl, t_map *map)
 	writer(s, sdl, map);
 }
 
-static void	actions(t_serv *s, t_sdl sdl, t_map *map)
+static void	actions(t_serv *s, t_map *map)
 {
 	SDL_GetMouseState(&s->mouse_xy[0], &s->mouse_xy[1]);
 	if (s->p_add == 1)
@@ -84,7 +84,7 @@ static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 		gui(s, &sdl, map);
 	}
 	else
-		actions(s, sdl, map);
+		actions(s, map);
 	writer(s, sdl, map);
 }
 

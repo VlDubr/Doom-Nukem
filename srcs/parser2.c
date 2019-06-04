@@ -6,13 +6,13 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 16:29:47 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/31 16:29:56 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:01:25 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-void		wall_sector_wr(t_serv *s, t_map *map)
+void		wall_sector_wr(t_map *map)
 {
 	int	c;
 	int i;

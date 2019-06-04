@@ -16,10 +16,10 @@ WIN_LIB = -L C:/MinGW/msys/1.0/lib
 
 all: $(NAME)
 $(NAME): clean
-	gcc  -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
+	gcc $(FLAG) -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) $(SDL_H) $(SDL_F)
 
 linux:
-	gcc -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) -lm -lSDL2
+	gcc $(FLAG) -I $(INC) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) -lm -lSDL2
 
 win:
 	gcc $(FLAG) -I $(INC) $(WIN_SDL_INCL) $(WIN_LIB) -g -o $(NAME) $(SRCS) $(GRAPH) $(TGA) $(LIBFT) -L $(LIB) -lmingw32 -lSDL2main -lSDL2

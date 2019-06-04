@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:09:04 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 18:07:16 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 18:19:15 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ void		str_wr(t_serv *s, t_sdl *sdl, char *str, char *temp2)
 	free(temp);
 }
 
+static void	next_buttons(t_serv *s, t_sdl *sdl, t_map *map, char *temp)
+{
+	s->text_c.y += 60;
+	temp = ret_str(2, map, s->sec_edit);
+	str_wr(s, sdl, "roof vis:", temp);
+	free(temp);
+	s->text_c.y += 60;
+	temp = ret_str(4, map, s->sec_edit);
+	str_wr(s, sdl, "roof tex:", temp);
+	free(temp);
+}
+
 static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 {
 	char	*temp;
@@ -65,13 +77,7 @@ static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 	temp = ret_str(1, map, s->sec_edit);
 	str_wr(s, sdl, "roof h:", temp);
 	free(temp);
-	s->text_c.y += 60;
-	temp = ret_str(2, map, s->sec_edit);
-	str_wr(s, sdl, "roof vis:", temp);
-	s->text_c.y += 60;
-	temp = ret_str(4, map, s->sec_edit);
-	str_wr(s, sdl, "roof tex:", temp);
-	free(temp);
+	next_buttons(s, sdl, map, temp);
 }
 
 void		text_wr(t_serv *s, t_sdl *sdl, t_map *map)

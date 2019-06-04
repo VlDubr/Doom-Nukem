@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 16:00:19 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:00:15 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static int		sec_alloc(t_map *map, t_serv *s)
 {
 	int i;
 
+	i = -1;
 	if (map->sec_count == s->sec_edit)
 		map->sector = zero_sec(map);
 	else

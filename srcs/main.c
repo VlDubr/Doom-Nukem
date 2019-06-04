@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 17:30:39 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/04 19:02:41 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 char	*file_read(t_serv *s, char *file)
 {
-	char	*buf;
+	char	buf[1001];
 	char	*str;
+	char	*del;
 	int		j;
 
 	s->file = file;
 	s->fd = open(file, O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
-	buf = (char *)malloc(sizeof(char) * 1000);
 	str = malloc(0);
-
 	if (s->fd == -1)
 		ft_error("Read file error!");
 	while ((j = read(s->fd, buf, 1000)) > 0)
 	{
+		del = str;
 		buf[j] = '\0';
 		str = ft_strjoin(str, buf);
+		free(del);
 	}
 	return (str);
 }
@@ -40,7 +41,7 @@ void	writer(t_serv *s, t_sdl sdl, t_map *map)
 	gui(s, &sdl, map);
 	map_writer(&sdl, s, map);
 	if (s->p_flag == 1)
-		pl_write(s, sdl, map);
+		pl_write(s, sdl);
 	dot_write(s, &sdl, map);
 	SDL_RenderPresent(sdl.r);
 }
@@ -67,6 +68,7 @@ int		main(int argc, char **argv)
 		sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
 		writer(s, sdl, map);
 		event(s, sdl, map);
+		free(str);
 	}
 	else
 		ft_error("Need file path!");

@@ -2,7 +2,12 @@
 NAME = editor
 HEAD = ./includes/*.h
 INC = /usr/local/include
-SRCS = ./srcs/*.c
+SRCS = ./srcs/gui/buttons.c ./srcs/gui/gui.c ./srcs/gui/textures.c ./srcs/events/add_port.c ./srcs/events/add_wall.c \
+./srcs/events/clr_map.c ./srcs/events/del_sec.c ./srcs/events/del_wall.c ./srcs/events/events.c \
+./srcs/events/m_events.c ./srcs/events/player.c ./srcs/events/save_map_units.c ./srcs/events/save_map.c\
+./srcs/parser/map_parser.c ./srcs/parser/parser2.c ./srcs/graphics/background_and_dot.c ./srcs/graphics/paint.c \
+./srcs/graphics/line_writing.c ./srcs/service/check_walls.c ./srcs/service/init.c ./srcs/service/service_f.c\
+./srcs/main.c
 TGA = ./lib/TGA-Reader/libtga.a
 GRAPH = ./lib/ft_graphics/libftgraphics.a
 LIBFT = ./lib/libft/libft.a

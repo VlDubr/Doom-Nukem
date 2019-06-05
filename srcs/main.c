@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 19:02:41 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/05 16:24:02 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*file_read(t_serv *s, char *file)
 		del = str;
 		buf[j] = '\0';
 		str = ft_strjoin(str, buf);
-		free(del);
+		ft_strdel(&del);
 	}
 	return (str);
 }
@@ -68,7 +68,7 @@ int		main(int argc, char **argv)
 		sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
 		writer(s, sdl, map);
 		event(s, sdl, map);
-		free(str);
+		ft_strdel(&str);
 	}
 	else
 		ft_error("Need file path!");

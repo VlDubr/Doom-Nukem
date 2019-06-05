@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 19:03:15 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/05 16:18:26 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <math.h>
 
-//# include "../lib/ft_graphics/includes/color.h"
+# include "../lib/ft_graphics/includes/color.h"
 # include "../lib/ft_graphics/includes/vector.h"
 # include "../lib/libft/includes/libft.h"
 # include "../lib/TGA-Reader/include/tga.h"
@@ -150,6 +150,7 @@ char				*save_w(t_map *map, int i, char *str_old);
 char				*save_s(t_map *map, int i, char *str_old);
 char				*save_p(t_map *map, char *str_old);
 void				clr_map(t_map *map, t_serv *s);
+void				loadimages(char *path, char **tmp, t_tga **textures, size_t *count);
 
 void				map_parser(t_serv *s, char *str, t_map *map);
 char				*file_read(t_serv *s, char *file);

@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   drawline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/03 19:10:51 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/06/03 19:11:35 by gdaniel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom.h"
 
-void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
+void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end,
+t_rgb color)
 {
 	t_fvector		delta;
 	t_fvector		edi;
@@ -13,10 +26,11 @@ void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	edi.y > 0 ? edi.y = 1 : 0;
 	edi.y < 0 ? edi.y = -1 : 0;
 	cord = setivector2d(start.x, start.y);
-	edi.z = 0;
-	while (edi.z < end.x - start.x)
+	edi.z = -1;
+	while (++edi.z < end.x - start.x)
 	{
-		if (cord.x + edi.z >= 0 && cord.x + edi.z < 800 && cord.y >= 0 && cord.y < 800)
+		if (cord.x + edi.z >= 0 && cord.x + edi.z < 800 && cord.y >= 0 &&
+		cord.y < 800)
 			p[(int)(cord.x + edi.z) + (cord.y * 800)] = ((((((255 << 8) |
 			color.red) << 8) | color.green) << 8) | color.blue);
 		edi.x = edi.x + delta.z;
@@ -25,11 +39,11 @@ void		drawlinelow(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 			cord.y = cord.y + edi.y;
 			edi.x = edi.x - delta.x;
 		}
-		edi.z++;
 	}
 }
 
-void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
+void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end,
+t_rgb color)
 {
 	t_fvector		delta;
 	t_fvector		edi;
@@ -42,10 +56,11 @@ void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 	edi.y > 0 ? edi.y = 1 : 0;
 	edi.y < 0 ? edi.y = -1 : 0;
 	cord = setivector2d(start.x, start.y);
-	edi.z = 0;
-	while (edi.z < end.y - start.y)
+	edi.z = -1;
+	while (++edi.z < end.y - start.y)
 	{
-		if (cord.x >= 0 && cord.x < 800 && cord.y + edi.z >= 0 && cord.y + edi.z < 800)
+		if (cord.x >= 0 && cord.x < 800 && cord.y + edi.z >= 0 &&
+		cord.y + edi.z < 800)
 			p[cord.x + (int)((cord.y + edi.z) * 800)] = ((((((255 << 8) |
 			color.red) << 8) | color.green) << 8) | color.blue);
 		edi.x = edi.x + delta.z;
@@ -54,7 +69,6 @@ void		drawlinehight(uint32_t *p, t_fvector start, t_fvector end, t_rgb color)
 			cord.x = cord.x + edi.y;
 			edi.x = edi.x - delta.y;
 		}
-		edi.z++;
 	}
 }
 

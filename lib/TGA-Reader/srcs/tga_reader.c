@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tga_reader.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:28:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/18 12:37:57 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 18:21:24 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ static void	recorder(t_tga *img, unsigned char *buf, t_service *s)
 		c_rec(img, buf, s);
 }
 
-static void	first_step(t_tga *img, unsigned char *buf, t_service *s, int fd)
+static void	first_step(t_tga *img, unsigned char **buf, t_service *s, int fd)
 {
 	unsigned char	*del;
 
-	head_rec(img, buf, s);
+	head_rec(img, *buf, s);
 	if (img->id_length != 0)
-		read(fd, buf, img->id_length);
-	del = buf;
+		read(fd, *buf, img->id_length);
+	del = *buf;
 	free(del);
 }
 
@@ -39,13 +39,13 @@ static t_tga	*reader(int fd, t_service *s)
 	t_tga			*img;
 
 	img = (t_tga *)malloc(sizeof(t_tga));
-	buf = (unsigned char *)malloc(sizeof(char) * 1000);
+	buf = (unsigned char *)malloc(sizeof(char) * 19);
 	while ((s->j = read(fd, buf, s->read_l)) > 0)
 	{
 		buf[s->j] = '\0';
 		if (s->j == 18)
 		{
-			first_step(img, buf, s, fd);
+			first_step(img, &buf, s, fd);
 			if (!(img->pic = malloc_pic(img->pic, img->width, img->height)))
 				ft_error("Malloc error!");
 			buf = (unsigned char *)malloc(sizeof(char) * (s->read_l + 1));

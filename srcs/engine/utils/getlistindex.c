@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawrect.c                                         :+:      :+:    :+:   */
+/*   getlistindex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 11:09:54 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:12:11 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/06/05 12:10:44 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/06/05 15:02:03 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	drawrect(t_doom *doom, t_irect rect, t_rgba color)
+t_list		*getlistindex(t_list *list, size_t index)
 {
-	t_ivector2d	cord;
+	t_list	*tmp;
+	t_list	*res;
 
-	cord.y = rect.start.y;
-	while (cord.y < rect.start.y + rect.height)
+	tmp = list;
+	if (index == 0)
+		return (list);
+	while (tmp != NULL && index)
 	{
-		cord.x = rect.start.x;
-		while (cord.x < rect.start.x + rect.width)
-		{
-			drawpoint(doom->win->pixels, doom->win->size, cord,
-			color);
-			cord.x++;
-		}
-		cord.y++;
+		tmp = tmp->next;
+		index--;
+		if (index == 0)
+			res = tmp;
 	}
+	return (res);
 }

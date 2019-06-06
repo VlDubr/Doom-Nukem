@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 19:44:06 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/04 12:45:13 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,48 +58,48 @@ void	rotate(t_doom *doom, double delta)
 		doom->player.rotate.x -= 0.005f * delta;
 }
 
-void	checkkeyboard(t_doom *doom, double delta)
+void	checkrun(t_doom *doom)
 {
 	if (doom->setting.input.keystate[SDL_SCANCODE_RSHIFT] ||
 	doom->setting.input.keystate[SDL_SCANCODE_LSHIFT])
 		doom->player.run = 1;
 	else
 		doom->player.run = 0;
+}
 
-	if (doom->setting.input.keystate[SDL_SCANCODE_RCTRL] ||
-	doom->setting.input.keystate[SDL_SCANCODE_LCTRL])
-		doom->player.height = 2;
-	else
-		doom->player.height = 5;
-
+void	checkmove(t_doom *doom, double delta)
+{
 	if (doom->setting.input.keystate[doom->setting.input.moveforward] ||
 		doom->setting.input.keystate[doom->setting.input.movebackward] ||
 		doom->setting.input.keystate[doom->setting.input.moveleft] ||
 		doom->setting.input.keystate[doom->setting.input.moveright])
 		playermove(doom, delta);
+}
 
-	if (doom->setting.input.keystate[doom->setting.input.rotleft] ||
-	doom->setting.input.keystate[doom->setting.input.rotright] ||
-	doom->setting.input.keystate[doom->setting.input.rotup] ||
-	doom->setting.input.keystate[doom->setting.input.rotdown])
-		rotate(doom, delta);
-
+void	checkkeyboard(t_doom *doom, double delta)
+{
+	checkrun(doom);
+	if (doom->setting.input.keystate[SDL_SCANCODE_RCTRL] ||
+	doom->setting.input.keystate[SDL_SCANCODE_LCTRL])
+		doom->player.height = 2;
+	else
+		doom->player.height = 5;
+	checkmove(doom, delta);
 	if (doom->setting.input.keystate[doom->setting.input.jump] &&
 	doom->player.stamina > 0)
 		playerjump(doom, &doom->player);
-
 	if (doom->setting.input.keystate[SDL_SCANCODE_ESCAPE])
 		doom->win->state = 0;
-
-	if (doom->setting.input.keystate[SDL_SCANCODE_P])
-		printf("pos: %f %f %f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
-	
-	if (doom->setting.input.mousekey[0])
-		shot(doom->sound.shot, doom->player, doom->setting.input, &doom->thismap.obj);
-
+	shot(doom, doom->sound.shot);
 	if (doom->player.velosity.x == 0 || doom->player.velosity.y == 0 ||
 	doom->player.velosity.z == 0)
 		addstamina(&doom->player, 0.1f);
+	
+	if (doom->setting.input.keystate[SDL_SCANCODE_P])
+	{
+		printf("pos: x %f y %f z %f\n", doom->player.pos.x, doom->player.pos.y, doom->player.pos.z);
+		printf("rot: x %f y %f z %f\n", doom->player.rotate.x, doom->player.rotate.y, doom->player.rotate.z);
+	}
 	doom->player.velosity = setfvector(0, 0, 0, 0);
 }
 
@@ -118,10 +118,9 @@ void	update(t_doom *doom, double delta)
 		agressionememy(&doom->player, &doom->thismap.obj[c]);
 		damageenemy(doom->sound.run, &doom->player,
 		&doom->thismap.obj[c], delta);
-		moveenemy(doom->player, &doom->thismap, &doom->thismap.obj[c], delta);
+		moveenemy(doom, &doom->thismap.obj[c], delta);
 		c++;
 	}
 	doom->player.targetid = 18446744073709551615u;
 	updateui(doom);
-	// playerdeath(&doom->player);
 }

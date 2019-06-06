@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 16:28:19 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/06 18:52:46 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,23 @@ int				main(int agrc, char **argv)
 {
 	char	*file[3];
 	t_doom	*doom;
+
 	doom = initdoom(argv[0]);
-	doom->player = defaultplayerdata();
+	doom->player = defaultplayerdata(doom);
 	switchlevel(doom, doom->level);
 	doom->thismap.obj[1].isagression = 1;
 	doom->currentframe = SDL_GetPerformanceCounter();
-	tga = tga_reader(ft_strjoin(doom->path, "640x400.tga"));
-	tgafloor = tga_reader(ft_strjoin(doom->path, "pol.tga"));
-	tgaenemy = tga_reader(ft_strjoin(doom->path, "monster.tga"));
 	while (doom->win->state)
 	{
+		SDL_WarpMouseInWindow(doom->win->window,
+		doom->win->size.x / 2, doom->win->size.y / 2);
+		SDL_GetMouseState(&doom->setting.input.old.x,
+		&doom->setting.input.old.y);
 		doom->lastframe = doom->currentframe;
 		doom->currentframe = SDL_GetPerformanceCounter();
 		doom->delta = (double)((doom->currentframe - doom->lastframe) *
 		1000 / (double)SDL_GetPerformanceFrequency());
-		// printf("delta: %f\n", doom->delta);
-		updateevent(doom);
+		updateevent(doom, doom->delta);
 		update(doom, doom->delta);
 		draw(doom);
 	}

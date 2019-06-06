@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bitmap.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 18:23:09 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/18 15:01:04 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/31 16:25:19 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,17 @@ t_tga	**bitmap(char *path, t_ivector2d wh)
 	trim(images, img, numb, wh);
 	free_pic(img);
 	free(img);
+	return (images);
+}
+
+t_tga	**bitmap_mall(t_tga *img, t_ivector2d wh, int *count)
+{
+	int		i;
+	t_tga	**images;
+
+	i = 0;
+	(*count) = ((img->height * img->width) / (wh.x * wh.y));
+	images = images_mall(img, (*count), wh);
+	trim(images, img, (*count), wh);
 	return (images);
 }

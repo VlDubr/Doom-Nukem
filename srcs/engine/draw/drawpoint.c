@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   drawpoint.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/03 19:11:44 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/06/03 19:12:00 by gdaniel          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom.h"
 
-void	drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord, t_rgba color)
+void	drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord,
+t_rgba color)
 {
-	t_rgba	pc;
-	t_rgba	newc;
-	uint32_t c;
+	t_rgba		pc;
+	t_rgba		newc;
+	uint32_t	c;
 
 	c = p[cord.x + ((cord.y) * 800)];
 	pc.alpha = c >> 24;

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   collide.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmcclure <vmcclure@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 18:40:19 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/14 13:40:17 by vmcclure         ###   ########.fr       */
+/*   Updated: 2019/06/03 17:27:28 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "physics.h"
+#include "doom.h"
 
 t_line			setline(t_fvector2d a1, t_fvector2d a2,
 t_fvector2d b1, t_fvector2d b2)
@@ -24,12 +24,12 @@ t_fvector2d b1, t_fvector2d b2)
 	return (l);
 }
 
-float	area(t_fvector2d a, t_fvector2d b, t_fvector2d c)
+float			area(t_fvector2d a, t_fvector2d b, t_fvector2d c)
 {
 	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
 
-int	collideline1(float a, float b, float c, float d)
+int				collideline1(float a, float b, float c, float d)
 {
 	float tmp;
 
@@ -48,33 +48,43 @@ int	collideline1(float a, float b, float c, float d)
 	return (ft_fmax(a, c) <= ft_fmin(b, d));
 }
 
-int	collideline(t_line line)
+int				collideline(t_line line)
 {
 	if (collideline1(line.p[0].x, line.p[1].x, line.p[2].x, line.p[3].x))
 		if (collideline1(line.p[0].y, line.p[1].y, line.p[2].y, line.p[3].y))
-			if (area(line.p[0], line.p[1], line.p[2]) * area(line.p[0], line.p[1], line.p[3]) <= 0)
-				if (area(line.p[2], line.p[3], line.p[0]) * area(line.p[2], line.p[3], line.p[1]) <= 0)
+			if (area(line.p[0], line.p[1], line.p[2]) *
+			area(line.p[0], line.p[1], line.p[3]) <= 0)
+				if (area(line.p[2], line.p[3], line.p[0]) *
+				area(line.p[2], line.p[3], line.p[1]) <= 0)
 					return (1);
 	return (0);
 }
 
-int		collide(t_fvector2d pos, t_fvector2d newpos, t_fvector *w, size_t count)
+int				collides(t_line line, t_map *map, size_t sector, int *visit)
 {
 	t_fvector2d	p1;
 	t_fvector2d	p2;
 	size_t		c;
+	size_t		i;
+	size_t		a;
 
-	c = 0;
-	while (c < count)
+	c = map->sectors[sector].start;
+	i = -1;
+	visit[sector] = 1;
+	while (++i + c < map->sectors[sector].start + map->sectors[sector].count)
 	{
-		p1 = setfvector2d(w[c].x, w[c].y);
-		p2 = setfvector2d(w[c + 1 >= count ? 0 : c + 1].x,
-		w[c + 1 >= count ? 0 : c + 1].y);
-		if (w[c].z == -1)
-			if (collideline(setline(pos,
-			newpos, p1, p2)))
+		a = map->sectors[sector].start + map->sectors[sector].count;
+		line.p[2] = setfvector2d(map->walls[c + i].x, map->walls[c + i].y);
+		line.p[3] = setfvector2d(map->walls[c + i + 1 >= a ? c : c + i + 1].x,
+		map->walls[c + i + 1 >= a ? c : c + i + 1].y);
+		if (map->walls[c + i].z == -1)
+		{
+			if (collideline(line))
 				return (1);
-		c++;
+		}
+		else if (!visit[(int)map->walls[c + i].z]
+		&& collides(line, map, (size_t)map->walls[c + i].z, visit))
+			return (1);
 	}
 	return (0);
 }

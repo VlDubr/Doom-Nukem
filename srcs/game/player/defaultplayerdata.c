@@ -6,13 +6,13 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:51:31 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/17 12:27:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/31 16:58:40 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-t_player	defaultplayerdata(void)
+t_player	defaultplayerdata(t_doom *doom)
 {
 	t_player r;
 
@@ -26,5 +26,8 @@ t_player	defaultplayerdata(void)
 	r.runspeed = 0.3f;
 	r.run = 0;
 	r.jump = 0;
+	r.weapons = doom->weapons;
+	r.weaponcount = doom->weaponcount;
+	r.thisweapon = &doom->weapons[0];
 	return (r);
 }

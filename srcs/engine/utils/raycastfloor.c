@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawrect.c                                         :+:      :+:    :+:   */
+/*   raycastfloor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 11:09:54 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:12:11 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/06/06 11:24:29 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/06/06 11:38:26 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	drawrect(t_doom *doom, t_irect rect, t_rgba color)
+t_fvector	raycastfloor(t_doom *doom, t_fvector angle, t_fvector2d yse)
 {
-	t_ivector2d	cord;
+	t_fvector	res;
+	t_fvector	step;
 
-	cord.y = rect.start.y;
-	while (cord.y < rect.start.y + rect.height)
-	{
-		cord.x = rect.start.x;
-		while (cord.x < rect.start.x + rect.width)
-		{
-			drawpoint(doom->win->pixels, doom->win->size, cord,
-			color);
-			cord.x++;
-		}
-		cord.y++;
-	}
+	step.y = (yse.y - yse.x) / cos(angle.y);
+	res.y = yse.y;
+	res.z = step.y * sin(angle.y);
+	step.z = res.z / cos(angle.x);
+	res.x = step.z * sin(angle.x);
+	return (res);
 }

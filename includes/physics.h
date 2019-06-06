@@ -12,16 +12,5 @@
 
 #ifndef PHYSICS_H
 # define PHYSICS_H
-# include "doom.h"
-# define SIGN(value) (value / abs(value))
-
-typedef struct	s_line
-{
-	t_fvector2d		p[4];
-}				t_line;
-t_line			setline(t_fvector2d a1, t_fvector2d a2,
-t_fvector2d b1, t_fvector2d b2);
-
-int				collideline(t_line line);
 
 #endif

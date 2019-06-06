@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   record.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:19:22 by srafe             #+#    #+#             */
-/*   Updated: 2019/04/17 15:29:29 by srafe            ###   ########.fr       */
+/*   Updated: 2019/05/31 17:50:54 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void		mono_rec(t_tga *img, unsigned char *buf, t_service *s)
 			img->pic[s->y][s->x].blue = buf[k];
 			img->pic[s->y][s->x].green = buf[k];
 			img->pic[s->y][s->x].red = buf[k];
-			img->pic[s->y][s->x].alpha = 255;
+			img->pic[s->y][s->x].alpha = buf[k];
 			s->x++;
 			k++;
 		}

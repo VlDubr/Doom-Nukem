@@ -6,18 +6,25 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 19:06:34 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/03 19:13:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	initwall(char *str, t_fvector **wall, int y2)
+void	initwall(char *str, t_fvector *wall)
 {
 	char		**tmp;
 	char		**tmp2;
 
-	
+	tmp = ft_strsplit(str, ' ');
+	tmp2 = ft_strsplit(tmp[1], ',');
+	(*wall).x = ft_atoi(tmp2[0]);
+	(*wall).y = ft_atoi(tmp2[1]);
+	(*wall).z = ft_atoi(tmp2[2]);
+	(*wall).w = 0;
+	free2dstring(tmp);
+	free2dstring(tmp2);
 }
 
 void	loadwall(char **str, t_fvector **wall, size_t *count)
@@ -41,14 +48,7 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 	{
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')
 		{
-			tmp = ft_strsplit(str[cord.x], ' ');
-			tmp2 = ft_strsplit(tmp[1], ',');
-			(*wall)[cord.y].x = ft_atoi(tmp2[0]);
-			(*wall)[cord.y].y = ft_atoi(tmp2[1]);
-			(*wall)[cord.y].z = ft_atoi(tmp2[2]);
-			(*wall)[cord.y].w = 0;
-			free2dstring(tmp);
-			free2dstring(tmp2);
+			initwall(str[cord.x], &(*wall)[cord.y]);
 			cord.y++;
 		}
 		cord.x++;
@@ -66,6 +66,7 @@ void	initsector(char *str, t_sector **sector, int y2)
 	(*sector)[y2].height = ft_atoi(tmp[4]);
 	(*sector)[y2].type = ft_atoi(tmp[5]);
 	(*sector)[y2].walltexture = ft_atoi(tmp[6]);
+	(*sector)[y2].floortexture = ft_atoi(tmp[7]);
 	free2dstring(tmp);
 }
 
@@ -106,12 +107,10 @@ void	initobj(char **str, t_object **obj, int y)
 	(*obj)[y].pos = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
 	ft_atof(tmp2[2]), 1);
 	free2dstring(tmp2);
-
 	tmp2 = ft_strsplit(str[3], ',');
 	(*obj)[y].rotate = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
 	ft_atof(tmp2[2]), 1);
 	free2dstring(tmp2);
-
 	(*obj)[y].width = ft_atof(str[4]);
 	(*obj)[y].maxhealth = ft_atoi(str[5]);
 	(*obj)[y].health = (*obj)[y].maxhealth;

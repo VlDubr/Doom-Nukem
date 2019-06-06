@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 17:02:48 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/06 19:07:43 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,11 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	if (peresechenie == 1)
 	{
 
-			switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
-				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
-			switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
-				cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
-		}
+		switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
+			cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
+		switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
+			cos(-1.047197551) * 1000, sin(-1.047197551) * 1000));
+	}//-1.047197551 1.048
 	l.p[0].x = 0;
 	l.p[0].y = 0;
 	l.p[1].x = cos(1.048) * 1000;
@@ -127,11 +127,10 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	// printf ("%zu - %d\n", c, peresechenie);
 	 if (peresechenie == 1)
 	 {
-
-			switchcordwall(&p[0], &p[1], &offset[0], setfvector2d(
-				cos(1.048) * 1000, sin(1.048) * 1000));
-			switchcordwall(&p[2], &p[3], &offset[2], setfvector2d(
-				cos(1.048) * 1000, sin(1.048) * 1000));
+		switchcordwall(&p[1], &p[0], &offset[1], setfvector2d(
+			cos(1.048) * 1000, sin(1.048) * 1000));
+		switchcordwall(&p[3], &p[2], &offset[3], setfvector2d(
+			cos(1.048) * 1000, sin(1.048) * 1000));
 	 }
 	 if (p[0].z <= 0 || p[1].z <= 0 || p[2].z <= 0 || p[3].z <= 0)
 		return (0);
@@ -198,9 +197,10 @@ t_fvector	*clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_
 	return (chek);
 }
 
-void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t floor, size_t ceil, t_rgb colorfloor, t_rgb colorceil, size_t i, t_tga texture)
+void	drawsectorv2(t_doom *doom, t_fvector *w, size_t count, size_t floor, size_t ceil, size_t i, t_tga texture)
 {
 	t_wall		wa;
+	t_wall		fl;
 	double		offloor[4];
 	float		vec;
 	t_fvector	delta;
@@ -212,7 +212,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	size_t		c;
 	t_fvector2d	r;
 
-	t_fvector	*fl;
+	// t_fvector	*fl;
 	int x;
 	t_rgb color1;
 	float dx;
@@ -221,50 +221,51 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 	int kef;
 	x = 0;
 	c = 0;
-	cammat = matcam(&play);
+	cammat = matcam(&doom->player);
 	projec = matprojection(initcam(setivector2d(800, 800)));
 
 	//calculate floor
-	t_fvector2d min;
-	t_fvector2d max;
+	// t_fvector2d min;
+	// t_fvector2d max;
 
-	min = setfvector2d(w[0].x, w[0].y);
-	max = setfvector2d(w[0].x, w[0].y);
-	while (c < count)
-	{
-		min.x = ft_fmin(min.x, w[c].x);
-		min.y = ft_fmin(min.y, w[c].y);
-		max.x = ft_fmax(max.x, w[c].x);
-		max.y = ft_fmax(max.y, w[c].y);
-		c++;
-	}
+	// min = setfvector2d(w[0].x, w[0].y);
+	// max = setfvector2d(w[0].x, w[0].y);
+	// while (c < count)
+	// {
+	// 	min.x = ft_fmin(min.x, w[c].x);
+	// 	min.y = ft_fmin(min.y, w[c].y);
+	// 	max.x = ft_fmax(max.x, w[c].x);
+	// 	max.y = ft_fmax(max.y, w[c].y);
+	// 	c++;
+	// }
 	// if (i == 0)
 	
-	wa.p[0] = setfvector(-500, floor, -500, 1);
-	wa.p[1] = setfvector(-500, floor, 500, 1);
-	wa.p[2] = setfvector(500, floor, 500, 1);
-	wa.p[3] = setfvector(500, floor, -500, 1);
-	maxdelt = fabsf (wa.p[2].x - wa.p[0].x);
-	if (fabsf(wa.p[2].z - wa.p[0].z) > fabsf(wa.p[2].x - wa.p[0].x))
-		maxdelt = fabsf (wa.p[2].z - wa.p[0].z);
-	multmatrixdrawwall(wa.p, cammat);
-	dx = wa.p[2].x - wa.p[0].x;
-	dy = wa.p[2].z - wa.p[0].z;
+	fl.p[0] = setfvector(-500, floor, -500, 1);
+	fl.p[1] = setfvector(-500, floor, 500, 1);
+	fl.p[2] = setfvector(500, floor, 500, 1);
+	fl.p[3] = setfvector(500, floor, -500, 1);
+	fl.texture = texture;
+	// maxdelt = fabsf (wa.p[2].x - wa.p[0].x);
+	// if (fabsf(wa.p[2].z - wa.p[0].z) > fabsf(wa.p[2].x - wa.p[0].x))
+	// 	maxdelt = fabsf (wa.p[2].z - wa.p[0].z);
+	multmatrixdrawwall(fl.p, cammat);
+	// dx = wa.p[2].x - wa.p[0].x;
+	// dy = wa.p[2].z - wa.p[0].z;
 	// dx = sqrt((dx * dx) + (dy * dy));
 	// offloor[0] = fabsf((wa.p[0].x) / dx);
 	// offloor[1] = 1 - fabsf(( wa.p[0].z) / dy);
 	// if (i == 0)
 	// 	printf ("%f \n", offloor[0] );
-	c = 0;
-	fl = clipforfloor(&play, wa.p, offset, i);
-	fl[0] = multipmatrix(fl[0], projec);
-	fl[0] = divfvector(fl[0], fl[0].w, fl[0].w, fl[0].w);
-	fl[0] = addfvector(fl[0], 1, 1, 0);
-	fl[0] = multfvector(fl[0], 400, 400, 1);
-	offloor[0] = (play.pos.z - min.y)/(max.y - min.y);
-	offloor[1] = 1.0-(play.pos.x - min.x)/(max.x - min.x);
-	fl[1].x = 800.0 * dx / 1000 * 20;
-	fl[1].y = 800.0 * dy / 500;
+	//c = 0;
+	//fl = clipforfloor(&play, wa.p, offset, i);
+	//multmatrixdrawwall(fl.p, projec);
+	// fl[0] = divfvector(fl[0], fl[0].w, fl[0].w, fl[0].w);
+	// fl[0] = addfvector(fl[0], 1, 1, 0);
+	// fl[0] = multfvector(fl[0], 400, 400, 1);
+	// offloor[0] = (play.pos.z - min.y)/(max.y - min.y);
+	// offloor[1] = 1.0-(play.pos.x - min.x)/(max.x - min.x);
+	// fl[1].x = 800.0 * dx / 1000 * 20;
+	// fl[1].y = 800.0 * dy / 500;
 	// if (i == 0)
 	// 	printf ("%f %f %f dy %f\n", fl[0].y , offloor[1], offloor[0], max.x - min.x );
 	//calculate wall
@@ -282,7 +283,7 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 		offset[2] = 1;
 		offset[3] = 1;
 
-		if (clip(&play, wa.p, offset, c))
+		if (clip(&doom->player, wa.p, offset, c))
 		{
 			wallproj(wa.p, projec);
 			if (w[c].z == -1)
@@ -295,88 +296,121 @@ void	drawsectorv2(uint32_t *p, t_player play, t_fvector *w, size_t count, size_t
 				ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
 				ft_swap((void**)&offset[1], (void**)&offset[0]);
 			}
-
-			if (w[c].z == -1)			
-				drow_wall(p, wa, texture, offset);
+			wa.offset[0] = offset[0];
+			wa.offset[1] = offset[1];
+			wa.offset[2] = offset[2];
+			wa.offset[3] = offset[3];
+			wa.texture = texture;
+			// if (w[c].z == -1)			
+			// 	drow_wall(doom->win->pixels, wa, texture, offset);
+			if (w[c].z == -1)
+				addwallinlist(&doom->pipeline, wa);
 			// printf ("%f %f %f %f\n", fl.x, fl.y, fl.z, fl.w);
-			// if (i == 0 )
-				//drawfloor(p, wa, color1,play, offloor, fl);
-			// drawline(p, wa.p[0], wa.p[1], color);
-			// drawline(p, wa.p[0], wa.p[2], color);
-			// drawline(p, wa.p[2], wa.p[3], color);
-			// drawline(p, wa.p[1], wa.p[3], color);
+			//if (i == 0 )
+			//	drawfloor(doom, wa, offloor, fl);
+			// drawline(doom->win->pixels, wa.p[0], wa.p[1], color);
+			// drawline(doom->win->pixels, wa.p[0], wa.p[2], color);
+			// drawline(doom->win->pixels, wa.p[2], wa.p[3], color);
+			// drawline(doom->win->pixels, wa.p[1], wa.p[3], color);
 		}
 		c++;
 		color1 = setrgb(255, 0, 255);
 	}
-	if (fl[0].x < 800 && fl[0].x > 0 && fl[0].y > 0 && fl[0].y < 800)
-		p[(int)fl[0].x + ((int)fl[0].y * 800)] = ((((((255 << 8) | 255) << 8) | 0) << 8) | 243);
-	free(fl);
+	// if (fl[0].x < 800 && fl[0].x > 0 && fl[0].y > 0 && fl[0].y < 800)
+	// 	p[(int)fl[0].x + ((int)fl[0].y * 800)] = ((((((255 << 8) | 255) << 8) | 0) << 8) | 243);
+	// free(fl);
+}
+
+void	drawwall(t_doom *doom)
+{
+	t_list	*tmp;
+	t_wall	*wall;
+
+	tmp = doom->pipeline;
+	while (tmp != NULL)
+	{
+		wall = (t_wall*)tmp->content;
+		drow_wall(doom->win->pixels, *wall, wall->texture, wall->offset);
+		tmp = tmp->next;
+	}
+}
+
+void	proj(t_doom *doom, t_mat4x4 projec, t_wall wa)
+{
+	if (clip(&doom->player, wa.p, wa.offset, wa.c))
+	{
+		wallproj(wa.p, projec);
+		if (wa.p[0].x > wa.p[1].x)
+		{
+			ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
+			ft_swap((void**)&wa.p[2], (void**)&wa.p[3]);
+			ft_swap((void**)&wa.offset[1], (void**)&wa.offset[0]);
+		}
+		addwallinlist(&doom->pipeline, wa);
+	}
+}
+
+void	loopdrawwall(t_doom *doom, t_wall **wa, int count, t_sermat mat)
+{
+	int i;
+
+	i = 0;
+	while (i <= count)
+	{
+		multmatrixdrawwall((*wa)[i].p, mat.cammat);
+		proj(doom, mat.projec, (*wa)[i]);
+		i++;
+	}
+}
+
+void	drawwallv3(t_doom *doom, size_t sec)
+{
+	t_wall		*wa;
+	t_sermat	mat;
+	t_sector	sect;
+	t_ivector	ci;
+
+	mat.cammat = matcam(&doom->player);
+	mat.projec = matprojection(initcam(setivector2d(800, 800)));
+	sect = doom->thismap.sectors[sec];
+	if ((wa = (t_wall*)ft_memalloc(sizeof(t_wall) * 2)) == NULL)
+		error("Error");
+	ci.x = sect.start;
+	ci.y = -1;
+	while (++ci.y < sect.count)
+	{
+		ci.z = setwalls(doom, &wa, sect, ci);
+		loopdrawwall(doom, &wa, ci.z, mat);
+	}
+	ft_memdel((void**)&wa);
 }
 
 void	draw(t_doom *doom)
 {
-	t_rgb	colorfloor;
-	t_rgb	colorceil;
 	int		i;
 
+	doom->pipeline = NULL;
+	i = 0;
+	//clock_t start = clock();
+	while (i < doom->thismap.sectorcount)
+	{
+		drawwallv3(doom, i);
+		i++;
+	}
+	// clock_t end = clock();
+	// double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+	// printf("The time: %f seconds\n", seconds);
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
-	i = doom->thismap.sectorcount - 1;
-	clock_t start = clock();
-	while (i > -1)
-	{
-		switch (i)
-		{
-			case 0:
-				colorfloor = setrgb(0, 0, 255);
-				colorceil = setrgb(150, 150, 150);
-				break;
-			case 1:
-				colorfloor = setrgb(0, 255, 0);
-				colorceil = setrgb(0, 150, 150);
-				break;
-			case 2:
-				colorfloor = setrgb(255, 0, 0);
-				colorceil = setrgb(0, 0, 150);
-				break;
-			default:
-				colorfloor = setrgb(255, 255, 255);
-				colorceil = setrgb(50, 50, 50);
-				break;
-		}
-		// if (doom->thismap.sectors[i].floor == 3)
-		// doom->thismap.sectors[i].floor = 1;
-		
-		drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-		doom->thismap.sectors[i].start,
-		doom->thismap.sectors[i].count,
-		doom->thismap.sectors[i].floor,
-		doom->thismap.sectors[i].height, colorfloor, colorceil, i, doom->texture[doom->thismap.sectors[i].walltexture]);
-		
-		// printf ("%d \n", doom->thismap.sectors[i].floor);
-		i--;
-	}
-	clock_t end = clock();
-	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-	// printf("The time: %f seconds\n", seconds);
 	drawobj(doom, doom->thismap);
-	// printf ("\n");
-	// colorfloor = setrgb(0, 0, 255);
-	// colorceil = setrgb(150, 150, 150);
-	// drawsectorv2(doom->win->pixels, doom->player, doom->thismap.walls +
-	// doom->thismap.sectors[doom->player.sector].start,
-	// doom->thismap.sectors[doom->player.sector].count,
-	// doom->thismap.sectors[doom->player.sector].floor,
-	// doom->thismap.sectors[i].height, colorfloor, colorceil, doom->player.sector);
-	
+	drawsort(doom->pipeline);
+	drawwall(doom);
+	ft_lstdel(&doom->pipeline, del);
 	drawminimap(doom->win->pixels, doom, doom->player.sector,
 	setivector2d(400, 300));
-
-
+	drawweapon(doom);
+	drawammo(doom);
 	drawui(doom);
-	// drawrect(doom);
-
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,
 	doom->win->size.x * sizeof(uint32_t));
 	SDL_RenderCopy(doom->win->renderer, doom->win->texture, NULL, NULL);

@@ -6,14 +6,15 @@ SRCS = main.c \
 		game/map/switchlevel.c game/map/minimap.c \
 		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c game/player/shot.c \
 		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
-		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c \
+		engine/collide.c engine/inside.c engine/sort.c engine/addwallinlist.c engine/calcwall.c \
+		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c engine/utils/stringcount.c engine/utils/getlistindex.c engine/utils/raycastfloor.c engine/utils/del.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
-		engine/collide.c engine/inside.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
-		engine/filesystem/loadassets.c engine/filesystem/loadmap.c \
+		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadweapon.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
-		engine/input/loadinput.c \
-		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c
+		engine/input/loadinput.c engine/input/mousemove.c \
+		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c \
+		engine/draw/drawimage.c engine/draw/drawpistol.c engine/draw/anim.c engine/draw/drawammo.c engine/draw/drawportal.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/
@@ -69,12 +70,14 @@ debuglinux: $(OBJ)
 clean:
 	$(MAKE) -C $(LIBFTFOLDER) clean
 	$(MAKE) -C $(GRAPHICSFOLDER) clean
+	$(MAKE) -C $(TGAREADERFOLDER) clean
 	rm -rf $(OBJDIR)
 	rm -rf *.o
 
 fclean: clean
 	$(MAKE) -C $(LIBFTFOLDER) fclean
 	$(MAKE) -C $(GRAPHICSFOLDER) fclean
+	$(MAKE) -C $(TGAREADERFOLDER) fclean
 	rm -rf $(BUILDFOLDER)
 	rm -rf $(NAME)
 

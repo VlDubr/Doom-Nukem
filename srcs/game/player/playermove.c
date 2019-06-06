@@ -6,22 +6,34 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 17:30:51 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/04 17:21:16 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
+void		initvisit(int *visit, size_t count)
+{
+	size_t		i;
+
+	i = -1;
+	while (++i < count)
+		visit[i] = 0;
+}
+
 static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 {
+	t_line		line;
+	int			visit[doom->thismap.sectorcount];
 	size_t		lastsector;
+	t_sector	sec;
 
+	initvisit(visit, doom->thismap.sectorcount);
+	sec = doom->thismap.sectors[doom->player.sector];
 	doom->player.velosity = newvec;
-	
-	if (collide(setfvector2d(doom->player.pos.x, doom->player.pos.z),
-		setfvector2d(doom->player.velosity.x, doom->player.velosity.z),
-		doom->thismap.walls + doom->thismap.sectors[doom->player.sector].start,
-		doom->thismap.sectors[doom->player.sector].count))
+	line.p[0] = setfvector2d(doom->player.pos.x, doom->player.pos.z);
+	line.p[1] = setfvector2d(doom->player.velosity.x, doom->player.velosity.z);
+	if (collides(line, &doom->thismap, doom->player.sector, visit))
 		return ;
 	lastsector = doom->player.sector;
 	doom->player.sector = isinside(setfvector2d(doom->player.velosity.x,
@@ -29,10 +41,7 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 	if (lastsector != doom->player.sector)
 	{
 		if ((doom->player.velosity.y / 1.5f)
-		< doom->thismap.sectors[doom->player.sector].floor ||
-		doom->player.velosity.y >
-		doom->thismap.sectors[doom->player.sector].floor
-		+ doom->thismap.sectors[doom->player.sector].height)
+		< sec.floor || doom->player.velosity.y > sec.floor + sec.height)
 		{
 			doom->player.sector = lastsector;
 			return ;

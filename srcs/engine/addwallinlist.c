@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawrect.c                                         :+:      :+:    :+:   */
+/*   addwallinlist.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 11:09:54 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:12:11 by gdaniel          ###   ########.fr       */
+/*   Created: 2019/06/05 17:03:41 by gdaniel           #+#    #+#             */
+/*   Updated: 2019/06/05 17:04:06 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	drawrect(t_doom *doom, t_irect rect, t_rgba color)
+void	addwallinlist(t_list **list, t_wall wa)
 {
-	t_ivector2d	cord;
-
-	cord.y = rect.start.y;
-	while (cord.y < rect.start.y + rect.height)
-	{
-		cord.x = rect.start.x;
-		while (cord.x < rect.start.x + rect.width)
-		{
-			drawpoint(doom->win->pixels, doom->win->size, cord,
-			color);
-			cord.x++;
-		}
-		cord.y++;
-	}
+	if (list == NULL)
+		*list = ft_lstnew((void*)&wa, sizeof(t_wall));
+	else
+		ft_lstadd(list, ft_lstnew((void*)&wa, sizeof(t_wall)));
 }

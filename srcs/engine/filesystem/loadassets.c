@@ -6,13 +6,13 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/05/29 19:42:19 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/06 18:29:33 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	loadimages(char *path, char **tmp, t_tga **textures, size_t *count)
+void		loadimages(char *path, char **tmp, t_tga **textures, size_t *count)
 {
 	int		y;
 	char	*filepath;
@@ -55,15 +55,14 @@ Mix_Chunk	*loadsound(char *path, char *soundname)
 		if (music == NULL)
 			error(Mix_GetError());
 	}
+	ft_strdel(&p);
 	return (music);
 }
 
-//ft_strjoin(ft_strjoin("Error: ", soundname), " not load")
-
-void	loadsounds(char *path, char **tmp, t_sound *s)
+void		loadsounds(char *path, char **tmp, t_sound *s)
 {
-	char *t;
-	int y;
+	char	*t;
+	int		y;
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
@@ -81,7 +80,7 @@ void	loadsounds(char *path, char **tmp, t_sound *s)
 	}
 }
 
-void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
+void		loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 {
 	int		y;
 
@@ -101,16 +100,59 @@ void	loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 	ft_strdel(&path);
 }
 
-void	loadassets(char *path, t_doom *doom)
+void		loadweapontexture(t_weapon **weapon, size_t count, t_doom *doom)
+{
+	size_t		i;
+	t_ivector	wh;
+	t_tga		*texture;
+	t_tga		**frame;
+	int			framemax;
+
+	i = 0;
+	while (i < count)
+	{
+		wh = (*weapon)[i].imagetype;
+		texture = &doom->texture[(*weapon)[i].imageid];
+		if (wh.x == 1)
+		{
+			frame = bitmap_mall(texture,
+			setivector2d(wh.y, wh.z), &framemax);
+			(*weapon)[i].anim = setanim(frame, framemax);
+			(*weapon)[i].texture = *frame;
+		}
+		else
+			(*weapon)[i].texture[0] = *texture;
+		i++;
+	}
+}
+
+void		loadfont(char *path, t_doom *doom)
+{
+	char *p;
+
+	p = ft_strjoin(path, "font.tga");
+	doom->font = bitmap(p, setivector2d(28, 36));
+	ft_strdel(&p);
+	ft_strdel(&path);
+}
+
+void		loadassets2(t_doom *doom)
+{
+	loadfont(ft_strjoin(doom->path, "assets/"), doom);
+	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
+}
+
+void		loadassets(char *path, t_doom *doom)
 {
 	int		y;
 	char	*str;
 	char	**tmp;
 
-	y = 0;
+	y = -1;
 	str = readfile(path);
+	ft_strdel(&path);
 	tmp = ft_strsplit(str, '\n');
-	while (tmp[y] != NULL)
+	while (tmp[++y] != NULL)
 	{
 		if (ft_strequ("image:", tmp[y]))
 			loadimages(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
@@ -121,8 +163,11 @@ void	loadassets(char *path, t_doom *doom)
 		else if (ft_strequ("map:", tmp[y]))
 			loadmaps(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
 			&doom->maps, &doom->mapcount);
-		y++;
+		else if (ft_strequ("weapons:", tmp[y]))
+			loadweapons(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
+			&doom->weapons, &doom->weaponcount);
 	}
+	loadassets2(doom);
 	free2dstring(tmp);
-	ft_strdel(&path);
+	ft_strdel(&str);
 }

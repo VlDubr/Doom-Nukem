@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:47:12 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/16 13:20:34 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/05/31 15:47:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static t_input	defaultinput(void)
 	r.rotright = SDL_SCANCODE_RIGHT;
 	r.rotup = SDL_SCANCODE_UP;
 	r.rotdown = SDL_SCANCODE_DOWN;
-	r.mouse.sensivety = 1;
+	r.sensivety = 0.0025f;
 	return (r);
 }
 

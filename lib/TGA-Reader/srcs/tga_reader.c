@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:28:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 19:07:14 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 18:20:28 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_tga	*reader(int fd, t_service *s)
 	t_tga			*img;
 
 	img = (t_tga *)malloc(sizeof(t_tga));
-	buf = (unsigned char *)malloc(sizeof(char) * 1000);
+	buf = (unsigned char *)malloc(sizeof(char) * 19);
 	while ((s->j = read(fd, buf, s->read_l)) > 0)
 	{
 		buf[s->j] = '\0';
@@ -71,6 +71,8 @@ t_tga			*tga_reader(char *path)
 	img = NULL;
 	if ((fd = open(path, O_RDWR)) > 0)
 		img = reader(fd, &s);
+	else if (fd == 0)
+		ft_error("File not opened!");
 	else if (fd == -1)
 		ft_error("Wrong file path");
 	close(fd);

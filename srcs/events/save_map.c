@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:31 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 19:15:04 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static char	*s_m_w(t_map *map)
 		if ((i < map->wall_count - 1)
 		&& (map->walls[i + 1].sector != map->walls[i].sector))
 		{
-			free(del);
+			ft_strdel(&del);
 			del = str;
 			str = ft_strjoin(str, "\n");
 		}
-		free(del);
+		ft_strdel(&del);
 	}
 	del = str;
 	str = ft_strjoin(str, "\n");
-	free(del);
+	ft_strdel(&del);
 	return (str);
 }
 
@@ -49,12 +49,12 @@ static char	*s_m_s(t_map *map, char *str, int *i)
 	{
 		del = str;
 		str = save_s(map, (*i), str);
-		free(del);
+		ft_strdel(&del);
 		(*i)++;
 	}
 	del = str;
 	str = ft_strjoin(str, "\n");
-	free(del);
+	ft_strdel(&del);
 	return (str);
 }
 
@@ -70,7 +70,8 @@ void		save_map(t_map *map, t_serv *s)
 		str = s_m_s(map, str, &i);
 		del = str;
 		str = save_p(map, str);
-		free(del);
+		ft_strdel(&del);
 		write(s->fd, str, sizeof(char) * ft_strlen(str));
+		ft_strdel(&str);
 	}
 }

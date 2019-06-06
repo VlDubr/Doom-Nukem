@@ -6,32 +6,28 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 16:24:02 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 18:37:00 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
 
-char	*file_read(t_serv *s, char *file)
+void	tex_write(t_serv *s, t_sdl sdl, t_map *map)
 {
-	char	buf[1001];
-	char	*str;
-	char	*del;
-	int		j;
+	int xy[2];
+	int wh[2];
 
-	s->file = file;
-	s->fd = open(file, O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
-	str = malloc(0);
-	if (s->fd == -1)
-		ft_error("Read file error!");
-	while ((j = read(s->fd, buf, 1000)) > 0)
-	{
-		del = str;
-		buf[j] = '\0';
-		str = ft_strjoin(str, buf);
-		ft_strdel(&del);
-	}
-	return (str);
+	xy[0] = 1280;
+	xy[1] = 67;
+	wh[0] = 45;
+	wh[1] = 45;
+	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].texture]);
+	xy[0] = 1325;
+	xy[1] = 187;
+	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].floor_tex]);
+	xy[0] = 1325;
+	xy[1] = 367;
+	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].roof_tex]);
 }
 
 void	writer(t_serv *s, t_sdl sdl, t_map *map)
@@ -43,6 +39,8 @@ void	writer(t_serv *s, t_sdl sdl, t_map *map)
 	if (s->p_flag == 1)
 		pl_write(s, sdl);
 	dot_write(s, &sdl, map);
+	if (s->sec_edit < map->sec_count)
+		tex_write(s, sdl, map);
 	SDL_RenderPresent(sdl.r);
 }
 
@@ -59,7 +57,7 @@ int		main(int argc, char **argv)
 			ft_error("Malloc error!");
 		if (!(s = (t_serv *)malloc(sizeof(t_serv))))
 			ft_error("Malloc error!");
-		str = init(map, s, argv[1]);
+		str = init(map, s, argv);
 		if (ft_strlen(str) >= 55)
 			map_parser(s, str, map);
 		SDL_Init(SDL_INIT_VIDEO);

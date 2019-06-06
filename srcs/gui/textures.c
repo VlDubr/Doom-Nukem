@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 12:39:20 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 17:30:59 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	fl_texture(t_serv *s, t_map *map)
 {
-	if (s->e.button.button == 1)
+	if (s->e.button.button == 1 &&
+		map->sector[s->sec_edit].floor_tex + 1 < map->tex_count)
 		map->sector[s->sec_edit].floor_tex++;
 	else if (s->e.button.button == 3 &&
 			map->sector[s->sec_edit].floor_tex > 0)
@@ -23,7 +24,8 @@ void	fl_texture(t_serv *s, t_map *map)
 
 void	roof_texture(t_serv *s, t_map *map)
 {
-	if (s->e.button.button == 1)
+	if (s->e.button.button == 1 &&
+		map->sector[s->sec_edit].roof_tex + 1 < map->tex_count)
 		map->sector[s->sec_edit].roof_tex++;
 	else if (s->e.button.button == 3 &&
 			map->sector[s->sec_edit].roof_tex > 0)
@@ -32,7 +34,8 @@ void	roof_texture(t_serv *s, t_map *map)
 
 void	sec_tex(t_serv *s, t_map *map)
 {
-	if (s->e.button.button == 1)
+	if (s->e.button.button == 1 &&
+		map->sector[s->sec_edit].texture + 1 < map->tex_count)
 		map->sector[s->sec_edit].texture++;
 	else if (s->e.button.button == 3 &&
 			map->sector[s->sec_edit].texture > 0)

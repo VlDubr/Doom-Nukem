@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:24:19 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/04 19:05:42 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 18:17:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ t_rgba	**malloc_pic(t_rgba **pic, int width, int height)
 
 void	free_pic(t_tga *img)
 {
-	int	i;
+	int	y;
 
-	i = 0;
-	while (i < img->height)
+	y = 0;
+	while (y < img->height)
 	{
-		free(img->pic[i]);
-		i++;
+		free(img->pic[y]);
+		y++;
 	}
 	free(img->pic);
 }

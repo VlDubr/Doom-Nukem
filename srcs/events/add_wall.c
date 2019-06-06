@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:10 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 18:33:12 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static t_sector	*zero_sec(t_map *map)
 	sec[i].roof_h = 10;
 	sec[i].sec_type = 0;
 	sec[i].w_count = 0;
-	sec[i].texture = 0;
 	sec[i].r_visibility = 1;
+	sec[i].texture = 0;
 	sec[i].floor_tex = 0;
 	sec[i].roof_tex = 0;
 	if (i == 0)

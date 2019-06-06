@@ -6,14 +6,38 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:59:05 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 16:10:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 19:18:02 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/editor.h"
 
+char	*prog_path(char *str)
+{
+	int		i;
+	int		j;
+	char	*new;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	while (str[i] != '/')
+		i--;
+	new = ft_strdup(str);
+	j = 0;
+	while (j <= i)
+	{
+		new[j] = str[j];
+		j++;
+	}
+	new[j] = '\0';
+	return (new);
+}
+
 static void	service_init(t_serv *s)
 {
+	char *str;
+
 	s->w_c = 0;
 	s->s_c = 0;
 	s->parse_flag = 0;
@@ -24,8 +48,12 @@ static void	service_init(t_serv *s)
 	s->sec_edit = 0;
 	s->text_wh.x = 28;
 	s->text_wh.y = 36;
-	s->text = bitmap("assets/image/editor/charmap4.tga", s->text_wh);
-	s->player = tga_reader("assets/image/editor/man.tga");
+	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap4.tga");
+	s->text = bitmap(str, s->text_wh);
+	free(str);
+	str = ft_strjoin(s->prog_path, "assets/image/editor/man.tga");
+	s->player = tga_reader(str);
+	free(str);
 	s->pl_c.x = 0;
 	s->pl_c.y = 0;
 	s->p_flag = 0;
@@ -34,8 +62,11 @@ static void	service_init(t_serv *s)
 	s->text_c.y = 10;
 }
 
-char		*init(t_map *map, t_serv *s, char *file)
+char		*init(t_map *map, t_serv *s, char **argv)
 {
+	char	*str1;
+	char	*str2;
+
 	map->sec_count = 0;
 	map->wall_count = 0;
 	map->player.coords[0] = 0;
@@ -43,6 +74,14 @@ char		*init(t_map *map, t_serv *s, char *file)
 	map->player.cam[0] = 0;
 	map->player.cam[1] = 0;
 	map->player.cam[2] = 0;
+	s->prog_path = prog_path(argv[0]);
+	str1 = ft_strjoin(s->prog_path, "assets/assets.cfg");
+	str2 = ft_strjoin(s->prog_path, "assets/");
+	img_parse(str1, str2, map, s);
+	ft_strdel(&str1);
+	free(s->prog_path);
+	s->prog_path = prog_path(argv[0]);
 	service_init(s);
-	return (file_read(s, file));
+	s->file = argv[1];
+	return (file_read(s->fd, argv[1]));
 }

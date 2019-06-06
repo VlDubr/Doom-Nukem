@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 16:18:26 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/06 16:49:03 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ typedef struct		s_map
 	t_player		player;
 	t_sector		*sector;
 	t_wall			*walls;
+	t_tga			*textures;
+	int				tex_count;
 	int				sec_count;
 	int				wall_count;
 }					t_map;
@@ -87,6 +89,7 @@ typedef struct		s_map
 typedef struct		s_serv
 {
 	char			*file;
+	char			*prog_path;
 	int				i;
 	int				j;
 	int				w_c;
@@ -143,16 +146,20 @@ void				pl_coords_init(t_map *map, t_serv *s);
 void				fl_texture(t_serv *s, t_map *map);
 void				roof_texture(t_serv *s, t_map *map);
 
-char				*init(t_map *map, t_serv *s, char *file);
+char				*init(t_map *map, t_serv *s, char **argv);
 void				save_map(t_map *map, t_serv *s);
 char				*save_unit(int i, char *delim);
 char				*save_w(t_map *map, int i, char *str_old);
 char				*save_s(t_map *map, int i, char *str_old);
 char				*save_p(t_map *map, char *str_old);
 void				clr_map(t_map *map, t_serv *s);
-void				loadimages(char *path, char **tmp, t_tga **textures, size_t *count);
 
 void				map_parser(t_serv *s, char *str, t_map *map);
-char				*file_read(t_serv *s, char *file);
+void				img_parse(char *assets, char *images,
+						t_map *map, t_serv *s);
+char				*file_read(int fd, char *file);
 int					roof_vis(t_map *map, char *temp, int s_c);
+void				del_str_mass(char **str);
+void				drawimage(t_sdl *sdl, int xy[2],
+					int wh[2], t_tga *image);
 #endif

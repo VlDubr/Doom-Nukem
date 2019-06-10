@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 16:20:01 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:19 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:33:03 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 void		w_del(t_map *map, int j, int i)
 {

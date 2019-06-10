@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 16:49:03 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 18:15:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,29 @@ typedef struct		s_sector
 	int				texture;
 }					t_sector;
 
+typedef struct		s_obj
+{
+	int				type;
+	float			pos[3];
+	float			rot[3];
+	int				width;
+	int				height;
+	int				health;
+	int				is_mov;
+	float			move_s;
+	int				agr_area;
+	int				texture;
+	int				damage;
+}					t_obj;
+
 typedef struct		s_map
 {
 	t_player		player;
 	t_sector		*sector;
 	t_wall			*walls;
 	t_tga			*textures;
+	t_obj			*obj;
+	int				obj_count;
 	int				tex_count;
 	int				sec_count;
 	int				wall_count;
@@ -94,6 +111,7 @@ typedef struct		s_serv
 	int				j;
 	int				w_c;
 	int				s_c;
+	int				o_c;
 	int				quit;
 	int				fd;
 	int				parse_flag;
@@ -110,6 +128,7 @@ typedef struct		s_serv
 	t_tga			*player;
 	int				p_add;
 	int				p_flag;
+	int				gui_flag;
 }					t_serv;
 
 void				ft_error(const char *str);
@@ -122,7 +141,8 @@ void				gui(t_serv *s, t_sdl *sdl, t_map *map);
 void				map_writer(t_sdl *sdl, t_serv *s, t_map *map);
 void				pl_write(t_serv *s, t_sdl sdl);
 void				line_dda(t_wall st, t_wall f, t_sdl *sd, t_serv *s);
-void				text_wr(t_serv *s, t_sdl *sdl, t_map *map);
+void				buttons(t_serv *s, t_sdl *sdl, t_map *map);
+void				obj_buttons(t_serv *s, t_sdl *sdl, t_map *map);
 void				dot_write(t_serv *s, t_sdl *sdl, t_map *map);
 
 void				event(t_serv *s, t_sdl sdl, t_map *map);
@@ -152,7 +172,11 @@ char				*save_unit(int i, char *delim);
 char				*save_w(t_map *map, int i, char *str_old);
 char				*save_s(t_map *map, int i, char *str_old);
 char				*save_p(t_map *map, char *str_old);
+char				*save_obj(t_map *map, int i, char *str_old);
 void				clr_map(t_map *map, t_serv *s);
+char				*save_elem(char *str, int num, char *c);
+char				*save_elem_fl(char *str, float num, char *c);
+int					roof_c(int i, t_map *map);
 
 void				map_parser(t_serv *s, char *str, t_map *map);
 void				img_parse(char *assets, char *images,
@@ -162,4 +186,11 @@ int					roof_vis(t_map *map, char *temp, int s_c);
 void				del_str_mass(char **str);
 void				drawimage(t_sdl *sdl, int xy[2],
 					int wh[2], t_tga *image);
+int					wall_p(t_map *map, char *str, int i, int w_c);
+int					sec_p(t_map *map, char *str, int i, int s_c);
+int					pl_p(t_map *map, char *str, int i);
+int					obj_p(t_map *map, char *str, int i, int o_c);
+
+void				str_wr(t_serv *s, t_sdl *sdl, char *str, char *temp2);
+char				*ret_str(int flag, t_map *map, int sec_edit);
 #endif

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:09:04 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 17:13:29 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:57:22 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 	temp = ret_str(5, map, s->sec_edit);
 	str_wr(s, sdl, "sec tex:", "");
 	ft_strdel(&temp);
-
 	s->text_c.y += 60;
 	temp = ret_str(0, map, s->sec_edit);
 	str_wr(s, sdl, "floor h:", temp);
@@ -81,7 +80,7 @@ static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 	next_buttons(s, sdl, map, temp);
 }
 
-void		text_wr(t_serv *s, t_sdl *sdl, t_map *map)
+void		buttons(t_serv *s, t_sdl *sdl, t_map *map)
 {
 	first_buttons(s, sdl, map);
 	s->text_c.x += 40;

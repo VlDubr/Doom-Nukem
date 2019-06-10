@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 13:50:08 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:26 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:31:47 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 void	pl_write(t_serv *s, t_sdl sdl)
 {

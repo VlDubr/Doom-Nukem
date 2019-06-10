@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:15:15 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:13 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:32:49 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 void	clr_map(t_map *map, t_serv *s)
 {

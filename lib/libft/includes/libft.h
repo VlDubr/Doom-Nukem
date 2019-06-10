@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 13:19:48 by wqarro-v          #+#    #+#             */
-/*   Updated: 2019/03/18 11:43:15 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 17:08:45 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ size_t				ft_wordcount(const char *s, char c);
 size_t				ft_wordsize(const char *s, char c);
 
 int					get_next_line(const int fd, char **line);
+char				*ft_ftoa(double num);
 
 #endif

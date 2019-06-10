@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 19:15:04 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:30:41 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 static char	*s_m_w(t_map *map)
 {
@@ -40,17 +40,16 @@ static char	*s_m_w(t_map *map)
 	return (str);
 }
 
-static char	*s_m_s(t_map *map, char *str, int *i)
+static char	*s_m_s(t_map *map, char *str)
 {
 	char	*del;
+	int		i;
 
-	(*i) = 0;
-	while ((*i) < map->sec_count)
+	i = 0;
+	while (i < map->sec_count)
 	{
-		del = str;
-		str = save_s(map, (*i), str);
-		ft_strdel(&del);
-		(*i)++;
+		str = save_s(map, i, str);
+		i++;
 	}
 	del = str;
 	str = ft_strjoin(str, "\n");
@@ -58,19 +57,30 @@ static char	*s_m_s(t_map *map, char *str, int *i)
 	return (str);
 }
 
+static char	*s_m_obj(t_map *map, char *str)
+{
+	char	*del;
+	int		i;
+
+	i = 0;
+	while (i < map->obj_count)
+	{
+		str = save_obj(map, i, str);
+		i++;
+	}
+	return (str);
+}
+
 void		save_map(t_map *map, t_serv *s)
 {
-	int		i;
 	char	*str;
-	char	*del;
 
 	if (map->wall_count > 0)
 	{
 		str = s_m_w(map);
-		str = s_m_s(map, str, &i);
-		del = str;
+		str = s_m_s(map, str);
 		str = save_p(map, str);
-		ft_strdel(&del);
+		str = s_m_obj(map, str);
 		write(s->fd, str, sizeof(char) * ft_strlen(str));
 		ft_strdel(&str);
 	}

@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 16:44:38 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:31:54 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 int		check_s(t_map *map, int i, int j)
 {

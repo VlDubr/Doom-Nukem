@@ -6,11 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 13:23:46 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:16 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 17:32:58 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/editor.h"
+#include "../../../includes/editor.h"
 
 static void	clr_port(t_map *map, t_serv *s)
 {

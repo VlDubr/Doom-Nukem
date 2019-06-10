@@ -6,78 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 16:20:12 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/10 15:43:55 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/editor.h"
-
-static int	wall_p(t_map *map, char *str, int i, int w_c)
-{
-	char	*temp;
-
-	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->walls[w_c].xy[0] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->walls[w_c].xy[1] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->walls[w_c].next_sec = ft_atoi(temp);
-	ft_strdel(&temp);
-	return (i);
-}
-
-static int	sec_p(t_map *map, char *str, int i, int s_c)
-{
-	char	*temp;
-
-	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].start_pos = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].w_count = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].floor_h = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].roof_h = roof_vis(map, temp, s_c);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].sec_type = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].texture = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].floor_tex = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->sector[s_c].roof_tex = ft_atoi(temp);
-
-	ft_strdel(&temp);
-	return (i);
-}
-
-static int	pl_p(t_map *map, char *str, int i)
-{
-	char	*temp;
-
-	temp = (char *)malloc(sizeof(char) * 10);
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->player.coords[0] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->player.coords[1] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->player.cam[0] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
-	map->player.cam[1] = ft_atoi(temp);
-
-	i = ft_str_chr_cpy(temp, str, i, " \n\01");
-	map->player.cam[2] = ft_atoi(temp);
-
-	ft_strdel(&temp);
-	return (i);
-}
 
 void		counter(t_serv *s, char *str, t_map *map)
 {
@@ -88,26 +21,41 @@ void		counter(t_serv *s, char *str, t_map *map)
 			map->wall_count++;
 		if (str[s->i] == 's')
 			map->sec_count++;
+		if (str[s->i] == 'o')
+			map->obj_count++;
 		s->i++;
 	}
+}
+
+void		map_malloc(t_map *map)
+{
+	if (!(map->sector = (t_sector *)malloc(sizeof(t_sector) * map->sec_count)))
+		ft_error("Sector malloc error!");
+	if (!(map->walls = (t_wall *)malloc(sizeof(t_wall) * map->wall_count)))
+		ft_error("Walls malloc error!");
+	if (!(map->obj = (t_obj *)malloc(sizeof(t_obj) * map->obj_count)))
+		ft_error("Objects malloc error!");
 }
 
 void		map_parser(t_serv *s, char *str, t_map *map)
 {
 	counter(s, str, map);
-	if (!(map->sector = (t_sector *)malloc(sizeof(t_sector) * map->sec_count)))
-		ft_error("Malloc error!");
-	if (!(map->walls = (t_wall *)malloc(sizeof(t_wall) * map->wall_count)))
-		ft_error("Malloc error!");
+	map_malloc(map);
 	s->i = 0;
 	while (str[s->i] != '\0')
 	{
-		if (str[s->i] == 'w' && s->w_c < map->wall_count)
-			s->i = wall_p(map, str, s->i + 3, s->w_c++);
-		else if (str[s->i] == 's' && s->s_c < map->sec_count)
-			s->i = sec_p(map, str, s->i + 3, s->s_c++);
-		else if (str[s->i] == 'p')
-			s->i = pl_p(map, str, s->i + 3);
+		if (str[s->i] > 96 && str[s->i] < 123 &&
+			str[s->i + 1] == ':' && str[s->i - 1] != '#')
+		{
+			if (str[s->i] == 'w' && s->w_c < map->wall_count)
+				s->i = wall_p(map, str, s->i + 3, s->w_c++);
+			else if (str[s->i] == 's' && s->s_c < map->sec_count)
+				s->i = sec_p(map, str, s->i + 3, s->s_c++);
+			else if (str[s->i] == 'p')
+				s->i = pl_p(map, str, s->i + 3);
+			else if (str[s->i] == 'o' && s->o_c < map->obj_count)
+				s->i = obj_p(map, str, s->i + 3, s->o_c++);
+		}
 		else
 			s->i++;
 	}

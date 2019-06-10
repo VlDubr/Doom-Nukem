@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/06 19:07:56 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:06:31 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void			previousframe(t_anim *anim);
 typedef struct	s_input
 {
 	const Uint8	*keystate;
+	int			use;
 	int			moveforward;
 	int			movebackward;
 	int			moveleft;
@@ -163,14 +164,24 @@ typedef struct	s_player
 
 typedef enum	e_typeobj
 {
-	PLAYER,
 	DECORE,
-	ENEMY
+	ENEMY,
+	USE,
+	LIGHTMOD
 }				t_typeobj;
+
+typedef enum	e_typeuse
+{
+	ADDHEALTH,
+	ADDAMMO,
+	ADDSTAMIN
+}				t_typeuse;
 
 typedef struct	s_object
 {
+	int			isactive;
 	t_typeobj	typeobject;
+	t_typeuse	typeuse;
 	size_t		sector;
 
 	t_fvector	pos;
@@ -178,6 +189,7 @@ typedef struct	s_object
 	t_fvector	velosity;
 
 	float		width;
+	float		height;
 
 	int			isdead;
 	int			health;
@@ -195,10 +207,15 @@ typedef struct	s_object
 	int			agressionarea;
 
 	size_t		texture;
+	size_t		textureup;
+	size_t		texturedown;
+	size_t		textureleft;
+	size_t		texturerigth;
 }				t_object;
 
 typedef struct	s_sector
 {
+	size_t			id;
 	size_t			start;
 	size_t			count;
 	int				floor;
@@ -206,6 +223,7 @@ typedef struct	s_sector
 	int				type;
 	size_t			walltexture;
 	size_t			floortexture;
+	float			light;
 }				t_sector;
 
 typedef struct	s_map
@@ -234,11 +252,14 @@ t_object *obj, double delta);
 
 typedef struct	s_wall
 {
+	int			type;
 	t_fvector	oldpoint[2];
+	t_fvector	floorpoint[2];
 	t_fvector	p[4];
 	float		offset[4];
 	size_t		c;
 	t_tga		texture;
+	float		light;
 }				t_wall;
 
 typedef struct	s_sermat
@@ -275,6 +296,8 @@ typedef struct	s_doom
 	char		*path;
 	t_window	*win;
 	t_list		*pipeline;
+	int			*visit;
+	int			*portalvisit;
 	SDL_Event	event;
 
 	t_sound		sound;
@@ -292,6 +315,7 @@ typedef struct	s_doom
 	t_tga		*texture;
 	size_t		texturecount;
 	t_tga		**font;
+	t_tga		*skybox;
 
 	t_player	player;
 
@@ -307,15 +331,18 @@ void		initsettingui(t_doom *doom);
 void		initsetting(t_setting *s);
 void		mousemove(t_player *play, t_input *input, float delta);
 
+void		drawskubox(t_doom *doom);
 void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord,
 t_rgba color);
 void		drawrect(t_doom *doom, t_irect rect, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
 void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
-void		drawfloor(t_doom *doom, t_wall wa, double *offloor, t_wall fl);
-void		drawceil(uint32_t *p, t_wall wa, t_rgb color);
+void		drawfloor(t_doom *doom, t_wall wa, int b);
+void		drawcail(t_doom *doom, t_wall wa, int b);
 void		drawimage(t_doom *doom, t_irect rect, t_tga *image);
+
+void		drawwallv3(t_doom *doom, size_t sec);
 
 int			portal(t_doom *doom, t_wall **wall, t_sector *sec, t_sector *newsec);
 int			setwalls(t_doom *doom, t_wall **wall, t_sector sec, t_ivector ci);
@@ -351,6 +378,8 @@ void		addstamina(t_player *p, float addvalue);
 void		minusstamina(t_player *p, float minusvalue);
 
 void		shot(t_doom *doom, Mix_Chunk *s);
+void		objpickup(t_input input, t_player *play, t_object *obj);
+void		lightmod(t_object *obj, t_map *map, t_input input);
 
 void		addhealth(t_player *p, float addvalue);
 void		minushealth(t_player *p, float minusvalue);
@@ -387,7 +416,7 @@ void		adddrawwall(t_fvector *view, float x, float y, float z);
 void		subdrawwall(t_fvector *view, float x, float y, float z);
 void		multdrawwall(t_fvector *view, float x, float y, float z);
 
-t_fvector	raycastfloor(t_doom *doom, t_fvector angle, t_fvector2d yse);
+t_fvector	raycastfloor(t_fvector2d angle, t_fvector2d yse);
 
 t_list		*getlistindex(t_list *list, size_t index);
 void		del(void *data, size_t size);

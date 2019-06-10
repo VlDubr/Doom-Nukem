@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/04 12:45:13 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:14:27 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	checkkeyboard(t_doom *doom, double delta)
 void	update(t_doom *doom, double delta)
 {
 	size_t c;
+	t_fvector2d	dirobj;
+	float		at;
 
 	c = 0;
 	checkkeyboard(doom, delta);
@@ -115,10 +117,41 @@ void	update(t_doom *doom, double delta)
 	checkswaplevel(doom, doom->player.sector);
 	while (c < doom->thismap.objcount)
 	{
-		agressionememy(&doom->player, &doom->thismap.obj[c]);
-		damageenemy(doom->sound.run, &doom->player,
-		&doom->thismap.obj[c], delta);
-		moveenemy(doom, &doom->thismap.obj[c], delta);
+		if (doom->thismap.obj[c].isactive)
+		{
+			dirobj = setfvector2d(doom->thismap.obj[c].pos.x - doom->player.pos.x,
+			doom->thismap.obj[c].pos.z - doom->player.pos.z);
+			at = radtodeg(atan2(dirobj.y, dirobj.x));
+			if (at > 45 && at < 315)
+				doom->thismap.obj[c].texture = doom->thismap.obj[c].texturerigth;
+			else if (at > 45 && at < 135)
+				doom->thismap.obj[c].texture = doom->thismap.obj[c].textureup;
+			else if (at > 135 && at < 225)
+				doom->thismap.obj[c].texture = doom->thismap.obj[c].textureleft;
+			else if (at > 225 && at < 315)
+				doom->thismap.obj[c].texture = doom->thismap.obj[c].texturedown;
+			else
+				doom->thismap.obj[c].texture = doom->thismap.obj[c].textureup;
+			if (doom->thismap.obj[c].typeobject == ENEMY)
+			{
+				agressionememy(&doom->player, &doom->thismap.obj[c]);
+				damageenemy(doom->sound.run, &doom->player,
+				&doom->thismap.obj[c], delta);
+				moveenemy(doom, &doom->thismap.obj[c], delta);
+			}
+			else if (doom->thismap.obj[c].typeobject == USE)
+			{
+				agressionememy(&doom->player, &doom->thismap.obj[c]);
+				objpickup(doom->setting.input, &doom->player, &doom->thismap.obj[c]);
+			}
+			else if (doom->thismap.obj[c].typeobject == LIGHTMOD)
+			{
+				agressionememy(&doom->player, &doom->thismap.obj[c]);
+				doom->thismap.obj[c].sector = isinside(setfvector2d(doom->thismap.obj[c].pos.x,
+				doom->thismap.obj[c].pos.z), doom->thismap, doom->thismap.obj[c].sector);
+				lightmod(&doom->thismap.obj[c], &doom->thismap, doom->setting.input);
+			}
+		}
 		c++;
 	}
 	doom->player.targetid = 18446744073709551615u;

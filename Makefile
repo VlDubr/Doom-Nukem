@@ -2,7 +2,7 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
-		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c game/object/drawobj.c \
+		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c game/object/drawobj.c game/object/pickup.c game/object/lightmod.c \
 		game/map/switchlevel.c game/map/minimap.c \
 		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c game/player/shot.c \
 		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
@@ -14,7 +14,7 @@ SRCS = main.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c engine/input/mousemove.c \
 		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c \
-		engine/draw/drawimage.c engine/draw/drawpistol.c engine/draw/anim.c engine/draw/drawammo.c engine/draw/drawportal.c
+		engine/draw/drawimage.c engine/draw/drawpistol.c engine/draw/anim.c engine/draw/drawammo.c engine/draw/drawportal.c engine/draw/drawskybox.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/

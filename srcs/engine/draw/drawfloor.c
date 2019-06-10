@@ -6,13 +6,13 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 19:10:42 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/04 15:33:31 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/07 17:39:01 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	drawfloor(t_doom *doom, t_wall wa, double *offloor, t_wall fl)
+void	drawfloor(t_doom *doom, t_wall wa, int b)
 {
 	float	endy;
 	float	y;
@@ -27,17 +27,16 @@ void	drawfloor(t_doom *doom, t_wall wa, double *offloor, t_wall fl)
 	t_fvector2d dir;
 	float kef;
 	t_rgba	color;
-	// printf ("%f\n", player.rotate.z);
-	if (wa.p[0].x > wa.p[1].x)
-		ft_swap((void**)&wa.p[0], (void**)&wa.p[1]);
-	x = wa.p[0].x;
+	if (wa.p[b == 3 || b == 1 ? 0 : 2].x > wa.p[b ? 1 : 3].x)
+		ft_swap((void**)&wa.p[b == 3 || b == 1 ? 0 : 2], (void**)&wa.p[b == 3 || b == 1 ? 1 : 3]);
+	x = wa.p[b ? 0 : 2].x;
 	i = 0;
 
 	dir.x = cos(doom->player.rotate.z);
 	dir.y = sin(doom->player.rotate.z);
-	while (x < wa.p[1].x)
+	while (x < wa.p[b == 3 || b == 1 ? 1 : 3].x)
 	{		
-		y = flerp(wa.p[0].y, wa.p[1].y, ((float)1 / (wa.p[1].x - wa.p[0].x)) * i);
+		y = flerp(wa.p[b == 3 || b == 1 ? 0 : 2].y, wa.p[b == 3 || b == 1 ? 1 : 3].y, ((float)1 / (wa.p[b == 3 || b == 1 ? 1 : 3].x - wa.p[b == 3 || b == 1 ? 0 : 2].x)) * i);
 		endy = 800;
 		// m = fl[0].y/offloor[1] / 500;
 		// kef = fl[0].y/offloor[1] - fl[0].y;
@@ -48,13 +47,13 @@ void	drawfloor(t_doom *doom, t_wall wa, double *offloor, t_wall fl)
 			// xp = fl.p[0].x + (x * dir.x) - (fl.p[0].z +xrotate (y * dir.y));
 			// yp = fl.p[0].z + (y * dir.y) - (fl.p[0].x + (x * dir.x));
 			//fl[1].x задаёт скорость в зависимости ширины сектора
-			xp = (int)fabsf(xp) % (int)fl.texture.width;
-			yp = (int)fabsf(yp) % (int)fl.texture.height;
-			if (yp >= 0 && yp < fl.texture.height && xp >= 0 && xp < fl.texture.width)
+			xp = (int)fabsf(xp);
+			yp = (int)fabsf(yp);
+			if (yp >= 0 && yp < wa.texture.height && xp >= 0 && xp < wa.texture.width)
 			{
-				color.red = fl.texture.pic[(int)yp][(int)xp].red;
-				color.green = fl.texture.pic[(int)yp][(int)xp].green;
-				color.blue = fl.texture.pic[(int)yp][(int)xp].blue;
+				color.red = wa.texture.pic[(int)yp][(int)xp].red;
+				color.green = wa.texture.pic[(int)yp][(int)xp].green;
+				color.blue = wa.texture.pic[(int)yp][(int)xp].blue;
 				//a = image.pic[yp][xp].alpha;
 			}
 			if (x >= 0 && x < 800 && y >= 0 && y < 800)

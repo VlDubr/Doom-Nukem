@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:51:31 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/31 16:58:40 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 17:57:35 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ t_player	defaultplayerdata(t_doom *doom)
 	r.weapons = doom->weapons;
 	r.weaponcount = doom->weaponcount;
 	r.thisweapon = &doom->weapons[0];
+	r.thisweapon->thisammo = 10;
 	return (r);
 }

@@ -6,13 +6,13 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/05/27 17:22:11 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 18:22:02 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "doom.h"
-void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int start, uint32_t *p, float	*offset)
+void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int start, uint32_t *p, float	*offset, float light)
 {
 	float dx;
 	float dy;
@@ -21,6 +21,7 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	float d;
 	float d1;
 	float d2;
+	t_rgba	color;
 	int r;
 	int g;
 	int b;
@@ -95,19 +96,43 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		yp =(int)((y - y1)/k);
 		if (yp >= 0 && yp < image.height && xp >= 0 && xp < image.width)
 		{
-			r = image.pic[yp][xp].red;
-			g = image.pic[yp][xp].green;
-			b = image.pic[yp][xp].blue;
-			a = image.pic[yp][xp].alpha;
+			color = image.pic[yp][xp];
+			// r = image.pic[yp][xp].red;
+			// g = image.pic[yp][xp].green;
+			// b = image.pic[yp][xp].blue;
+			// a = image.pic[yp][xp].alpha;
 		}
 		if (x >= 0 && x < 800 && y >= 0 && y < 800)
 		{
-			if (a != 0)
+			t_rgba		pc;
+			t_rgba		newc;
+			uint32_t	c;
+			int l = light == 1 ? 2 : 1;
+
+			c = p[(int)x + (((int)y) * 800)];
+			pc.alpha = c >> 24;
+			pc.red = (((c << 8) >> 24));
+			pc.green = (((c << 16) >> 24));
+			pc.blue = (((c << 24) >> 24));
+			c = ((((((color.alpha << 8) | color.red / l) << 8) | color.green / l) << 8)
+			| color.blue / l);
+			if (color.alpha == 255)
 			{
-				if (y < y0 && y > y1 && x > 0)
-					p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-					p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+				if (x >= 0 && x < 800 && y >= 0 && y < 800)
+					p[(int)x + (((int)y) * 800)] = c;
 			}
+			else if (color.alpha < 255 && color.alpha > 0)
+			{
+				newc = opacityrgba(pc, color);
+				p[(int)x + (((int)y) * 800)] = ((((((newc.alpha << 8) | newc.red) << 8)
+				| newc.green) << 8) | newc.blue);
+			}
+			// if (a != 0)
+			// {
+			// 	if (y < y0 && y > y1 && x > 0)
+			// 		p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+			// 		p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
+			// }
 		}
 		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 		// 	SDL_RenderDrawPoint (renderer,x, y);
@@ -153,7 +178,7 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	int mindist;
 	int buf;
 	int start;
-	if( wall.p[0].x > 800 || wall.p[1].x > 800 || wall.p[0].x < -2 || wall.p[1].x < -2)
+	if( wall.p[0].x > 810 || wall.p[1].x > 810 || wall.p[0].x < -2 || wall.p[1].x < -2)
 		return;
 	dx1 = (wall.p[1].x - wall.p[0].x);
 	dy1 = (wall.p[1].y - wall.p[0].y);
@@ -221,7 +246,7 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	{
 		y = 0;
 		xp = (int)((float)((float)x+kef[0])/m[0]);
-		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p, offset);
+		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p, offset, wall.light);
 		x++;
 	}
 	i = 0;

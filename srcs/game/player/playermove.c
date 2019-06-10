@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/04 17:21:16 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 14:33:11 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 	t_sector	sec;
 
 	initvisit(visit, doom->thismap.sectorcount);
-	sec = doom->thismap.sectors[doom->player.sector];
 	doom->player.velosity = newvec;
 	line.p[0] = setfvector2d(doom->player.pos.x, doom->player.pos.z);
 	line.p[1] = setfvector2d(doom->player.velosity.x, doom->player.velosity.z);
@@ -38,10 +37,11 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 	lastsector = doom->player.sector;
 	doom->player.sector = isinside(setfvector2d(doom->player.velosity.x,
 	doom->player.velosity.z), doom->thismap, doom->player.sector);
+	sec = doom->thismap.sectors[doom->player.sector];
 	if (lastsector != doom->player.sector)
 	{
-		if ((doom->player.velosity.y / 1.5f)
-		< sec.floor || doom->player.velosity.y > sec.floor + sec.height)
+		if ((doom->player.velosity.y / 1.5f) < sec.floor
+		|| doom->player.velosity.y > sec.floor + sec.height)
 		{
 			doom->player.sector = lastsector;
 			return ;

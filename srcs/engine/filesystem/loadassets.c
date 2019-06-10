@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 18:29:33 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 15:29:24 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,12 @@ void		loadfont(char *path, t_doom *doom)
 
 void		loadassets2(t_doom *doom)
 {
+	char *pathskybox;
+	
+	pathskybox = ft_strjoin(ft_strjoin(doom->path, "assets/"), "skybox.tga");
 	loadfont(ft_strjoin(doom->path, "assets/"), doom);
 	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
+	doom->skybox = tga_reader(pathskybox);
 }
 
 void		loadassets(char *path, t_doom *doom)

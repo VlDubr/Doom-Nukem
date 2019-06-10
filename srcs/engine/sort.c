@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 11:59:11 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/05 18:18:05 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/07 12:35:18 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ void	wallswap(t_list *list, t_ivector cord)
 
 	ltmp = (t_wall*)getlistindex(list, cord.x)->content;
 	ltmp1 = (t_wall*)getlistindex(list, cord.y)->content;
-	z.x = (ltmp->p[0].z + ltmp->p[1].z + ltmp->p[2].z +
-	ltmp->p[3].z) / 4.0f;
-	z.y = (ltmp1->p[0].z + ltmp1->p[1].z + ltmp1->p[2].z +
-	ltmp1->p[3].z) / 4.0f;
+	z.x = (ltmp->p[0].w + ltmp->p[1].w + ltmp->p[2].w + ltmp->p[3].w) / 4.0f;
+	z.y = (ltmp1->p[0].w + ltmp1->p[1].w + ltmp1->p[2].w + ltmp1->p[3].w) / 4.0f;
 	if (z.x < z.y)
 		ft_swap(&getlistindex(list, cord.x)->content,
 		&getlistindex(list, cord.y)->content);

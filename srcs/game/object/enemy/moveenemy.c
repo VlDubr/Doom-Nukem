@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:47:39 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 18:23:46 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 14:58:37 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ void			moveenemy(t_doom *doom, t_object *obj, float delta)
 
 	initvisit(visit, doom->thismap.sectorcount);
 	dir = checldir(&line, obj, doom->player, delta);
-	sec = doom->thismap.sectors[obj->sector];
-	if (!(obj->ismoveble && obj->ismove) ||
+	if (!(obj->ismoveble && obj->ismove) &&
 	collides(line, &doom->thismap, obj->sector, visit))
 		return ;
 	lastsector = obj->sector;
 	obj->sector = isinside(setfvector2d(obj->velosity.x,
 	obj->velosity.z), doom->thismap, obj->sector);
+	sec = doom->thismap.sectors[obj->sector];
 	if (lastsector != obj->sector)
 	{
-		if ((obj->velosity.y / 1.5f) < sec.floor ||
+		if (obj->pos.y + (obj->height / 1.5f) < sec.floor ||
 		obj->velosity.y > sec.floor + sec.height)
 		{
 			obj->sector = lastsector;

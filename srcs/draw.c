@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/06 19:07:43 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 17:03:27 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,15 +240,15 @@ void	drawsectorv2(t_doom *doom, t_fvector *w, size_t count, size_t floor, size_t
 	// }
 	// if (i == 0)
 	
-	fl.p[0] = setfvector(-500, floor, -500, 1);
-	fl.p[1] = setfvector(-500, floor, 500, 1);
-	fl.p[2] = setfvector(500, floor, 500, 1);
-	fl.p[3] = setfvector(500, floor, -500, 1);
-	fl.texture = texture;
+	// fl.p[0] = setfvector(-500, floor, -500, 1);
+	// fl.p[1] = setfvector(-500, floor, 500, 1);
+	// fl.p[2] = setfvector(500, floor, 500, 1);
+	// fl.p[3] = setfvector(500, floor, -500, 1);
+	// fl.texture = texture;
 	// maxdelt = fabsf (wa.p[2].x - wa.p[0].x);
 	// if (fabsf(wa.p[2].z - wa.p[0].z) > fabsf(wa.p[2].x - wa.p[0].x))
 	// 	maxdelt = fabsf (wa.p[2].z - wa.p[0].z);
-	multmatrixdrawwall(fl.p, cammat);
+	//multmatrixdrawwall(fl.p, cammat);
 	// dx = wa.p[2].x - wa.p[0].x;
 	// dy = wa.p[2].z - wa.p[0].z;
 	// dx = sqrt((dx * dx) + (dy * dy));
@@ -330,7 +330,12 @@ void	drawwall(t_doom *doom)
 	while (tmp != NULL)
 	{
 		wall = (t_wall*)tmp->content;
-		drow_wall(doom->win->pixels, *wall, wall->texture, wall->offset);
+		if (wall->type != 2)
+			drow_wall(doom->win->pixels, *wall, wall->texture, wall->offset);
+		// if (wall->type == 3 || wall->type == 1 || wall->type == 2)
+		// 	//drawfloor(doom, *wall, wall->type);
+		// if (wall->type == 3 || wall->type == 4 || wall->type == 5)
+		// 	//drawcail(doom, *wall, wall->type);
 		tmp = tmp->next;
 	}
 }
@@ -377,6 +382,7 @@ void	drawwallv3(t_doom *doom, size_t sec)
 		error("Error");
 	ci.x = sect.start;
 	ci.y = -1;
+	doom->visit[sec] = 1;
 	while (++ci.y < sect.count)
 	{
 		ci.z = setwalls(doom, &wa, sect, ci);
@@ -387,24 +393,18 @@ void	drawwallv3(t_doom *doom, size_t sec)
 
 void	draw(t_doom *doom)
 {
-	int		i;
-
 	doom->pipeline = NULL;
-	i = 0;
-	//clock_t start = clock();
-	while (i < doom->thismap.sectorcount)
-	{
-		drawwallv3(doom, i);
-		i++;
-	}
-	// clock_t end = clock();
-	// double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-	// printf("The time: %f seconds\n", seconds);
+	drawwallv3(doom, doom->player.sector);
 	SDL_RenderClear(doom->win->renderer);
 	cleartexture(doom->win);
+	drawskubox(doom);
 	drawobj(doom, doom->thismap);
+	//clock_t start = clock();
 	drawsort(doom->pipeline);
 	drawwall(doom);
+	//clock_t end = clock();
+	//double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+	//printf("The time: %f seconds\n", seconds);
 	ft_lstdel(&doom->pipeline, del);
 	drawminimap(doom->win->pixels, doom, doom->player.sector,
 	setivector2d(400, 300));

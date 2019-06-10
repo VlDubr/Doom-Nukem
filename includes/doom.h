@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 18:06:31 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 19:47:49 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,8 @@ typedef enum	e_typeobj
 	DECORE,
 	ENEMY,
 	USE,
-	LIGHTMOD
+	LIGHTMOD,
+	USEDOOR
 }				t_typeobj;
 
 typedef enum	e_typeuse
@@ -182,6 +183,7 @@ typedef struct	s_object
 	int			isactive;
 	t_typeobj	typeobject;
 	t_typeuse	typeuse;
+	int			iscollide;
 	size_t		sector;
 
 	t_fvector	pos;

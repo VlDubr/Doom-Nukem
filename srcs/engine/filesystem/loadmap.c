@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 17:28:42 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 19:59:45 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	initsector(char *str, t_sector **sector, int y2)
 	(*sector)[y2].type = ft_atoi(tmp[5]);
 	(*sector)[y2].walltexture = ft_atoi(tmp[6]);
 	(*sector)[y2].floortexture = ft_atoi(tmp[7]);
-	(*sector)[y2].light = 1;
+	(*sector)[y2].light = 0;
 	(*sector)[y2].id = y2;
 	free2dstring(tmp);
 }
@@ -105,27 +105,28 @@ void	initobj(char **str, t_object **obj, int y)
 
 	(*obj)[y].typeobject = ft_atoi(str[1]);
 	(*obj)[y].typeuse = ft_atoi(str[2]);
+	(*obj)[y].iscollide = ft_atoi(str[3]);
 
-	tmp2 = ft_strsplit(str[3], ',');
+	tmp2 = ft_strsplit(str[4], ',');
 	(*obj)[y].pos = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
 	ft_atof(tmp2[2]), 1);
 	free2dstring(tmp2);
-	tmp2 = ft_strsplit(str[4], ',');
+	tmp2 = ft_strsplit(str[5], ',');
 	(*obj)[y].rotate = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
 	ft_atof(tmp2[2]), 1);
 	free2dstring(tmp2);
-	(*obj)[y].width = ft_atof(str[5]);
-	(*obj)[y].height = ft_atoi(str[6]);
-	(*obj)[y].maxhealth = ft_atoi(str[7]);
+	(*obj)[y].width = ft_atof(str[6]);
+	(*obj)[y].height = ft_atoi(str[7]);
+	(*obj)[y].maxhealth = ft_atoi(str[8]);
 	(*obj)[y].health = (*obj)[y].maxhealth;
-	(*obj)[y].ismoveble = ft_atoi(str[8]);
-	(*obj)[y].movespeed = ft_atof(str[9]);
-	(*obj)[y].agressionarea = ft_atoi(str[10]);
-	(*obj)[y].textureup = ft_atoi(str[11]);
-	(*obj)[y].texturedown = ft_atoi(str[12]);
-	(*obj)[y].textureleft = ft_atoi(str[13]);
-	(*obj)[y].texturerigth = ft_atoi(str[14]);
-	(*obj)[y].damage = ft_atoi(str[15]);
+	(*obj)[y].ismoveble = ft_atoi(str[9]);
+	(*obj)[y].movespeed = ft_atof(str[10]);
+	(*obj)[y].agressionarea = ft_atoi(str[11]);
+	(*obj)[y].textureup = ft_atoi(str[12]);
+	(*obj)[y].texturedown = ft_atoi(str[13]);
+	(*obj)[y].textureleft = ft_atoi(str[14]);
+	(*obj)[y].texturerigth = ft_atoi(str[15]);
+	(*obj)[y].damage = ft_atoi(str[16]);
 	(*obj)[y].dscmax = 100;
 	(*obj)[y].isactive = 1;
 	(*obj)[y].dsc = (*obj)[y].dscmax;

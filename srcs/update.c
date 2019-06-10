@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 18:14:27 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 20:05:43 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,11 @@ void	update(t_doom *doom, double delta)
 				doom->thismap.obj[c].sector = isinside(setfvector2d(doom->thismap.obj[c].pos.x,
 				doom->thismap.obj[c].pos.z), doom->thismap, doom->thismap.obj[c].sector);
 				lightmod(&doom->thismap.obj[c], &doom->thismap, doom->setting.input);
+			}
+			else if (doom->thismap.obj[c].typeobject == USEDOOR)
+			{
+				agressionememy(&doom->player, &doom->thismap.obj[c]);
+				
 			}
 		}
 		c++;

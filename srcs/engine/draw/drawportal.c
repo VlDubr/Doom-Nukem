@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 19:06:08 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 14:23:06 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/10 19:58:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,21 @@ int		portal(t_doom *doom, t_wall **wall, t_sector *sec, t_sector *newsec)
 			setwalldown(&(*wall)[0], newsec, sec, 2);
 			i++;
 		}
-		else if (newsec->floor == sec->floor)
-			i++;
-		if (sec->height > newsec->height)
+		// else if (newsec->floor == sec->floor)
+		// 	i++;
+
+		if (sec->height + sec->floor > newsec->height + newsec->floor)
 		{
 			setwallup(&(*wall)[1], sec, newsec, 4);
 			i++;
 		}
-		else if (newsec->height > sec->height)
+		else if (newsec->height + newsec->floor > sec->height + sec->floor)
 		{
 			setwallup(&(*wall)[1], newsec, sec, 5);
 			i++;
 		}
-		else if (newsec->height == sec->height)
-			i++;
+		// else if (newsec->height == sec->height)
+		// 	i++;
 	}
 	doom->portalvisit[sec->id] = 1;
 	return (i);

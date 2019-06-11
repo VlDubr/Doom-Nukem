@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 19:47:49 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 12:40:55 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,7 @@ typedef struct	s_doom
 	size_t		texturecount;
 	t_tga		**font;
 	t_tga		*skybox;
+	t_tga		*door;
 
 	t_player	player;
 
@@ -382,6 +383,7 @@ void		minusstamina(t_player *p, float minusvalue);
 void		shot(t_doom *doom, Mix_Chunk *s);
 void		objpickup(t_input input, t_player *play, t_object *obj);
 void		lightmod(t_object *obj, t_map *map, t_input input);
+void		opendoor(t_object *obj, t_input input, t_map *map);
 
 void		addhealth(t_player *p, float addvalue);
 void		minushealth(t_player *p, float minusvalue);

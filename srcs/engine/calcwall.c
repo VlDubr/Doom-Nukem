@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 19:07:30 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 17:03:45 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 13:23:08 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int		setwalls(t_doom *doom, t_wall **wall, t_sector sec, t_ivector ci)
 	else
 	{
 		ij.x = portal(doom, wall, &sec, &doom->thismap.sectors[(int)w[0].z]);
-		if (doom->visit[doom->thismap.sectors[(int)w[0].z].id] == 0)
-			drawwallv3(doom, w[0].z);
+		//if (doom->visit[doom->thismap.sectors[(int)w[0].z].id] == 0)
+		//	drawwallv3(doom, w[0].z);
 	}
 	ij.y = ij.x + 1;
 	while (--ij.y > -1)

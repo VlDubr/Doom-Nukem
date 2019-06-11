@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 17:57:43 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 11:54:59 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ int				main(int agrc, char **argv)
 	b = 0;
 	while (doom->win->state)
 	{
-		//if (b == 0)
-		//{
+		if (b == 0)
+		{
 			SDL_WarpMouseInWindow(doom->win->window,
 			doom->win->size.x / 2, doom->win->size.y / 2);
 			b = 1;
-		//}
+		}
 		SDL_GetMouseState(&doom->setting.input.old.x,
 		&doom->setting.input.old.y);
 		doom->lastframe = doom->currentframe;

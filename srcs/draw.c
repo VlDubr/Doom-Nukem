@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 17:03:27 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 13:23:03 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,7 +378,7 @@ void	drawwallv3(t_doom *doom, size_t sec)
 	mat.cammat = matcam(&doom->player);
 	mat.projec = matprojection(initcam(setivector2d(800, 800)));
 	sect = doom->thismap.sectors[sec];
-	if ((wa = (t_wall*)ft_memalloc(sizeof(t_wall) * 2)) == NULL)
+	if ((wa = (t_wall*)ft_memalloc(sizeof(t_wall) * 3)) == NULL)
 		error("Error");
 	ci.x = sect.start;
 	ci.y = -1;

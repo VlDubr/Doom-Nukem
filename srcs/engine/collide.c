@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 18:40:19 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 19:53:13 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 12:37:17 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int				collides(t_line line, t_map *map, size_t sector, int *visit)
 			if (collideline(line))
 				return (1);
 		}
+		else if (map->walls[c + i].w == 1 && collideline(line))
+			return (1);
 		else if (!visit[(int)map->walls[c + i].z]
 		&& collides(line, map, (size_t)map->walls[c + i].z, visit))
 			return (1);

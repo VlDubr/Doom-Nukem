@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 20:05:43 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 12:31:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,8 @@ void	update(t_doom *doom, double delta)
 			else if (doom->thismap.obj[c].typeobject == USEDOOR)
 			{
 				agressionememy(&doom->player, &doom->thismap.obj[c]);
-				
+				opendoor(&doom->thismap.obj[c], doom->setting.input, &doom->thismap);
+				printf("%d\n", doom->thismap.walls[doom->thismap.obj[c].typeuse].w);
 			}
 		}
 		c++;

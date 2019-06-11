@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 15:29:24 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 12:47:46 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,14 +136,20 @@ void		loadfont(char *path, t_doom *doom)
 	ft_strdel(&path);
 }
 
-void		loadassets2(t_doom *doom)
+void		loadassets2(char *path, t_doom *doom)
 {
 	char *pathskybox;
-	
-	pathskybox = ft_strjoin(ft_strjoin(doom->path, "assets/"), "skybox.tga");
+	char *pathdoor;
+
+	pathskybox = ft_strjoin(path, "skybox.tga");
+	pathdoor = ft_strjoin(path, "door.tga");
 	loadfont(ft_strjoin(doom->path, "assets/"), doom);
 	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
 	doom->skybox = tga_reader(pathskybox);
+	doom->door = tga_reader(pathskybox);
+	ft_strdel(&path);
+	ft_strdel(&pathskybox);
+	ft_strdel(&pathdoor);
 }
 
 void		loadassets(char *path, t_doom *doom)
@@ -171,7 +177,7 @@ void		loadassets(char *path, t_doom *doom)
 			loadweapons(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
 			&doom->weapons, &doom->weaponcount);
 	}
-	loadassets2(doom);
+	loadassets2(ft_strjoin(doom->path, "assets/"), doom);
 	free2dstring(tmp);
 	ft_strdel(&str);
 }

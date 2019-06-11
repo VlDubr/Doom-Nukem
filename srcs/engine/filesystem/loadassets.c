@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/11 12:47:46 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:30:19 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void		loadimages(char *path, char **tmp, t_tga **textures, size_t *count)
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("sound:", tmp[y])
-	&& !ft_strequ("map:", tmp[y]))
+	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
 		y++;
 	(*count) = y;
 	(*textures) = (t_tga*)malloc(sizeof(t_tga) * y);
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("sound:", tmp[y])
-	&& !ft_strequ("map:", tmp[y]))
+	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
 	{
 		filepath = ft_strjoin(path, tmp[y]);
 		(*textures)[y] = *tga_reader(filepath);
@@ -66,7 +66,7 @@ void		loadsounds(char *path, char **tmp, t_sound *s)
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
-	&& !ft_strequ("map:", tmp[y]))
+	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
 	{
 		t = ft_strjoin(path, tmp[y]);
 		if (ft_strequ(tmp[y], "sounds/jump.mp3"))
@@ -86,13 +86,13 @@ void		loadmaps(char *path, char **tmp, t_map **map, size_t *size)
 
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
-	&& !ft_strequ("sound:", tmp[y]))
+	&& !ft_strequ("sound:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
 		y++;
 	(*size) = y;
 	(*map) = (t_map*)malloc(sizeof(t_map) * y);
 	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
-	&& !ft_strequ("sound:", tmp[y]))
+	&& !ft_strequ("sound:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
 	{
 		(*map)[y] = loadmap(ft_strjoin(path, tmp[y]));
 		y++;
@@ -140,16 +140,20 @@ void		loadassets2(char *path, t_doom *doom)
 {
 	char *pathskybox;
 	char *pathdoor;
+	char *pathlogo;
 
 	pathskybox = ft_strjoin(path, "skybox.tga");
 	pathdoor = ft_strjoin(path, "door.tga");
+	pathlogo = ft_strjoin(path, "logo.tga");
 	loadfont(ft_strjoin(doom->path, "assets/"), doom);
 	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
 	doom->skybox = tga_reader(pathskybox);
-	doom->door = tga_reader(pathskybox);
+	doom->door = tga_reader(pathdoor);
+	//doom->logo = tga_reader(pathlogo);
 	ft_strdel(&path);
 	ft_strdel(&pathskybox);
 	ft_strdel(&pathdoor);
+	ft_strdel(&pathlogo);
 }
 
 void		loadassets(char *path, t_doom *doom)

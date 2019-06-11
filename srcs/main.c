@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 11:54:59 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:36:24 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,33 @@ t_doom			*initdoom(char *argv0)
 	return (d);
 }
 
-static int		*initvisit(size_t size)
+void			initmenu(t_doom *doom)
 {
-	size_t	i;
-	int		*res;
+	doom->newgame.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25), 100, 50);
+	doom->newgame.texture = doom->texture[1];
+	doom->quit.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25 + 75), 100, 50);
+	doom->quit.texture = doom->texture[1];
 
-	if ((res = (int*)ft_memalloc(sizeof(int) * size)) == NULL)
-		error("Error: visit not allocated");
-	i = 0;
-	while (i < size)
-	{
-		res[i] = 0;
-		i++;
-	}
-	return (res);
+	doom->easy.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25), 100, 50);
+	doom->easy.texture = doom->texture[1];
+	doom->middle.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25 + 75), 100, 50);
+	doom->middle.texture = doom->texture[1];
+	doom->hard.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25 + 150), 100, 50);
+	doom->hard.texture = doom->texture[1];
+
+	doom->gameoverbutton.rect = setirect(setivector2d(doom->win->size.x / 2 - 50,
+	doom->win->size.y / 2 - 25), 100, 50);
+	doom->gameoverbutton.texture = doom->texture[1];
 }
 
 int				main(int agrc, char **argv)
 {
 	char	*file[3];
-	static int b;
 	t_doom	*doom;
 
 	doom = initdoom(argv[0]);
@@ -69,15 +76,13 @@ int				main(int agrc, char **argv)
 	switchlevel(doom, doom->level);
 	doom->thismap.obj[1].isagression = 1;
 	doom->currentframe = SDL_GetPerformanceCounter();
-	b = 0;
+	doom->gamestate = 0;
+	initmenu(doom);
 	while (doom->win->state)
 	{
-		if (b == 0)
-		{
+		if (!doom->mouseactive)
 			SDL_WarpMouseInWindow(doom->win->window,
 			doom->win->size.x / 2, doom->win->size.y / 2);
-			b = 1;
-		}
 		SDL_GetMouseState(&doom->setting.input.old.x,
 		&doom->setting.input.old.y);
 		doom->lastframe = doom->currentframe;
@@ -85,12 +90,10 @@ int				main(int agrc, char **argv)
 		doom->delta = (double)((doom->currentframe - doom->lastframe) *
 		1000 / (double)SDL_GetPerformanceFrequency());
 		updateevent(doom, doom->delta);
-		update(doom, doom->delta);
-		doom->visit = initvisit(doom->thismap.sectorcount);
-		doom->portalvisit = initvisit(doom->thismap.sectorcount);
-		draw(doom);
-		ft_memdel((void**)&doom->visit);
-		ft_memdel((void**)&doom->portalvisit);
+		if (doom->gamestate == 1)
+			gamescene(doom);
+		else
+			menuscene(doom);
 	}
 	quitprogram(doom);
 	return (0);

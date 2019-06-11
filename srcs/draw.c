@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 13:23:03 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 14:12:42 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,22 +355,24 @@ void	proj(t_doom *doom, t_mat4x4 projec, t_wall wa)
 	}
 }
 
-void	loopdrawwall(t_doom *doom, t_wall **wa, int count, t_sermat mat)
+void	loopdrawwall(t_doom *doom, t_list *wa, int count, t_sermat mat)
 {
-	int i;
+	t_wall *wall;
+	t_list *tmp;
 
-	i = 0;
-	while (i <= count)
+	tmp = wa;
+	while (tmp != NULL)
 	{
-		multmatrixdrawwall((*wa)[i].p, mat.cammat);
-		proj(doom, mat.projec, (*wa)[i]);
-		i++;
+		wall = (t_wall*)tmp->content;
+		multmatrixdrawwall(wall->p, mat.cammat);
+		proj(doom, mat.projec, *wall);
+		tmp = tmp->next;
 	}
 }
 
 void	drawwallv3(t_doom *doom, size_t sec)
 {
-	t_wall		*wa;
+	t_list		*wa;
 	t_sermat	mat;
 	t_sector	sect;
 	t_ivector	ci;
@@ -378,17 +380,16 @@ void	drawwallv3(t_doom *doom, size_t sec)
 	mat.cammat = matcam(&doom->player);
 	mat.projec = matprojection(initcam(setivector2d(800, 800)));
 	sect = doom->thismap.sectors[sec];
-	if ((wa = (t_wall*)ft_memalloc(sizeof(t_wall) * 3)) == NULL)
-		error("Error");
 	ci.x = sect.start;
 	ci.y = -1;
 	doom->visit[sec] = 1;
 	while (++ci.y < sect.count)
 	{
-		ci.z = setwalls(doom, &wa, sect, ci);
-		loopdrawwall(doom, &wa, ci.z, mat);
+		wa = NULL;
+		setwalls(doom, &wa, sect, ci);
+		loopdrawwall(doom, wa, ci.z, mat);
+		ft_lstdel(&wa, del);
 	}
-	ft_memdel((void**)&wa);
 }
 
 void	draw(t_doom *doom)

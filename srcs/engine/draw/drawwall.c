@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/06/10 18:22:02 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 15:12:44 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,18 +114,17 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 			pc.red = (((c << 8) >> 24));
 			pc.green = (((c << 16) >> 24));
 			pc.blue = (((c << 24) >> 24));
-			c = ((((((color.alpha << 8) | color.red / l) << 8) | color.green / l) << 8)
-			| color.blue / l);
 			if (color.alpha == 255)
 			{
 				if (x >= 0 && x < 800 && y >= 0 && y < 800)
-					p[(int)x + (((int)y) * 800)] = c;
+					p[(int)x + (((int)y) * 800)] = ((((((color.alpha << 8) | color.red / l) << 8) |
+					color.green / l) << 8) | color.blue / l);;
 			}
 			else if (color.alpha < 255 && color.alpha > 0)
 			{
 				newc = opacityrgba(pc, color);
-				p[(int)x + (((int)y) * 800)] = ((((((newc.alpha << 8) | newc.red) << 8)
-				| newc.green) << 8) | newc.blue);
+				p[(int)x + (((int)y) * 800)] = ((((((newc.alpha << 8) | newc.red / l) << 8)
+				| newc.green / l) << 8) | newc.blue / l);
 			}
 			// if (a != 0)
 			// {

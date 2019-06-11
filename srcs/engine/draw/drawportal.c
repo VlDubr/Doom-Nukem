@@ -6,86 +6,102 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 19:06:08 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 13:23:10 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 14:39:25 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	setwalldown(t_wall *wall, t_sector *sec, t_sector *newsec, int type)
+void	setwalldown(t_list **wall, t_sector *sec, t_sector *newsec,
+t_fvector oldpoint[3])
 {
-	wall->p[0] = setfvector(wall->oldpoint[0].x, sec->floor,
-	wall->oldpoint[0].y, 1);
-	wall->p[1] = setfvector(wall->oldpoint[1].x, sec->floor,
-	wall->oldpoint[1].y, 1);
-	wall->p[2] = addfvector(wall->p[0], 0, newsec->floor - sec->floor, 0);
-	wall->p[3] = addfvector(wall->p[1], 0, newsec->floor - sec->floor, 0);
-	wall->type = type;
+	t_wall *wa;
+
+	if ((wa = (t_wall*)malloc(sizeof(t_wall))) == NULL)
+		error("Error: mamore not allocated");
+	wa->p[0] = setfvector(oldpoint[0].x, sec->floor,
+	oldpoint[0].y, 1);
+	wa->p[1] = setfvector(oldpoint[1].x, sec->floor,
+	oldpoint[1].y, 1);
+	wa->p[2] = addfvector(wa->p[0], 0, newsec->floor - sec->floor, 0);
+	wa->p[3] = addfvector(wa->p[1], 0, newsec->floor - sec->floor, 0);
+	wa->type = (int)oldpoint[2].x;
+	addwallinlist(wall, *wa);
+	free(wa);
 }
 
-void	setwallup(t_wall *wall, t_sector *sec, t_sector *newsec, int type)
+void	setwallup(t_list **wall, t_sector *sec, t_sector *newsec,
+t_fvector oldpoint[3])
 {
-	wall->p[0] = setfvector(wall->oldpoint[0].x,
-	newsec->floor + newsec->height,
-	wall->oldpoint[0].y, 1);
-	wall->p[1] = setfvector(wall->oldpoint[1].x,
-	newsec->floor + newsec->height,
-	wall->oldpoint[1].y, 1);
-	wall->p[2] = addfvector(wall->p[0], 0,
+	t_wall *wa;
+
+	if ((wa = (t_wall*)malloc(sizeof(t_wall))) == NULL)
+		error("Error: mamore not allocated");
+	wa->p[0] = setfvector(oldpoint[0].x,
+	newsec->floor + newsec->height, oldpoint[0].y, 1);
+	wa->p[1] = setfvector(oldpoint[1].x,
+	newsec->floor + newsec->height, oldpoint[1].y, 1);
+	wa->p[2] = addfvector(wa->p[0], 0,
 	(sec->floor + sec->height) - (newsec->floor + newsec->height), 0);
-	wall->p[3] = addfvector(wall->p[1], 0,
+	wa->p[3] = addfvector(wa->p[1], 0,
 	(sec->floor + sec->height) - (newsec->floor + newsec->height), 0);
-	wall->type = type;
+	wa->type = (int)oldpoint[2].x;
+	addwallinlist(wall, *wa);
+	free(wa);
 }
 
-void	setdoorwall(t_wall *wall, t_sector *sec, t_sector *newsec)
+void	setdoorwall(t_list **wall, t_sector *sec, t_sector *newsec,
+t_fvector oldpoint[3])
 {
-	wall->p[0] = setfvector(wall->oldpoint[0].x,
-	newsec->floor,
-	wall->oldpoint[0].y, 1);
-	wall->p[1] = setfvector(wall->oldpoint[1].x,
-	newsec->floor,
-	wall->oldpoint[1].y, 1);
-	wall->p[2] = addfvector(wall->p[0], 0,
-	newsec->floor + newsec->height, 0);
-	wall->p[3] = addfvector(wall->p[1], 0,
-	newsec->floor + newsec->height, 0);
-	wall->type = 6;
+	t_wall *wa;
+
+	if ((wa = (t_wall*)malloc(sizeof(t_wall))) == NULL)
+		error("Error: mamore not allocated");
+	wa->p[0] = setfvector(oldpoint[0].x, newsec->floor, oldpoint[0].y, 1);
+	wa->p[1] = setfvector(oldpoint[1].x, newsec->floor, oldpoint[1].y, 1);
+	wa->p[2] = setfvector(oldpoint[0].x, sec->floor +
+	sec->height, oldpoint[0].y, 1);
+	wa->p[3] = setfvector(oldpoint[1].x, sec->floor +
+	sec->height, oldpoint[1].y, 1);
+	wa->type = 6;
+	addwallinlist(wall, *wa);
+	free(wa);
 }
 
-int		portal(t_doom *doom, t_wall **wall, t_sector *sec, t_sector *newsec)
+void	drawup(t_list **wall, t_sector *sec, t_sector *newsec, t_fvector old[3])
 {
-	int i;
-
-	i = 0;
-	if (doom->portalvisit[newsec->id] == 0)
+	if (sec->floor < newsec->floor)
 	{
-		if (sec->floor < newsec->floor)
+		old[2].x = 3;
+		setwalldown(wall, sec, newsec, old);
+	}
+	else if (newsec->floor < sec->floor)
+	{
+		old[2].x = 2;
+		setwalldown(wall, newsec, sec, old);
+	}
+}
+
+void	portal(t_doom *doom, t_list **wall, t_sector *sec, t_fvector old[3])
+{
+	t_sector newsec;
+
+	newsec = doom->thismap.sectors[(int)old[0].z];
+	if (doom->portalvisit[newsec.id] == 0)
+	{
+		drawup(wall, sec, &newsec, old);
+		if (sec->height + sec->floor > newsec.height + newsec.floor)
 		{
-			setwalldown(&(*wall)[0], sec, newsec, 1);
-			i++;
+			old[2].x = 4;
+			setwallup(wall, sec, &newsec, old);
 		}
-		else if (newsec->floor < sec->floor)
+		else if (newsec.height + newsec.floor > sec->height + sec->floor)
 		{
-			setwalldown(&(*wall)[0], newsec, sec, 2);
-			i++;
+			old[2].x = 5;
+			setwallup(wall, &newsec, sec, old);
 		}
-		if (sec->height + sec->floor > newsec->height + newsec->floor)
-		{
-			setwallup(&(*wall)[1], sec, newsec, 4);
-			i++;
-		}
-		else if (newsec->height + newsec->floor > sec->height + sec->floor)
-		{
-			setwallup(&(*wall)[1], newsec, sec, 5);
-			i++;
-		}
-		if ((*wall)[0].oldpoint[0].w == 1)
-		{
-			setdoorwall(&(*wall)[2], sec, newsec);
-			i++;
-		}
+		if (old[0].w == 1)
+			setdoorwall(wall, sec, &newsec, old);
 	}
 	doom->portalvisit[sec->id] = 1;
-	return (i);
 }

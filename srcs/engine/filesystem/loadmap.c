@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 11:47:39 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:12:27 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 	}
 	cord.x = 0;
 	cord.y = 0;
-	*wall = (t_fvector*)malloc(sizeof(t_fvector) * (*count + 1));
+	*wall = (t_fvector*)malloc(sizeof(t_fvector) * (*count));
 	while (str[cord.x] != NULL)
 	{
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')
@@ -99,6 +99,24 @@ void	loadsector(char **str, t_sector **sector, size_t *count)
 	}
 }
 
+void	initobj2(char **str, t_object **obj, int y)
+{
+	(*obj)[y].width = ft_atof(str[6]);
+	(*obj)[y].height = ft_atoi(str[7]);
+	(*obj)[y].maxhealth = ft_atoi(str[8]);
+	(*obj)[y].health = (*obj)[y].maxhealth;
+	(*obj)[y].ismoveble = ft_atoi(str[9]);
+	(*obj)[y].movespeed = ft_atof(str[10]);
+	(*obj)[y].agressionarea = ft_atoi(str[11]);
+	(*obj)[y].textureup = ft_atoi(str[12]);
+	(*obj)[y].texturedown = ft_atoi(str[13]);
+	(*obj)[y].textureleft = ft_atoi(str[14]);
+	(*obj)[y].texturerigth = ft_atoi(str[15]);
+	(*obj)[y].damage = ft_atoi(str[16]);
+	(*obj)[y].dscmax = 100;
+	(*obj)[y].isactive = 1;
+}
+
 void	initobj(char **str, t_object **obj, int y)
 {
 	char	**tmp2;
@@ -115,20 +133,7 @@ void	initobj(char **str, t_object **obj, int y)
 	(*obj)[y].rotate = setfvector(ft_atof(tmp2[0]), ft_atof(tmp2[1]),
 	ft_atof(tmp2[2]), 1);
 	free2dstring(tmp2);
-	(*obj)[y].width = ft_atof(str[6]);
-	(*obj)[y].height = ft_atoi(str[7]);
-	(*obj)[y].maxhealth = ft_atoi(str[8]);
-	(*obj)[y].health = (*obj)[y].maxhealth;
-	(*obj)[y].ismoveble = ft_atoi(str[9]);
-	(*obj)[y].movespeed = ft_atof(str[10]);
-	(*obj)[y].agressionarea = ft_atoi(str[11]);
-	(*obj)[y].textureup = ft_atoi(str[12]);
-	(*obj)[y].texturedown = ft_atoi(str[13]);
-	(*obj)[y].textureleft = ft_atoi(str[14]);
-	(*obj)[y].texturerigth = ft_atoi(str[15]);
-	(*obj)[y].damage = ft_atoi(str[16]);
-	(*obj)[y].dscmax = 100;
-	(*obj)[y].isactive = 1;
+	initobj2(str, obj, y);
 	(*obj)[y].dsc = (*obj)[y].dscmax;
 }
 

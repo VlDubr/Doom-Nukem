@@ -6,13 +6,14 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:02 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/04/15 15:27:00 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 14:52:25 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILESYSTEM_H
 # define FILESYSTEM_H
 # include "../lib/libft/includes/libft.h"
+# include "doom.h"
 # include <unistd.h>
 # include <fcntl.h>
 # ifndef BUFF_SIZE

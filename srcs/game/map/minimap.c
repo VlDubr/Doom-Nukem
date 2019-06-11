@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/21 12:51:13 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 18:33:18 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 17:59:38 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,23 @@ void	drawenemy(uint32_t *p, t_player play, t_map *map, t_ivector2d cord)
 	size_t		count;
 
 	count = 0;
-	color = setrgb(255, 0, 0);
 	while (count < map->objcount)
 	{
-		e = setfvector(map->obj[count].pos.x, map->obj[count].pos.z, 0, 1);
-		e = subfvector(e, play.pos.x, play.pos.z, 0);
-		e = addfvector(e, cord.x, cord.y, 0);
-		if (e.x >= 0 && e.x < 800 && e.y >= 0 && e.y < 800)
-			p[(int)e.x + ((int)e.y * 800)] = ((((((255 << 8) |
-			color.red) << 8) | color.green) << 8) | color.blue);
+		if (map->obj[count].isactive && map->obj[count].typeobject != DECORE)
+		{
+			if (map->obj[count].typeobject == ENEMY)
+				color = setrgb(255, 0, 0);
+			else if (map->obj[count].typeobject == USE)
+				color = setrgb(0, 255, 0);
+			else
+				color = setrgb(0, 0, 255);
+			e = setfvector(map->obj[count].pos.x, map->obj[count].pos.z, 0, 1);
+			e = subfvector(e, play.pos.x, play.pos.z, 0);
+			e = addfvector(e, cord.x, cord.y, 0);
+			if (e.x >= 0 && e.x < 800 && e.y >= 0 && e.y < 800)
+				p[(int)e.x + ((int)e.y * 800)] = ((((((255 << 8) |
+				color.red) << 8) | color.green) << 8) | color.blue);
+		}
 		count++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 12:31:20 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:31:20 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,13 @@ void	checkkeyboard(t_doom *doom, double delta)
 	doom->player.velosity = setfvector(0, 0, 0, 0);
 }
 
-void	update(t_doom *doom, double delta)
+void	objectupdate(t_doom *doom)
 {
 	size_t c;
 	t_fvector2d	dirobj;
 	float		at;
 
 	c = 0;
-	checkkeyboard(doom, delta);
-	playerrotate(&doom->player);
-	gravity(&doom->player,
-	doom->thismap.sectors[doom->player.sector].floor, delta);
-	checkswaplevel(doom, doom->player.sector);
 	while (c < doom->thismap.objcount)
 	{
 		if (doom->thismap.obj[c].isactive)
@@ -136,8 +131,10 @@ void	update(t_doom *doom, double delta)
 			{
 				agressionememy(&doom->player, &doom->thismap.obj[c]);
 				damageenemy(doom->sound.run, &doom->player,
-				&doom->thismap.obj[c], delta);
-				moveenemy(doom, &doom->thismap.obj[c], delta);
+				&doom->thismap.obj[c], doom->delta);
+				moveenemy(doom, &doom->thismap.obj[c], doom->delta);
+				if (doom->thismap.obj[c].health <= 0)
+					doom->thismap.obj[c].isactive = 0;
 			}
 			else if (doom->thismap.obj[c].typeobject == USE)
 			{
@@ -155,11 +152,22 @@ void	update(t_doom *doom, double delta)
 			{
 				agressionememy(&doom->player, &doom->thismap.obj[c]);
 				opendoor(&doom->thismap.obj[c], doom->setting.input, &doom->thismap);
-				printf("%d\n", doom->thismap.walls[doom->thismap.obj[c].typeuse].w);
 			}
 		}
 		c++;
 	}
+}
+
+void	update(t_doom *doom, double delta)
+{
+	checkkeyboard(doom, delta);
+	playerrotate(&doom->player);
+	gravity(&doom->player,
+	doom->thismap.sectors[doom->player.sector].floor, delta);
+	checkswaplevel(doom, doom->player.sector);
+	objectupdate(doom);
 	doom->player.targetid = 18446744073709551615u;
+	if (doom->player.health <= 0)
+		doom->gamestate = 3;
 	updateui(doom);
 }

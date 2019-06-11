@@ -18,6 +18,14 @@
 		"string": "c",
 		"string_view": "c",
 		"utility": "c",
-		"vector": "c"
+		"vector": "c",
+		"__functional_base": "c",
+		"__functional_base_03": "c",
+		"__tuple": "c",
+		"functional": "c",
+		"limits": "c",
+		"tuple": "c",
+		"type_traits": "c",
+		"filesystem.h": "c"
 	}
 }

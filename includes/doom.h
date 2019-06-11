@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 12:40:55 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/11 18:34:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct	s_player
 	t_fvector	pos;
 	t_fvector	rotate;
 	t_fvector	velosity;
+	int			damagemult;
 	size_t		sector;
 
 	t_weapon	*weapons;
@@ -295,6 +296,8 @@ typedef struct	s_settingui
 
 typedef struct	s_doom
 {
+	int			mouseactive;
+	int			gamestate;
 	char		*path;
 	t_window	*win;
 	t_list		*pipeline;
@@ -303,6 +306,15 @@ typedef struct	s_doom
 	SDL_Event	event;
 
 	t_sound		sound;
+
+	t_tga		*logo;
+	t_tga		*gameoverlogo;
+	t_button	newgame;
+	t_button	quit;
+	t_button	easy;
+	t_button	middle;
+	t_button	hard;
+	t_button	gameoverbutton;
 
 	Uint64		lastframe;
 	Uint64		currentframe;
@@ -328,6 +340,9 @@ typedef struct	s_doom
 	t_map		thismap;
 }				t_doom;
 
+void		gamescene(t_doom *doom);
+void		menuscene(t_doom *doom);
+
 void		moveenemy(t_doom *doom, t_object *obj, float delta);
 
 void		initsettingui(t_doom *doom);
@@ -347,8 +362,8 @@ void		drawimage(t_doom *doom, t_irect rect, t_tga *image);
 
 void		drawwallv3(t_doom *doom, size_t sec);
 
-int			portal(t_doom *doom, t_wall **wall, t_sector *sec, t_sector *newsec);
-int			setwalls(t_doom *doom, t_wall **wall, t_sector sec, t_ivector ci);
+void		portal(t_doom *doom, t_list **wall, t_sector *sec, t_fvector old[3]);
+void		setwalls(t_doom *doom, t_list **wall, t_sector sec, t_ivector ci);
 
 void		drawammo(t_doom *doom);
 void		drawweapon(t_doom *doom);

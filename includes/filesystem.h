@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:02 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 14:35:21 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:27:34 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 int			fileexist(char *path);
 char		*readfile(char *path);
 char		*getpath(const char *argv0);
+
+t_tga		*loadsecontimage(char *path);
 
 void		compress(void);
 void		decompress(void);

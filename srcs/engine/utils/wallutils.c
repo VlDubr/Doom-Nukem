@@ -6,26 +6,11 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:20:16 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/07 12:16:58 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:51:16 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
-
-void	initdrawwall(t_fvector *view)
-{
-	int			y;
-
-	y = 0;
-	while (y < 4)
-	{
-		view[y].x = 0;
-		view[y].y = 0;
-		view[y].z = 0;
-		view[y].w = 1;
-		y++;
-	}
-}
 
 void	multmatrixdrawwall(t_fvector *view, t_mat4x4 mat)
 {

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 15:23:30 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 15:49:02 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 18:01:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	drawskubox(t_doom *doom)
 		cord.x = 0;
 		while (cord.x < doom->win->size.x)
 		{
-			color = doom->skybox->pic[(int)uv.y][(int)uv.x % doom->skybox->width];
+			color = doom->skybox->pic[(int)uv.y][(int)uv.x
+			% doom->skybox->width];
 			drawpoint(doom->win->pixels, doom->win->size, cord, color);
 			uv.x += step.x;
 			cord.x++;

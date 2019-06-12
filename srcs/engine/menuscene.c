@@ -6,68 +6,11 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:54:06 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 12:52:55 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:55:51 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
-
-static void	cleartexture(t_window *win)
-{
-	t_ivector2d cord;
-
-	cord.y = 0;
-	while (cord.y < win->size.y)
-	{
-		cord.x = 0;
-		while (cord.x < win->size.x)
-		{
-			win->pixels[cord.x + (cord.y * win->size.x)] = 0;
-			cord.x++;
-		}
-		cord.y++;
-	}
-}
-
-static int	boxcollision(t_button button, t_ivector2d mousepos)
-{
-	if (mousepos.x > button.rect.start.x &&
-	mousepos.y > button.rect.start.y &&
-	mousepos.x < button.rect.start.x + button.rect.width &&
-	mousepos.y < button.rect.start.y + button.rect.height)
-		return (1);
-	return (0);
-}
-
-void		menuupdate(t_doom *doom)
-{
-	if (doom->setting.input.mousekey[0])
-	{
-		if (doom->gamestate == 0)
-		{
-			if (boxcollision(doom->newgame, doom->setting.input.mousepos))
-				doom->gamestate = 2;
-			if (boxcollision(doom->quit, doom->setting.input.mousepos))
-				doom->win->state = 0;
-		}
-		else if (doom->gamestate == 2)
-		{
-			if (boxcollision(doom->easy, doom->setting.input.mousepos))
-				doom->player.damagemult = 1;
-			else if (boxcollision(doom->middle, doom->setting.input.mousepos))
-				doom->player.damagemult = 2;
-			else if (boxcollision(doom->hard, doom->setting.input.mousepos))
-				doom->player.damagemult = 3;
-			doom->gamestate = 1;
-		}
-		else if (doom->gamestate == 3)
-			if (boxcollision(doom->gameoverbutton, doom->setting.input.mousepos))
-			{
-				doom->gamestate = 0;
-				switchlevel(doom, 0);
-			}
-	}
-}
 
 void		drawbuttos(t_doom *doom)
 {
@@ -107,7 +50,7 @@ void		menudraw(t_doom *doom)
 	SDL_RenderPresent(doom->win->renderer);
 }
 
-void	menuscene(t_doom *doom)
+void		menuscene(t_doom *doom)
 {
 	doom->mouseactive = 1;
 	menuupdate(doom);

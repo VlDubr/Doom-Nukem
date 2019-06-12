@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 13:47:14 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:14:09 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:08:42 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		inside(t_fvector2d i, t_fvector *p, size_t size)
 		prev = c;
 		c++;
 	}
-	return (b&1) != 0;
+	return (b & 1) != 0;
 }
 
 size_t	isinside(t_fvector2d pos, t_map map, size_t lastsecid)

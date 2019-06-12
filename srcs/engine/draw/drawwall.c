@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/06/12 14:52:15 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 19:10:31 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,6 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 	if (ey == 1)
 		e *=-1;
 	k = dy   / (image.height);
-	// if (y0 > 800)
-	// 	y0 = 800;
-	// if (y1 > 800)
-	// 	y1 = 800;
-	// if (y0 < 0)
-	// 	y0 = 0;
-	// if (y1 < 0)
-	// 	y1 = 0;
-	// if (y > 800)
-	// 	y = 800;
-	// if (y < 0)
-	// 	y = 0;
-
-	// if (start == 1 && y > 800)
-	// {
-	// 	y = 800;
-	// 	y0 = 800;
-	// 	y1 = 0;
-	// }
-	// else if (start == 2 && y < 0)
-	// {
-	// 	y = 0;
-	// 	y0 = 0;
-	// 	y1 = 800;
-	// }
-	
 	while (y <= y0 && y >= y1)
 	{
 		if ((start == 2 && y >= 800) || (start == 1 && y < 0))
@@ -97,10 +71,6 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 		if (yp >= 0 && yp < image.height && xp >= 0 && xp < image.width)
 		{
 			color = image.pic[yp][xp];
-			// r = image.pic[yp][xp].red;
-			// g = image.pic[yp][xp].green;
-			// b = image.pic[yp][xp].blue;
-			// a = image.pic[yp][xp].alpha;
 		}
 		if (x >= 0 && x < 800 && y >= 0 && y < 800)
 		{
@@ -126,131 +96,92 @@ void brez(float x0, float x1, float y0, float y1, t_tga image,  int xp, int star
 				p[(int)x + (((int)y) * 800)] = ((((((newc.alpha << 8) | newc.red / l) << 8)
 				| newc.green / l) << 8) | newc.blue / l);
 			}
-			// if (a != 0)
-			// {
-			// 	if (y < y0 && y > y1 && x > 0)
-			// 		p[(int)(x+1) + ((int)(y) * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-			// 		p[(int)x + ((int)y * 800)] = ((((((255 << 8) | r) << 8) | g) << 8) | b);
-			// }
 		}
-		// SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-		// 	SDL_RenderDrawPoint (renderer,x, y);
 	}
 }
-void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
-{
-	int dx1;
-	int dy1;
-	int dx4;
-	int dy4;
-	int dist1;
-	int dist2;
-	float dir1;
-	float dir4;
-	float k;
-	char r;
-	char g;
-	char b;
-	int i;
-	int x;
-	int y;
-	float m[2];
-	char a;
-	float *stena1_x;
-	float *stena1_y;
-	float *stena2_x;
-	float *stena2_y;
 
-	float *dist_sten;
-	float *ugol_sten;
-	float shag_dlya_2_steni;
-	float shag_dlya_1_steni;
-	int maxdist;
-	int x0;
-	int y0;
-	int x2;
-	int y2;
-	int x1;
-	int y1;
-	int xp;
-	int yp;
-	int mindist;
-	int buf;
+void	initmmdshagstart(t_ivector2d *maxmindist, t_fvector2d *shag,
+int *start, t_irect d1d4)
+{
+	maxmindist->x = abs(d1d4.width);
+	maxmindist->y = abs(d1d4.start.x);
+	shag->y = (float)maxmindist->y / (float)maxmindist->x;
+	shag->x = 1.0;
+	*start = 2;
+	if (d1d4.width <= d1d4.start.x)
+	{
+		maxmindist->x = abs(d1d4.start.x);
+		start = 1;
+		maxmindist->y = abs(d1d4.width);
+		shag->y = 1.0;
+		shag->x = (float)maxmindist->y / (float)maxmindist->x;
+	}
+}
+
+void	mallocstena(float *stena[4], t_ivector2d maxmindist)
+{
+	stena[0] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
+	stena[1] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
+	stena[2] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
+	stena[3] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
+}
+
+void drawwall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
+{
+	t_irect	d1d4;
+	t_ivector2d dist;
+	t_ivector2d	xy;
+	float kef;
+	float m;
+	float *stena[4];
+	t_fvector2d	shag;
+	t_ivector2d maxmindist;
 	int start;
 	if( wall.p[0].x > 810 || wall.p[1].x > 810 || wall.p[0].x < -2 || wall.p[1].x < -2)
 		return ;
-	dx1 = (wall.p[1].x - wall.p[0].x);
-	dy1 = (wall.p[1].y - wall.p[0].y);
-	dx4 = (wall.p[3].x - wall.p[2].x);
-	dy4 = (wall.p[3].y - wall.p[2].y);
-	dist1 = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
-	dist2 = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
-	if (dx4 > dx1)
-	{
-		maxdist = abs(dx4);
-		start = 2;
-		mindist = abs(dx1);
-		shag_dlya_1_steni = (float)mindist / (float)maxdist;
-		shag_dlya_2_steni = 1.0;
-	}
-	else
-	{
-		maxdist = abs(dx1);
-		start = 1;
-		mindist = abs(dx4);
-		shag_dlya_1_steni = 1.0;
-		shag_dlya_2_steni = (float)mindist / (float)maxdist;
-	}
-	dir1 = (atan((float)dy1/(float)dx1));
-	dir4 = (atan((float)dy4/(float)dx4));
-	stena1_x = (float *)malloc((sizeof(float)) * (maxdist+1));
-	stena1_y = (float *)malloc((sizeof(float)) * (maxdist+1));
-	stena2_x = (float *)malloc((sizeof(float)) * (maxdist+1));
-	stena2_y = (float *)malloc((sizeof(float)) * (maxdist+1));
-	i = 0;
-	while (i < maxdist)
-	{
-		stena1_x[i] = wall.p[0].x + (i * shag_dlya_1_steni);
-		stena1_y[i] = wall.p[0].y + (i * shag_dlya_1_steni * ((float)dist1/(float)dx1)) * sin(dir1);
-		stena2_x[i] = wall.p[2].x + (i * shag_dlya_2_steni);
-		stena2_y[i] = wall.p[2].y + (i * shag_dlya_2_steni * ((float)dist2/(float)dx4)) *sin(dir4);
-		i++;
-	}
-	x = 0;
-	float kef[2];
-	kef[0] = 0;
-	m[0] = ((float)maxdist) / (float)(image.width);
+	d1d4 = setirect(setivector2d((wall.p[1].x - wall.p[0].x), (wall.p[1].y - wall.p[0].y)), (wall.p[3].x - wall.p[2].x), (wall.p[3].y - wall.p[2].y));
+	dist.x = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
+	dist.y = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
 
+	initmmdshagstart(&maxmindist, &shag, &start, d1d4);
+	mallocstena(stena, maxmindist);
+	xy.y = 0;
+	while (xy.y < maxmindist.x)
+	{
+		stena[0][xy.y] = wall.p[0].x + (xy.y * shag.y);
+		stena[1][xy.y] = wall.p[0].y + (xy.y * shag.y * ((float)dist.x / (float)d1d4.start.x)) * sin(atan((float)d1d4.start.y / (float)d1d4.start.x));
+		stena[2][xy.y] = wall.p[2].x + (xy.y * shag.x);
+		stena[3][xy.y] = wall.p[2].y + (xy.y * shag.x * ((float)dist.y / (float)d1d4.width)) * sin(atan((float)d1d4.height / (float)d1d4.width));
+		xy.y++;
+	}
 
-	// printf ("1 - %f\n", offset[1]);
-	// printf ("1 - %f\n", offset[1]);
+	kef = 0;
+	m = ((float)maxmindist.x) / (float)(image.width);
 
 	if (offset[1] < 1)
 	{
-
-		kef[0] = 0;//(float)maxdist/offset[1] - (float)maxdist;
-		m[0] = (((float)maxdist/offset[1])) / (float)(image.width);
+		kef = 0;
+		m = (((float)maxmindist.x / offset[1])) / (float)(image.width);
 	}
 	if (offset[0] < 1)
 	{
-		kef[0] = (float)maxdist/offset[0] - (float)maxdist;
-		m[0] = (((float)maxdist/offset[0])) / (float)(image.width);
+		kef = (float)maxmindist.x / offset[0] - (float)maxmindist.x;
+		m = (((float)maxmindist.x / offset[0])) / (float)(image.width);
 	}
 	if (offset[1] < 1 && offset[0] < 1)
 	{
-		m[0] = (((float)maxdist/(offset[0] * offset[1]))) / (float)(image.width);
-		kef[0] = (float)maxdist/(offset[0]* offset[1]) - ((float)maxdist / offset[1]);
+		m = (((float)maxmindist.x / (offset[0] * offset[1]))) / (float)(image.width);
+		kef = (float)maxmindist.x / (offset[0]* offset[1]) - ((float)maxmindist.x / offset[1]);
 	}
-	while (x < maxdist)
+	xy.x = 0;
+	while (xy.x < maxmindist.x)
 	{
-		y = 0;
-		xp = (int)((float)((float)x+kef[0])/m[0]);
-		brez (stena1_x[x], stena2_x[x], stena1_y[x], stena2_y[x], image, xp,  start, p, offset, wall.light);
-		x++;
+		brez (stena[0][xy.x], stena[2][xy.x], stena[1][xy.x], stena[3][xy.x], image,
+		(int)((float)((float)xy.x + kef) / m),  start, p, offset, wall.light);
+		xy.x++;
 	}
-	i = 0;
-	free(stena1_x);
-	free(stena1_y);
-	free(stena2_x);
-	free(stena2_y);
+	free(stena[0]);
+	free(stena[1]);
+	free(stena[2]);
+	free(stena[3]);
 }

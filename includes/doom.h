@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 13:33:52 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 18:55:45 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include "../lib/ft_graphics/includes/color.h"
 # include "../lib/TGA-Reader/include/tga.h"
 # include "filesystem.h"
-# include "physics.h"
 # include <stdlib.h>
 
 # ifdef __APPLE__
@@ -271,7 +270,6 @@ typedef struct	s_sermat
 	t_mat4x4	projec;
 }				t_sermat;
 
-
 typedef struct	s_setting
 {
 	t_input		input;
@@ -347,6 +345,7 @@ typedef struct	s_doom
 
 void		gamescene(t_doom *doom);
 void		menuscene(t_doom *doom);
+void		menuupdate(t_doom *doom);
 
 void		moveenemy(t_doom *doom, t_object *obj, float delta);
 
@@ -354,21 +353,28 @@ void		initsettingui(t_doom *doom);
 void		initsetting(t_setting *s);
 void		mousemove(t_player *play, t_input *input, float delta);
 
+void		cleartexture(t_window *win);
+
 void		drawskubox(t_doom *doom);
 void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord,
 t_rgba color);
 void		drawrect(t_doom *doom, t_irect rect, t_rgba color);
 void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
 void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
-void		drow_wall(uint32_t *p, t_wall wall, t_tga image, float *offset);
 void		drawfloor(t_doom *doom, t_wall wa, int b);
 void		drawcail(t_doom *doom, t_wall wa, int b);
 void		drawimage(t_doom *doom, t_irect rect, t_tga *image);
-
+void		drawwall(uint32_t *p, t_wall wall, t_tga image, float	*offset);
 void		drawwallv3(t_doom *doom, size_t sec);
 
-void		portal(t_doom *doom, t_list **wall, t_sector *sec, t_fvector old[3]);
+void		portal(t_doom *doom, t_list **wall, t_sector *sec,
+t_fvector old[3]);
 void		setwalls(t_doom *doom, t_list **wall, t_sector sec, t_ivector ci);
+
+void		objectupdate(t_doom *doom);
+void		rotate(t_doom *doom, double delta);
+void		playerrotate(t_player *p);
+void		gravity(t_player *p, float y, double delta);
 
 void		drawammo(t_doom *doom);
 void		drawweapon(t_doom *doom);
@@ -418,11 +424,17 @@ int			collide(t_fvector2d pos, t_fvector2d newpos,
 t_fvector *w, size_t count);
 int			collides(t_line line, t_map *map, size_t sector, int *visit);
 int			collideobj(t_line line, t_player play, t_map *map);
+int			collideline(t_line line);
+int			collideobj(t_line line, t_player play, t_map *map);
 int			inside(t_fvector2d i, t_fvector *p, size_t size);
 size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
 
 void		loadassets(char *path, t_doom *doom);
+void		loadsounds(char *path, char **tmp, t_sound *s);
+void		loadfont(char *path, t_doom *doom);
 t_map		loadmap(char *path);
+void		loadobj(char **str, t_object **obj, size_t *count);
+void		loadsector(char **str, t_sector **sector, size_t *count);
 void		loadweapons(char *path, char **tmp,
 t_weapon **weapon, size_t *count);
 void		switchlevel(t_doom *doom, size_t level);
@@ -441,6 +453,8 @@ void		adddrawwall(t_fvector *view, float x, float y, float z);
 void		subdrawwall(t_fvector *view, float x, float y, float z);
 void		multdrawwall(t_fvector *view, float x, float y, float z);
 
+int			boxcollision(t_button button, t_ivector2d mousepos);
+
 t_fvector	raycastfloor(t_fvector2d angle, t_fvector2d yse);
 
 t_list		*getlistindex(t_list *list, size_t index);
@@ -448,5 +462,8 @@ void		del(void *data, size_t size);
 void		free2dstring(char **str);
 size_t		stringcount(char **str);
 void		error(const char *str);
+
+void		loadimagetype(char *str, t_weapon *weapon);
+void		loadnameweapon(char *str, t_weapon *weapon);
 
 #endif

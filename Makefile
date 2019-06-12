@@ -2,16 +2,25 @@ NAME = doom
 SRCS = main.c \
 		updateevent.c update.c draw.c quitprogram.c \
 		error.c createwindow.c utils.c \
-		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c game/object/drawobj.c game/object/pickup.c game/object/lightmod.c game/object/opendoor.c \
+		game/object/enemy/moveenemy.c game/object/enemy/agression.c game/object/enemy/damageenemy.c \
+		game/object/drawobj.c game/object/pickup.c game/object/lightmod.c game/object/opendoor.c \
+		game/object/objupdate.c \
 		game/map/switchlevel.c game/map/minimap.c \
-		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c game/player/defaultplayerdata.c game/player/shot.c \
-		game/ui/bar.c game/ui/drawui.c game/ui/optionmenu.c game/ui/updateui.c game/ui/initsettingui.c \
-		engine/collide.c engine/inside.c engine/sort.c engine/addwallinlist.c engine/calcwall.c engine/gamescene.c engine/menuscene.c \
-		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c engine/utils/stringcount.c engine/utils/getlistindex.c engine/utils/raycastfloor.c engine/utils/del.c \
+		game/player/playermove.c game/player/playerjump.c game/player/health.c game/player/stamina.c \
+		game/player/defaultplayerdata.c game/player/shot.c game/player/playerupdate.c \
+		game/ui/bar.c game/ui/drawui.c \
+		engine/collide.c engine/inside.c engine/sort.c engine/addwallinlist.c engine/calcwall.c engine/menuupdate.c \
+		engine/gamescene.c engine/menuscene.c engine/boxcollide.c engine/cleartexture.c \
+		engine/collideobj.c \
+		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c engine/utils/stringcount.c \
+		engine/utils/wallutils2.c engine/utils/setline.c \
+		engine/utils/getlistindex.c engine/utils/raycastfloor.c engine/utils/del.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
-		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadweapon.c \
-		engine/filesystem/archive.c \
+		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadobj.c \
+		engine/filesystem/loadweapon.c engine/filesystem/loadweapon2.c engine/filesystem/loadsector.c \
+		engine/filesystem/archive.c engine/filesystem/loadfont.c engine/filesystem/loadsounds.c \
+		engine/filesystem/loadsecontimage.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c engine/input/mousemove.c \
 		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c \

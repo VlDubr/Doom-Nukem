@@ -6,19 +6,11 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:14:48 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 15:56:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:15:33 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
-
-void	initoffset(t_wall *wa)
-{
-	wa->offset[0] = 1;
-	wa->offset[1] = 1;
-	wa->offset[2] = 1;
-	wa->offset[3] = 1;
-}
 
 void	initwallobj(t_doom *doom, t_map map, t_wall *wa, size_t c)
 {
@@ -67,7 +59,10 @@ int		drawobjnorm(t_doom *doom, t_wall *wa, t_sermat mat, size_t c)
 	multmatrixdrawwall(wa->p, matroty(atan2(dir.z, dir.x)));
 	adddrawwall(wa->p, doom->thismap.obj[c].pos.x, doom->thismap.obj[c].pos.y,
 	doom->thismap.obj[c].pos.z);
-	initoffset(wa);
+	wa->offset[0] = 1;
+	wa->offset[1] = 1;
+	wa->offset[2] = 1;
+	wa->offset[3] = 1;
 	wa->texture = doom->texture[doom->thismap.obj[c].texture];
 	multmatrixdrawwall(wa->p, mat.cammat);
 	return (clip(&doom->player, wa->p, wa->offset, c));

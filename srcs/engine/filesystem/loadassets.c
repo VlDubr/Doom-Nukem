@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 12:38:30 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 17:27:04 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,51 +33,6 @@ void		loadimages(char *path, char **tmp, t_tga **textures, size_t *count)
 		y++;
 	}
 	ft_strdel(&path);
-}
-
-Mix_Chunk	*loadsound(char *path, char *soundname)
-{
-	size_t		i;
-	size_t		len;
-	char		*p;
-	Mix_Chunk	*music;
-
-	len = ft_strlen(path);
-	i = len;
-	while (path[i] != '/')
-		i--;
-	i++;
-	p = ft_strsub(path, i, ft_strlen(soundname));
-	music = NULL;
-	if (ft_strequ(p, soundname))
-	{
-		music = Mix_LoadWAV(path);
-		if (music == NULL)
-			error(Mix_GetError());
-	}
-	ft_strdel(&p);
-	return (music);
-}
-
-void		loadsounds(char *path, char **tmp, t_sound *s)
-{
-	char	*t;
-	int		y;
-
-	y = 0;
-	while (tmp[y] != NULL && !ft_strequ("image:", tmp[y])
-	&& !ft_strequ("map:", tmp[y]) && !ft_strequ("weapons:", tmp[y]))
-	{
-		t = ft_strjoin(path, tmp[y]);
-		if (ft_strequ(tmp[y], "sounds/jump.mp3"))
-			s->jump = loadsound(t, "jump.mp3");
-		else if (ft_strequ(tmp[y], "sounds/damage.mp3"))
-			s->run = loadsound(t, "damage.mp3");
-		else if (ft_strequ(tmp[y], "sounds/shot.mp3"))
-			s->shot = loadsound(t, "shot.mp3");
-		ft_strdel(&t);
-		y++;
-	}
 }
 
 void		loadmaps(char *path, char **tmp, t_map **map, size_t *size)
@@ -126,26 +81,7 @@ void		loadweapontexture(t_weapon **weapon, size_t count, t_doom *doom)
 	}
 }
 
-void		loadfont(char *path, t_doom *doom)
-{
-	char *p;
-
-	p = ft_strjoin(path, "font.tga");
-	doom->font = bitmap(p, setivector2d(28, 36));
-	ft_strdel(&p);
-	ft_strdel(&path);
-}
-
-t_tga		*loadsecontimage(char *path)
-{
-	t_tga	*image;
-
-	image = tga_reader(path);
-	ft_strdel(&path);
-	return (image);
-}
-
-void		loadassets2(char *path, t_doom *doom)
+void		loadassets2(char *path, t_doom *doom, char *str)
 {
 	loadfont(ft_strjoin(doom->path, "assets/"), doom);
 	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
@@ -159,6 +95,7 @@ void		loadassets2(char *path, t_doom *doom)
 	doom->middletga = loadsecontimage(ft_strjoin(path, "middle.tga"));
 	doom->hardtga = loadsecontimage(ft_strjoin(path, "hard.tga"));
 	ft_strdel(&path);
+	ft_strdel(&str);
 }
 
 void		loadassets(char *path, t_doom *doom)
@@ -186,7 +123,6 @@ void		loadassets(char *path, t_doom *doom)
 			loadweapons(ft_strjoin(doom->path, "assets/"), tmp + (y + 1),
 			&doom->weapons, &doom->weaponcount);
 	}
-	loadassets2(ft_strjoin(doom->path, "assets/"), doom);
+	loadassets2(ft_strjoin(doom->path, "assets/"), doom, str);
 	free2dstring(tmp);
-	ft_strdel(&str);
 }

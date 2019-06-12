@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:37 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 16:09:04 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 18:56:19 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,24 +117,8 @@ int		clip(t_player *player, t_fvector p[4], float offset[4], size_t c)
 	return (1);
 }
 
-void	cleartexture(t_window *win)
-{
-	t_ivector2d cord;
-
-	cord.y = 0;
-	while (cord.y < win->size.y)
-	{
-		cord.x = 0;
-		while (cord.x < win->size.x)
-		{
-			win->pixels[cord.x + (cord.y * win->size.x)] = 0;
-			cord.x++;
-		}
-		cord.y++;
-	}
-}
-
-t_fvector	*clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_t c)
+t_fvector	*clipforfloor(t_player *player, t_fvector p[4], float offset[4],
+size_t c)
 {
 	float		t1;
 	float		t2;
@@ -177,7 +161,7 @@ t_fvector	*clipforfloor(t_player *player, t_fvector p[4], float offset[4], size_
 	return (chek);
 }
 
-void	drawwall(t_doom *doom)
+void	drawwalls(t_doom *doom)
 {
 	t_list	*tmp;
 	t_wall	*wall;
@@ -187,7 +171,7 @@ void	drawwall(t_doom *doom)
 	{
 		wall = (t_wall*)tmp->content;
 		if (wall->type != 2)
-			drow_wall(doom->win->pixels, *wall, wall->texture, wall->offset);
+			drawwall(doom->win->pixels, *wall, wall->texture, wall->offset);
 		// if (wall->type == 3 || wall->type == 1 || wall->type == 2)
 		// 	//drawfloor(doom, *wall, wall->type);
 		// if (wall->type == 3 || wall->type == 4 || wall->type == 5)
@@ -258,7 +242,7 @@ void	draw(t_doom *doom)
 	drawobj(doom, doom->thismap);
 	//clock_t start = clock();
 	drawsort(doom->pipeline);
-	drawwall(doom);
+	drawwalls(doom);
 	//clock_t end = clock();
 	//double seconds = (double)(end - start) / CLOCKS_PER_SEC;
 	//printf("The time: %f seconds\n", seconds);

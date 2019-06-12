@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 15:54:06 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 18:36:45 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:52:55 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ void		menuupdate(t_doom *doom)
 				doom->player.damagemult = 3;
 			doom->gamestate = 1;
 		}
+		else if (doom->gamestate == 3)
+			if (boxcollision(doom->gameoverbutton, doom->setting.input.mousepos))
+			{
+				doom->gamestate = 0;
+				switchlevel(doom, 0);
+			}
 	}
 }
 
@@ -78,9 +84,10 @@ void		drawbuttos(t_doom *doom)
 	}
 	else if (doom->gamestate == 3)
 	{
-		drawimage(doom, setirect(setivector2d(doom->win->size.x / 2 - 100,
-		doom->win->size.y / 2 - 50), 200, 100), doom->gameoverlogo);
-		drawimage(doom, doom->gameoverbutton.rect, &doom->gameoverbutton.texture);
+		drawimage(doom, setirect(setivector2d(doom->win->size.x / 2 - 300,
+		doom->win->size.y / 2 - 100 - 250), 600, 200), doom->gameoverlogo);
+		drawimage(doom, doom->gameoverbutton.rect,
+		&doom->gameoverbutton.texture);
 	}
 }
 
@@ -90,8 +97,9 @@ void		menudraw(t_doom *doom)
 	cleartexture(doom->win);
 	drawimage(doom, setirect(setivector2d(0, 0), doom->win->size.x,
 	doom->win->size.y), doom->skybox);
-	//drawimage(doom, setirect(setivector2d(doom->win->size.x / 2 - 100,
-	//doom->win->size.y / 2 - 50), 200, 100), doom->logo);
+	if (doom->gamestate != 3)
+		drawimage(doom, setirect(setivector2d(doom->win->size.x / 2 - 300,
+		doom->win->size.y / 2 - 100 - 250), 600, 200), doom->logo);
 	drawbuttos(doom);
 	SDL_UpdateTexture(doom->win->texture, NULL, doom->win->pixels,
 	doom->win->size.x * sizeof(uint32_t));

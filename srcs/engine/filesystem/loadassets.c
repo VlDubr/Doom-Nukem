@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/11 18:30:19 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:38:30 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,24 +136,29 @@ void		loadfont(char *path, t_doom *doom)
 	ft_strdel(&path);
 }
 
+t_tga		*loadsecontimage(char *path)
+{
+	t_tga	*image;
+
+	image = tga_reader(path);
+	ft_strdel(&path);
+	return (image);
+}
+
 void		loadassets2(char *path, t_doom *doom)
 {
-	char *pathskybox;
-	char *pathdoor;
-	char *pathlogo;
-
-	pathskybox = ft_strjoin(path, "skybox.tga");
-	pathdoor = ft_strjoin(path, "door.tga");
-	pathlogo = ft_strjoin(path, "logo.tga");
 	loadfont(ft_strjoin(doom->path, "assets/"), doom);
 	loadweapontexture(&doom->weapons, doom->weaponcount, doom);
-	doom->skybox = tga_reader(pathskybox);
-	doom->door = tga_reader(pathdoor);
-	//doom->logo = tga_reader(pathlogo);
+	doom->skybox = loadsecontimage(ft_strjoin(path, "skybox.tga"));
+	doom->door = loadsecontimage(ft_strjoin(path, "door.tga"));
+	doom->logo = loadsecontimage(ft_strjoin(path, "logo.tga"));
+	doom->gameoverlogo = loadsecontimage(ft_strjoin(path, "gameoverlogo.tga"));
+	doom->newgametga = loadsecontimage(ft_strjoin(path, "newgame.tga"));
+	doom->quittga = loadsecontimage(ft_strjoin(path, "quit.tga"));
+	doom->easytga = loadsecontimage(ft_strjoin(path, "easy.tga"));
+	doom->middletga = loadsecontimage(ft_strjoin(path, "middle.tga"));
+	doom->hardtga = loadsecontimage(ft_strjoin(path, "hard.tga"));
 	ft_strdel(&path);
-	ft_strdel(&pathskybox);
-	ft_strdel(&pathdoor);
-	ft_strdel(&pathlogo);
 }
 
 void		loadassets(char *path, t_doom *doom)

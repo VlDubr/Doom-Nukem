@@ -22,7 +22,7 @@ w: 75,50,1,0
 #s: startwall countwall floor ceil type texturewallid texturefloorid textureceilid textureportalid
 s: 0 6 1 10 0 0 0
 s: 6 5 5 10 0 1 1
-s: 11 4 1 10 0 2 2
+s: 11 4 1 10 1 2 2
 
 #o: (int)typeobject (int)typeuse (int)iscollide (float)position (float)rotation (int)width (int)height (int)maxhealth (int)ismovable (float)movespeed (int)argessionarea (int)textureupid (int)texturedownid (int)textureleftid (int)texturerigthid (int)damage
 o: 1 2 1 64.417984,1,33.575703 0,0,0 10 5 100 1 0.05 15 4 2 3 1 1

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 16:50:24 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/15 16:50:24 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:59:16 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ void	switchlevel(t_doom *doom, size_t level)
 		doom->player.pos.y = doom->thismap.sectors[doom->player.sector].floor
 		+ doom->player.height;
 		doom->player.rotate = doom->thismap.startplayer.rotate;
+		doom->player.health = doom->player.maxhealth;
 	}
 }

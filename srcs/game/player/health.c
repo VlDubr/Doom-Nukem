@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 12:36:01 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 17:43:38 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:42:44 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	minushealth(t_player *p, float minusvalue)
 		p->health -= minusvalue;
 }
 
-void	playerdeath(t_player *p)
+void	playerdeath(t_player *p, int *gamestate)
 {
 	if (p->health <= 0)
-		printf("Death\n");
+		*gamestate = 3;
 }

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 18:34:15 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:43:33 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,10 +310,15 @@ typedef struct	s_doom
 	t_tga		*logo;
 	t_tga		*gameoverlogo;
 	t_button	newgame;
+	t_tga		*newgametga;
 	t_button	quit;
+	t_tga		*quittga;
 	t_button	easy;
+	t_tga		*easytga;
 	t_button	middle;
+	t_tga		*middletga;
 	t_button	hard;
+	t_tga		*hardtga;
 	t_button	gameoverbutton;
 
 	Uint64		lastframe;
@@ -402,7 +407,7 @@ void		opendoor(t_object *obj, t_input input, t_map *map);
 
 void		addhealth(t_player *p, float addvalue);
 void		minushealth(t_player *p, float minusvalue);
-void		playerdeath(t_player *p);
+void		playerdeath(t_player *p, int *gamestate);
 
 void		playermove(t_doom *doom, double delta);
 void		playerjump(t_doom *doom, t_player *player);

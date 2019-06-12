@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:03 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 18:31:20 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 12:43:45 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ void	update(t_doom *doom, double delta)
 	checkswaplevel(doom, doom->player.sector);
 	objectupdate(doom);
 	doom->player.targetid = 18446744073709551615u;
-	if (doom->player.health <= 0)
-		doom->gamestate = 3;
+	playerdeath(&doom->player, &doom->gamestate);
 	updateui(doom);
 }

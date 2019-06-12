@@ -11,6 +11,7 @@ SRCS = main.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadweapon.c \
+		engine/filesystem/archive.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c engine/input/mousemove.c \
 		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c \
@@ -46,7 +47,7 @@ $(NAME): $(OBJ)
 	$(MAKE) -C $(LIBFTFOLDER)
 	$(MAKE) -C $(GRAPHICSFOLDER)
 	$(MAKE) -C $(TGAREADERFOLDER)
-	cp -r $(ASSETSFOLDER) $(BUILDFOLDER)
+	#cp -r $(ASSETSFOLDER) $(BUILDFOLDER)
 	gcc $(FLAG) $(OBJ) $(SDL2LINKMACOS) $(GRAPHICSLINK) $(LIBFTLINK) $(TGAREADERLINK) -o $(NAME)
 
 debugmacos: $(OBJ)

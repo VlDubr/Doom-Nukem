@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 12:43:33 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 13:33:52 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,6 +417,7 @@ void		loadinput(char *path, t_input *input);
 int			collide(t_fvector2d pos, t_fvector2d newpos,
 t_fvector *w, size_t count);
 int			collides(t_line line, t_map *map, size_t sector, int *visit);
+int			collideobj(t_line line, t_player play, t_map *map);
 int			inside(t_fvector2d i, t_fvector *p, size_t size);
 size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
 

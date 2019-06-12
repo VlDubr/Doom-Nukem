@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 14:33:11 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 13:54:40 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void		initvisit(int *visit, size_t count)
 		visit[i] = 0;
 }
 
+int			colli(t_line line, int *visit, t_doom *doom)
+{
+	return (collides(line, &doom->thismap, doom->player.sector, visit) ||
+	collideobj(line, doom->player, &doom->thismap));
+}
+
 static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 {
 	t_line		line;
@@ -32,7 +38,7 @@ static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
 	doom->player.velosity = newvec;
 	line.p[0] = setfvector2d(doom->player.pos.x, doom->player.pos.z);
 	line.p[1] = setfvector2d(doom->player.velosity.x, doom->player.velosity.z);
-	if (collides(line, &doom->thismap, doom->player.sector, visit))
+	if (colli(line, visit, doom))
 		return ;
 	lastsector = doom->player.sector;
 	doom->player.sector = isinside(setfvector2d(doom->player.velosity.x,

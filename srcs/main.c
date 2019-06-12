@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 13:16:30 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 14:35:36 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_doom			*initdoom(char *argv0)
 	if (!(d = (t_doom*)malloc(sizeof(t_doom))))
 		error("Error: Memory is not allocated");
 	d->path = getpath(argv0);
+	decompress();
 	initsdl(SDL_INIT_EVERYTHING);
 	loadassets(ft_strjoin(d->path, "assets/assets.cfg"), d);
 	d->level = 0;
@@ -50,7 +51,6 @@ void			initmenu(t_doom *doom)
 	doom->quit.rect = setirect(setivector2d(doom->win->size.x / 2 - 150,
 	doom->win->size.y / 2 - 50 + 75), 300, 100);
 	doom->quit.texture = *doom->quittga;
-
 	doom->easy.rect = setirect(setivector2d(doom->win->size.x / 2 - 150,
 	doom->win->size.y / 2 - 50), 300, 100);
 	doom->easy.texture = *doom->easytga;
@@ -95,7 +95,6 @@ int				main(int agrc, char **argv)
 	{
 		event(doom);
 		doom->gamestate == 1 ? gamescene(doom) : menuscene(doom);
-			
 	}
 	quitprogram(doom);
 	return (0);

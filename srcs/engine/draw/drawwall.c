@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/06/11 15:12:44 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/12 14:52:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void drow_wall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
 	int buf;
 	int start;
 	if( wall.p[0].x > 810 || wall.p[1].x > 810 || wall.p[0].x < -2 || wall.p[1].x < -2)
-		return;
+		return ;
 	dx1 = (wall.p[1].x - wall.p[0].x);
 	dy1 = (wall.p[1].y - wall.p[0].y);
 	dx4 = (wall.p[3].x - wall.p[2].x);

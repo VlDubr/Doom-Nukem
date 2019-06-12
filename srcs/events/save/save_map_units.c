@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 14:56:55 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 17:54:17 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 13:15:55 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ char	*save_obj(t_map *map, int i, char *str_old)
 
 	str = ft_strjoin(str_old, "o: ");
 	ft_strdel(&str_old);
-	str = save_elem(str, map->obj[i].type, " ");
+	str = save_elem(str, map->obj[i].type_obj, " ");
+	str = save_elem(str, map->obj[i].type_use, " ");
+	str = save_elem(str, map->obj[i].is_collide, " ");
 	str = save_elem_fl(str, map->obj[i].pos[0], ",");
 	str = save_elem_fl(str, map->obj[i].pos[1], ",");
 	str = save_elem_fl(str, map->obj[i].pos[2], " ");
@@ -73,7 +75,10 @@ char	*save_obj(t_map *map, int i, char *str_old)
 	str = save_elem(str, map->obj[i].is_mov, " ");
 	str = save_elem_fl(str, map->obj[i].move_s, " ");
 	str = save_elem(str, map->obj[i].agr_area, " ");
-	str = save_elem(str, map->obj[i].texture, " ");
+	str = save_elem(str, map->obj[i].texture_up, " ");
+	str = save_elem(str, map->obj[i].texture_down, " ");
+	str = save_elem(str, map->obj[i].texture_left, " ");
+	str = save_elem(str, map->obj[i].texture_right, " ");
 	str = save_elem(str, map->obj[i].damage, "\n");
 	return (str);
 }

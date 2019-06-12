@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 18:15:24 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 13:00:27 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ typedef struct		s_sector
 
 typedef struct		s_obj
 {
-	int				type;
+	int				type_obj;
+	int				type_use;
+	int				is_collide;
 	float			pos[3];
 	float			rot[3];
 	int				width;
@@ -86,7 +88,10 @@ typedef struct		s_obj
 	int				is_mov;
 	float			move_s;
 	int				agr_area;
-	int				texture;
+	int				texture_up;
+	int				texture_down;
+	int				texture_left;
+	int				texture_right;
 	int				damage;
 }					t_obj;
 

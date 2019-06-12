@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 13:32:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 16:29:08 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 13:15:03 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	obj_p_part2(t_map *map, char *str, int i, int o_c)
 {
 	char	*temp;
 
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].height = ft_atoi(temp);
 	temp = (char *)malloc(sizeof(char) * 100);
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->obj[o_c].health = ft_atoi(temp);
@@ -85,7 +87,13 @@ int	obj_p_part2(t_map *map, char *str, int i, int o_c)
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->obj[o_c].agr_area = ft_atoi(temp);
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->obj[o_c].texture = ft_atoi(temp);
+	map->obj[o_c].texture_up = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].texture_down = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].texture_left = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].texture_right = ft_atoi(temp);
 	i = ft_str_chr_cpy(temp, str, i, " \n\01");
 	map->obj[o_c].damage = ft_atoi(temp);
 	ft_strdel(&temp);
@@ -98,7 +106,11 @@ int	obj_p(t_map *map, char *str, int i, int o_c)
 
 	temp = (char *)malloc(sizeof(char) * 100);
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->obj[o_c].type = ft_atoi(temp);
+	map->obj[o_c].type_obj = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].type_use = ft_atoi(temp);
+	i = ft_str_chr_cpy(temp, str, i, " \n\00");
+	map->obj[o_c].is_collide = ft_atoi(temp);
 	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
 	map->obj[o_c].pos[0] = ft_atof(temp);
 	i = ft_str_chr_cpy(temp, str, i, ",\n\00");
@@ -113,8 +125,6 @@ int	obj_p(t_map *map, char *str, int i, int o_c)
 	map->obj[o_c].rot[2] = ft_atof(temp);
 	i = ft_str_chr_cpy(temp, str, i, " \n\00");
 	map->obj[o_c].width = ft_atoi(temp);
-	i = ft_str_chr_cpy(temp, str, i, " \n\00");
-	map->obj[o_c].height = ft_atoi(temp);
 	ft_strdel(&temp);
 	return (obj_p_part2(map, str, i, o_c));
 }

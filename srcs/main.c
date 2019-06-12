@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 18:37:00 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 12:52:54 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,27 @@ void	tex_write(t_serv *s, t_sdl sdl, t_map *map)
 	int xy[2];
 	int wh[2];
 
-	xy[0] = 1280;
-	xy[1] = 67;
-	wh[0] = 45;
-	wh[1] = 45;
-	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].texture]);
-	xy[0] = 1325;
-	xy[1] = 187;
-	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].floor_tex]);
-	xy[0] = 1325;
-	xy[1] = 367;
-	drawimage(&sdl, xy, wh, &map->textures[map->sector[s->sec_edit].roof_tex]);
+	if (s->gui_flag == 0)
+	{
+		xy[0] = 1280;
+		xy[1] = 67;
+		wh[0] = 45;
+		wh[1] = 45;
+		drawimage(&sdl, xy, wh,
+			&map->textures[map->sector[s->sec_edit].texture]);
+		xy[0] = 1325;
+		xy[1] = 187;
+		drawimage(&sdl, xy, wh,
+			&map->textures[map->sector[s->sec_edit].floor_tex]);
+		xy[0] = 1325;
+		xy[1] = 367;
+		drawimage(&sdl, xy, wh,
+			&map->textures[map->sector[s->sec_edit].roof_tex]);
+	}
+	else if (s->gui_flag == 1)
+	{
+		
+	}
 }
 
 void	writer(t_serv *s, t_sdl sdl, t_map *map)

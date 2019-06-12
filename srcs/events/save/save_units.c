@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 16:03:29 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 17:30:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 17:01:28 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*save_unit_fl(float i, char *delim)
 	char *str;
 	char *del;
 
-	str = ft_ftoa(i);
+	str = ft_ftoa(i, 5);
 	del = str;
 	str = ft_strjoin(str, delim);
 	ft_strdel(&del);

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:59:05 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 12:58:49 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 18:51:46 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ char		*prog_path(char *str)
 	return (new);
 }
 
+static void	service_init2(t_serv *s)
+{
+	s->pl_c.x = 0;
+	s->pl_c.y = 0;
+	s->p_flag = 0;
+	s->p_add = 0;
+	s->text_c.x = 980;
+	s->text_c.y = 10;
+}
+
 static void	service_init(t_serv *s)
 {
 	char *str;
@@ -52,15 +62,15 @@ static void	service_init(t_serv *s)
 	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap4.tga");
 	s->text = bitmap(str, s->text_wh);
 	ft_strdel(&str);
+	s->text_025_wh.x = 7;
+	s->text_025_wh.y = 9;
+	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap.tga");
+	s->text_025 = bitmap(str, s->text_025_wh);
+	ft_strdel(&str);
 	str = ft_strjoin(s->prog_path, "assets/image/editor/man.tga");
 	s->player = tga_reader(str);
 	ft_strdel(&str);
-	s->pl_c.x = 0;
-	s->pl_c.y = 0;
-	s->p_flag = 0;
-	s->p_add = 0;
-	s->text_c.x = 980;
-	s->text_c.y = 10;
+	service_init2(s);
 }
 
 char		*init(t_map *map, t_serv *s, char **argv)
@@ -84,6 +94,7 @@ char		*init(t_map *map, t_serv *s, char **argv)
 	free(s->prog_path);
 	s->prog_path = prog_path(argv[0]);
 	s->gui_flag = 0;
+	s->obj_edit = 0;
 	service_init(s);
 	s->file = argv[1];
 	return (file_read(s->fd, argv[1]));

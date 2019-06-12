@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 13:00:27 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 18:59:29 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,19 @@ typedef struct		s_serv
 	int				mouse_xy[2];
 	int				wh_screen[2];
 	int				sec_edit;
+	int				obj_edit;
 	SDL_Event		e;
 	t_ivector2d		text_wh;
+	t_ivector2d		text_025_wh;
 	t_ivector2d		text_c;
 	t_tga			**text;
+	t_tga			**text_025;
 	t_ivector2d		pl_c;
 	t_tga			*player;
 	int				p_add;
 	int				p_flag;
 	int				gui_flag;
+	int				obj_add;
 }					t_serv;
 
 void				ft_error(const char *str);
@@ -149,6 +153,7 @@ void				line_dda(t_wall st, t_wall f, t_sdl *sd, t_serv *s);
 void				buttons(t_serv *s, t_sdl *sdl, t_map *map);
 void				obj_buttons(t_serv *s, t_sdl *sdl, t_map *map);
 void				dot_write(t_serv *s, t_sdl *sdl, t_map *map);
+void				tex_write(t_serv *s, t_sdl sdl, t_map *map);
 
 void				event(t_serv *s, t_sdl sdl, t_map *map);
 int					check_wall(t_serv *s, t_map *map);
@@ -170,6 +175,8 @@ void				wall_sector_wr(t_map *map);
 void				pl_coords_init(t_map *map, t_serv *s);
 void				fl_texture(t_serv *s, t_map *map);
 void				roof_texture(t_serv *s, t_map *map);
+void				button_events(t_serv *s, t_map *map);
+void				obj_events(t_serv *s, t_map *map);
 
 char				*init(t_map *map, t_serv *s, char **argv);
 void				save_map(t_map *map, t_serv *s);
@@ -198,4 +205,15 @@ int					obj_p(t_map *map, char *str, int i, int o_c);
 
 void				str_wr(t_serv *s, t_sdl *sdl, char *str, char *temp2);
 char				*ret_str(int flag, t_map *map, int sec_edit);
+
+void				add_obj(t_map *map, t_serv *s);
+void				obj_e(t_serv *s, t_map *map);
+void				obj_type(t_serv *s, t_map *map);
+int					obj_tex(t_serv *s, t_map *map, int tex);
+int					obj_num(t_serv *s, t_map *map, int num);
+float				obj_fl(t_serv *s, t_map *map, float num);
+void				obj_movable(t_serv *s, t_map *map);
+void				del_obj(t_map *map, t_serv *s);
+void				obj_to_map(t_serv *s, t_map *map);
+void				obj_writer(t_serv *s, t_sdl sdl, t_map *map);
 #endif

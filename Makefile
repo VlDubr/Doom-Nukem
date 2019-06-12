@@ -7,7 +7,9 @@ SRCS = ./srcs/gui/buttons.c ./srcs/gui/gui.c ./srcs/gui/textures.c ./srcs/events
 ./srcs/events/m_events.c ./srcs/events/add_elem/player.c ./srcs/events/save/save_map_units.c ./srcs/events/save/save_map.c\
 ./srcs/parser/map_parser.c ./srcs/parser/img_parser.c ./srcs/parser/parser2.c ./srcs/graphics/background_and_dot.c \
 ./srcs/graphics/paint.c ./srcs/graphics/line_writing.c ./srcs/service/check_walls.c ./srcs/service/init.c ./srcs/service/service_f.c\
-./srcs/service/del_str_mass.c ./srcs/graphics/draw_image.c ./srcs/parser/unit_p.c ./srcs/events/save/save_units.c ./srcs/main.c
+./srcs/service/del_str_mass.c ./srcs/graphics/draw_image.c ./srcs/parser/unit_p.c ./srcs/events/save/save_units.c ./srcs/events/obj_events.c \
+./srcs/graphics/writer.c ./srcs/graphics/texture_writing.c ./srcs/events/add_elem/add_obj.c ./srcs/events/delete/del_obj.c ./srcs/events/button_events.c \
+./srcs/graphics/obj_writer.c ./srcs/main.c
 TGA = ./lib/TGA-Reader/libtga.a
 GRAPH = ./lib/ft_graphics/libftgraphics.a
 LIBFT = ./lib/libft/libft.a

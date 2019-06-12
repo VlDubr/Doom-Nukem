@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/05 15:34:21 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/12 18:43:22 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void	actions(t_serv *s, t_map *map)
 	SDL_GetMouseState(&s->mouse_xy[0], &s->mouse_xy[1]);
 	if (s->p_add == 1)
 		pl_add(s, map);
+	else if (s->obj_add == 1)
+		obj_to_map(s, map);
 	else if (s->e.button.button == 1 && check_wall(s, map) == 1
 		&& check_double_wall(s, map) == 1)
 		add_wall_to_map(map, s);
@@ -46,41 +48,24 @@ static void	actions(t_serv *s, t_map *map)
 	}
 }
 
-static void	button_events(t_serv *s, t_map *map)
-{
-	if (s->mouse_xy[1] < 60)
-		sec_e(s, map);
-	else if (s->mouse_xy[1] < 120 && s->sec_edit < map->sec_count)
-		sec_tex(s, map);
-	else if (s->mouse_xy[1] < 180 && s->sec_edit < map->sec_count)
-		floor_e(s, map);
-	else if (s->mouse_xy[1] < 240)
-		fl_texture(s, map);
-	else if (s->mouse_xy[1] < 300 && s->sec_edit < map->sec_count)
-		roof_e(s, map);
-	else if (s->mouse_xy[1] < 360 && s->sec_edit < map->sec_count)
-		r_vis_e(s, map);
-	else if (s->mouse_xy[1] < 420 && s->sec_edit < map->sec_count)
-		roof_texture(s, map);
-	else if (s->mouse_xy[1] < 480)
-		act_pl(s, map);
-	else if (s->mouse_xy[1] > 700)
-		clr_map(map, s);
-}
-
 static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 {
 	SDL_GetMouseState(&s->mouse_xy[0], &s->mouse_xy[1]);
 	if (s->mouse_xy[0] > 1000)
 	{
-		if (s->mouse_xy[1] < 800)
-			button_events(s, map);
-		else if (s->mouse_xy[1] > 800)
+		if (s->gui_flag == 0)
 		{
-			s->fd = open(s->file, O_TRUNC | O_RDWR);
-			save_map(map, s);
-			close(s->fd);
+			if (s->mouse_xy[1] < 800)
+				button_events(s, map);
+			else if (s->mouse_xy[1] > 800)
+			{
+				s->fd = open(s->file, O_TRUNC | O_RDWR);
+				save_map(map, s);
+				close(s->fd);
+			}
 		}
+		else
+			obj_events(s, map);
 		gui(s, &sdl, map);
 	}
 	else

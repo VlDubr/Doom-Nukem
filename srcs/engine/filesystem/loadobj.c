@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 17:52:38 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:58:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:39:38 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	loadobj(char **str, t_object **obj, size_t *count)
 			(*count)++;
 		cord.x++;
 	}
-	*obj = (t_object*)malloc(sizeof(t_object) * (*count));
+	*obj = (t_object*)malloc(sizeof(t_object) * (*count + 1));
 	cord.x = 0;
 	cord.y = 0;
 	while (str[cord.x] != NULL)

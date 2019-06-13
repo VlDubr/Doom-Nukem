@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 17:54:08 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:58:42 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:32:25 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	loadsector(char **str, t_sector **sector, size_t *count)
 	}
 	y = 0;
 	y2 = 0;
-	*sector = (t_sector*)malloc(sizeof(t_sector) * (*count));
+	*sector = (t_sector*)malloc(sizeof(t_sector) * (*count + 1));
 	while (str[y] != NULL)
 	{
 		if (str[y][0] == 's' && str[y][1] == ':')

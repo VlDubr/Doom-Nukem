@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:02 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:27:34 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:25:27 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ char		*getpath(const char *argv0);
 
 t_tga		*loadsecontimage(char *path);
 
-void		compress(void);
-void		decompress(void);
+void		compress(char *path);
+void		decompress(char *path);
+void		unixcommand(char *command);
 
 int			deserializeint(char *str, char *name);
 void		serializeint(int fd, char *name, int nb);

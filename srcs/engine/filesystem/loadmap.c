@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/13 18:45:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:08:24 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	initwall(char *str, t_fvector **wall, int y)
 void	loadwall(char **str, t_fvector **wall, size_t *count)
 {
 	t_ivector2d	cord;
-
 
 	cord = setivector2d(-1, 0);
 	while (str[++cord.x] != NULL)

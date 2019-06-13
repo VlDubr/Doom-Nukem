@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:28:14 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 18:21:24 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:58:10 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static void	first_step(t_tga *img, unsigned char **buf, t_service *s, int fd)
 	if (img->id_length != 0)
 		read(fd, *buf, img->id_length);
 	del = *buf;
-	free(del);
+	ft_memdel((void**)&del);
 }
 
-static t_tga	*reader(int fd, t_service *s)
+t_tga		*reader(int fd, t_service *s)
 {
 	unsigned char	*buf;
 	t_tga			*img;

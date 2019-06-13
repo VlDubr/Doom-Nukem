@@ -1,0 +1,6 @@
+name: Pistol
+imagetype: 1 128,128
+image: 6
+maxammo: 100
+damagetype: 1
+damage: 1

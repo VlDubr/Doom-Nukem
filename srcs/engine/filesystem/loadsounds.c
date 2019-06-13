@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 17:24:05 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:29:39 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:31:46 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,5 @@ void		loadsounds(char *path, char **tmp, t_sound *s)
 		ft_strdel(&t);
 		y++;
 	}
+	ft_strdel(&path);
 }

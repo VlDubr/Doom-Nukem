@@ -1,0 +1,33 @@
+# TEST
+
+#w: position2d (z portal or wall. if z = -1 isportal else wall)
+w: 0,0,-1,0
+w: 50,0,-1,0
+w: 75,25,1,1
+w: 50,50,-1,0
+w: 0,50,-1,0
+w: -25,25,-1,0
+
+w: 50,50,0,0
+w: 75,25,-1,0
+w: 100,25,-1,0
+w: 100,50,2,0
+w: 75,50,-1,0
+
+w: 100,50,-1,0
+w: 100,100,-1,0
+w: 75,100,-1,0
+w: 75,50,1,0
+
+#s: startwall countwall floor ceil type texturewallid texturefloorid textureceilid textureportalid
+s: 0 6 1 10 0 0 0
+s: 6 5 5 10 0 1 1
+s: 11 4 1 10 1 2 2
+
+#o: (int)typeobject (int)typeuse (int)iscollide (float)position (float)rotation (int)width (int)height (int)maxhealth (int)ismovable (float)movespeed (int)argessionarea (int)textureupid (int)texturedownid (int)textureleftid (int)texturerigthid (int)damage
+o: 3 2 1 25.571106,1,22.846706 0,0,0 10 5 100 1 0.05 15 4 0 3 1 1
+#o: 0 10,1,20 0,0,0 2 100 1 0.05 15 3 1
+#o: 0 10,1,25 0,0,0 2 100 1 0.05 15 3 1
+
+#p: position2d rotation
+p: 10,10 0,0,0

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/13 18:10:51 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:32:49 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,19 @@ static void		initsdl(Uint32 sdlflag)
 
 t_doom			*initdoom(char *argv0)
 {
+	char	*path;
 	t_doom	*d;
 
 	if (!(d = (t_doom*)malloc(sizeof(t_doom))))
 		error("Error: Memory is not allocated");
 	d->path = getpath(argv0);
-	decompress();
+	//decompress(ft_strjoin(d->path, "assets.tar"));
 	initsdl(SDL_INIT_EVERYTHING);
 	loadassets(ft_strjoin(d->path, "assets/assets.cfg"), d);
 	d->level = 0;
+	path = ft_strjoin(d->path, "assets");
+	//unixcommand(ft_strjoin("rm -rf ", path));
+	ft_strdel(&path);
 	loadinput(d->path, &d->setting.input);
 	initsetting(&d->setting);
 	d->win = createwindow(setivector2d(800, 800), "DOOM", SDL_WINDOW_RESIZABLE);

@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:03:48 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 14:54:57 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 19:21:05 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*readfile(char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd <= 0)
-		error(ft_strjoin(ft_strjoin("Error: not opened file: ", path), "\n"));
+		error(ft_strjoin("Error: not opened file: ", path));
 	str = ft_strnew(0);
 	while ((r = read(fd, buff, BUFF_SIZE)) > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 18:59:29 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 14:35:57 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ typedef struct		s_serv
 	t_ivector2d		text_c;
 	t_tga			**text;
 	t_tga			**text_025;
+	t_tga			**text_rev;
 	t_ivector2d		pl_c;
 	t_tga			*player;
 	int				p_add;

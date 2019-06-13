@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:09:04 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 15:16:20 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 17:55:11 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void		str_wr(t_serv *s, t_sdl *sdl, char *str, char *temp2)
 	temp = ft_strjoin(str, temp2);
 	bitmap_write(sdl->r, s->text, s->text_c, temp);
 	ft_strdel(&temp);
+	if (ft_strlen(temp2) != 0)
+		ft_strdel(&temp2);
 }
 
 static void	next_buttons(t_serv *s, t_sdl *sdl, t_map *map, char *temp)
@@ -41,11 +43,9 @@ static void	next_buttons(t_serv *s, t_sdl *sdl, t_map *map, char *temp)
 	s->text_c.y += 60;
 	temp = ret_str(2, map, s->sec_edit);
 	str_wr(s, sdl, "  roof vis:", temp);
-	ft_strdel(&temp);
 	s->text_c.y += 60;
 	temp = ret_str(3, map, s->sec_edit);
 	str_wr(s, sdl, "  roof tex:", "");
-	ft_strdel(&temp);
 }
 
 static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
@@ -54,19 +54,16 @@ static void	first_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 
 	temp = ft_itoa(s->sec_edit);
 	str_wr(s, sdl, "  sector:", temp);
-	ft_strdel(&temp);
 	s->text_c.y += 60;
 	str_wr(s, sdl, "  sec tex:", "");
 	s->text_c.y += 60;
 	temp = ret_str(0, map, s->sec_edit);
 	str_wr(s, sdl, "  floor h:", temp);
-	ft_strdel(&temp);
 	s->text_c.y += 60;
 	str_wr(s, sdl, "  floor tex", "");
 	s->text_c.y += 60;
 	temp = ret_str(1, map, s->sec_edit);
 	str_wr(s, sdl, "  roof h:", temp);
-	ft_strdel(&temp);
 	next_buttons(s, sdl, map, temp);
 }
 

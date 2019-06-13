@@ -6,26 +6,11 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 18:43:22 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 17:29:51 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/editor.h"
-
-static void	keydown(t_serv *s, t_sdl sdl, t_map *map)
-{
-	if (s->e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-		s->quit = 1;
-	if (s->e.key.keysym.scancode == SDL_SCANCODE_W)
-		s->coord_y -= 25;
-	if (s->e.key.keysym.scancode == SDL_SCANCODE_S)
-		s->coord_y += 25;
-	if (s->e.key.keysym.scancode == SDL_SCANCODE_D)
-		s->coord_x += 25;
-	if (s->e.key.keysym.scancode == SDL_SCANCODE_A)
-		s->coord_x -= 25;
-	writer(s, sdl, map);
-}
 
 static void	actions(t_serv *s, t_map *map)
 {
@@ -84,8 +69,8 @@ void		event(t_serv *s, t_sdl sdl, t_map *map)
 				s->quit = 1;
 			if (s->e.type == SDLK_ESCAPE)
 				s->quit = 1;
-			if (s->e.type == SDL_KEYDOWN)
-				keydown(s, sdl, map);
+			if (s->e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+				s->quit = 1;
 			if (s->e.type == SDL_MOUSEBUTTONDOWN)
 				m_button_down(s, sdl, map);
 		}

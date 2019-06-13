@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 14:56:55 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 13:15:55 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 12:41:41 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*save_p(t_map *map, char *str_old)
 	str = save_elem(str, map->player.coords[1], " ");
 	str = save_elem(str, map->player.cam[0], ",");
 	str = save_elem(str, map->player.cam[1], ",");
-	str = save_elem(str, map->player.cam[2], "\n");
+	str = save_elem(str, map->player.cam[2], "\n\n");
 	return (str);
 }
 

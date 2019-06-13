@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 16:12:58 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/06 16:15:52 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 15:55:51 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	loadimages(char *path, char **tmp, t_tga **textures, int *count)
 	int		y;
 	char	*filepath;
 
-	y = 1;
+	y = 0;
 	while (tmp[y] != NULL && !ft_strequ("sound:", tmp[y])
 	&& !ft_strequ("map:", tmp[y]))
 		y++;

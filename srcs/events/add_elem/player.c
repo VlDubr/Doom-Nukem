@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 13:50:08 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 17:31:47 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 17:02:03 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	pl_write(t_serv *s, t_sdl sdl)
 {
-	s->pl_c.x += s->coord_x;
-	s->pl_c.y += s->coord_y;
+	s->pl_c.x -= (s->player->width / 2);
+	s->pl_c.y -= (s->player->height / 2);
 	img_write(sdl.r, s->player, s->pl_c);
-	s->pl_c.x -= s->coord_x;
-	s->pl_c.y -= s->coord_y;
+	s->pl_c.x += (s->player->width / 2);
+	s->pl_c.y += (s->player->height / 2);
 }
 
 void	pl_add(t_serv *s, t_map *map)

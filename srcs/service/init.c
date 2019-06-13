@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:59:05 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 18:51:46 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 14:44:27 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ char		*prog_path(char *str)
 
 static void	service_init2(t_serv *s)
 {
+	char *str;
+
+	str = ft_strjoin(s->prog_path, "assets/image/editor/man.tga");
+	s->player = tga_reader(str);
+	ft_strdel(&str);
 	s->pl_c.x = 0;
 	s->pl_c.y = 0;
 	s->p_flag = 0;
@@ -67,8 +72,8 @@ static void	service_init(t_serv *s)
 	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap.tga");
 	s->text_025 = bitmap(str, s->text_025_wh);
 	ft_strdel(&str);
-	str = ft_strjoin(s->prog_path, "assets/image/editor/man.tga");
-	s->player = tga_reader(str);
+	str = ft_strjoin(s->prog_path, "assets/image/editor/char_rev.tga");
+	s->text_rev = bitmap(str, s->text_025_wh);
 	ft_strdel(&str);
 	service_init2(s);
 }

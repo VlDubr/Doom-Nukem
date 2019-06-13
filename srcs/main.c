@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 18:04:41 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/13 19:02:07 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		main(int argc, char **argv)
 			map_parser(s, str, map);
 		SDL_Init(SDL_INIT_VIDEO);
 		sdl.win = SDL_CreateWindow("DOOM-Nukem Map Editor", 0, 0,
-			s->wh_screen[0] + 500, s->wh_screen[1], 0);
+			s->wh_screen[0] + 560, s->wh_screen[1], 0);
 		sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
 		writer(s, sdl, map);
 		event(s, sdl, map);

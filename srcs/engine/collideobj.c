@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:03:10 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 18:03:26 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:00:25 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ t_player play)
 
 int				collideobj(t_line line, t_player play, t_map *map)
 {
-	t_fvector	p1;
-	t_fvector	p2;
-	t_fvector	dir;
 	size_t		c;
 
 	c = -1;

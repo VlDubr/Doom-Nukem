@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 11:43:51 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/29 15:21:26 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 17:59:11 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	playerjump(t_doom *doom, t_player *player)
 {
 	float	height;
-	float	tmp;
 
 	Mix_PlayChannel(2, doom->sound.jump, 0);
 	height = doom->thismap.sectors[player->sector].floor +

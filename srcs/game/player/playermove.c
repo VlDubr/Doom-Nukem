@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 17:38:21 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 13:54:40 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 17:59:01 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			colli(t_line line, int *visit, t_doom *doom)
 	collideobj(line, doom->player, &doom->thismap));
 }
 
-static void	checkpos(t_doom *doom, t_fvector newvec, t_fvector2d dir)
+static void	checkpos(t_doom *doom, t_fvector newvec)
 {
 	t_line		line;
 	int			visit[doom->thismap.sectorcount];
@@ -92,5 +92,5 @@ void		playermove(t_doom *doom, double delta)
 		dir = multfvector2d(dir, doom->player.movespeed * delta,
 		doom->player.movespeed * delta);
 	newvec = addfvector(doom->player.pos, dir.x, 0, dir.y);
-	checkpos(doom, newvec, dir);
+	checkpos(doom, newvec);
 }

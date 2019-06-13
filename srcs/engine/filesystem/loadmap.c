@@ -6,26 +6,11 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:45:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:54:16 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:03:22 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
-
-void	initwall(char *str, t_fvector *wall)
-{
-	char		**tmp;
-	char		**tmp2;
-
-	tmp = ft_strsplit(str, ' ');
-	tmp2 = ft_strsplit(tmp[1], ',');
-	(*wall).x = ft_atoi(tmp2[0]);
-	(*wall).y = ft_atoi(tmp2[1]);
-	(*wall).z = ft_atoi(tmp2[2]);
-	(*wall).w = tmp2[3] != NULL ? ft_atoi(tmp2[3]) : 0;
-	free2dstring(tmp);
-	free2dstring(tmp2);
-}
 
 void	loadwall(char **str, t_fvector **wall, size_t *count)
 {
@@ -33,26 +18,26 @@ void	loadwall(char **str, t_fvector **wall, size_t *count)
 	char		**tmp;
 	char		**tmp2;
 
-	cord.x = 0;
-	(*count) = 0;
-	while (str[cord.x] != NULL)
-	{
+	cord = setivector2d(-1, 0);
+	while (str[++cord.x] != NULL)
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')
-			(*count)++;
-		cord.x++;
-	}
-	cord.x = 0;
-	cord.y = 0;
-	*wall = (t_fvector*)malloc(sizeof(t_fvector) * (*count));
-	while (str[cord.x] != NULL)
-	{
+			cord.y++;
+	cord = setivector2d(-1, 0);
+	*wall = (t_fvector*)malloc(sizeof(t_fvector) * cord.y);
+	while (str[++cord.x] != NULL)
 		if (str[cord.x][0] == 'w' && str[cord.x][1] == ':')
 		{
-			initwall(str[cord.x], &(*wall)[cord.y]);
+			tmp = ft_strsplit(str[cord.x], ' ');
+			tmp2 = ft_strsplit(tmp[1], ',');
+			(*wall)[cord.y].x = ft_atoi(tmp2[0]);
+			(*wall)[cord.y].y = ft_atoi(tmp2[1]);
+			(*wall)[cord.y].z = ft_atoi(tmp2[2]);
+			(*wall)[cord.y].w = tmp2[3] != NULL ? ft_atoi(tmp2[3]) : 0;
+			free2dstring(tmp);
+			free2dstring(tmp2);
 			cord.y++;
 		}
-		cord.x++;
-	}
+	(*count) = cord.y;
 }
 
 void	initplayer(char *str, t_player *player)
@@ -75,8 +60,6 @@ void	loadplayer(char **str, t_player *player)
 {
 	int		y;
 	int		flag;
-	char	**tmp;
-	char	**tmp2;
 
 	y = 0;
 	flag = 0;
@@ -102,6 +85,8 @@ t_map	loadmap(char *path)
 
 	str = readfile(path);
 	tmp = ft_strsplit(str, '\n');
+	if (tmp == NULL)
+		error("Error: memory not allocated");
 	loadwall(tmp, &r.walls, &r.wallcount);
 	loadsector(tmp, &r.sectors, &r.sectorcount);
 	loadplayer(tmp, &r.startplayer);

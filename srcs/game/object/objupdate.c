@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 17:10:35 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:10:56 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 17:55:07 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	logicobj(t_doom *doom, t_object *obj)
 {
 	if (obj->typeobject == ENEMY)
 	{
-		moveenemy(doom, &obj, doom->delta);
+		moveenemy(doom, obj, doom->delta);
 		if (obj->health <= 0)
 			obj->isactive = 0;
 	}

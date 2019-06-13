@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:47:12 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/10 17:29:22 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:04:36 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static t_input	deserializeinput(char *file)
 	t_input	input;
 	int		y;
 	char	**tmp;
-	char	*name;
 
 	y = 0;
 	tmp = ft_strsplit(file, '\n');

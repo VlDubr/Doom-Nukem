@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 18:20:18 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:06:16 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:01:05 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void		del(void *data, size_t size)
 {
+	(void)size;
 	if (!data)
 		return ;
 	free(data);

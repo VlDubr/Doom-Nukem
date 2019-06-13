@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:41:58 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:15:05 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:10:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ void	checkmousebuttondown(t_doom *doom, SDL_MouseButtonEvent e)
 		doom->setting.input.mousekey[2] = 1;
 }
 
-void	updateevent(t_doom *doom, float delta)
+void	updateevent(t_doom *doom)
 {
-	SDL_Keycode key;
-
 	doom->setting.input.mousekey[0] = 0;
 	doom->setting.input.mousekey[1] = 0;
 	doom->setting.input.mousekey[2] = 0;
@@ -48,5 +46,5 @@ void	updateevent(t_doom *doom, float delta)
 		if (doom->event.type == SDL_MOUSEBUTTONDOWN)
 			checkmousebuttondown(doom, doom->event.button);
 	}
-	mousemove(&doom->player, &doom->setting.input, delta);
+	mousemove(&doom->player, &doom->setting.input);
 }

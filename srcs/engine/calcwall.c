@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/06 19:07:30 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/11 14:22:19 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:00:05 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	setotherwalldata(t_doom *doom, t_wall *wall, t_sector sec, t_ivector ci)
 	wall->offset[1] = 1;
 	wall->offset[2] = 1;
 	wall->offset[3] = 1;
-	wall->texture = doom->texture[sec.walltexture];
+	wall->texture = wall->type != 6 ?
+	doom->texture[sec.walltexture] : *doom->door;
 	wall->c = ci.x + ci.y;
 	wall->light = sec.light;
 }
@@ -51,7 +52,7 @@ void	setwalls(t_doom *doom, t_list **wall, t_sector sec, t_ivector ci)
 	t_wall		*wa;
 
 	w[0] = doom->thismap.walls[ci.x + ci.y];
-	w[1] = doom->thismap.walls[ci.x + ci.y + 1 >= ci.x + sec.count ?
+	w[1] = doom->thismap.walls[ci.x + ci.y + 1 >= ci.x + (int)sec.count ?
 	sec.start : ci.x + ci.y + 1];
 	if (w[0].z == -1)
 		setwall(doom, wall, sec, w);
@@ -65,15 +66,8 @@ void	setwalls(t_doom *doom, t_list **wall, t_sector sec, t_ivector ci)
 	while (tmp != NULL)
 	{
 		wa = (t_wall*)tmp->content;
-		wa->offset[0] = 1;
-		wa->offset[1] = 1;
-		wa->offset[2] = 1;
-		wa->offset[3] = 1;
-		wa->texture = wa->type != 6 ? doom->texture[sec.walltexture] : *doom->door;
-		wa->c = ci.x + ci.y;
-		wa->light = sec.light;
+		setotherwalldata(doom, wa, sec, ci);
 		tmp->content = wa;
-		//setotherwalldata(doom, wa, sec, ci);
 		tmp = tmp->next;
 	}
 }

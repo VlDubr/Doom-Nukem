@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:22:16 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:10:51 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ void			event(t_doom *doom)
 	doom->currentframe = SDL_GetPerformanceCounter();
 	doom->delta = (double)((doom->currentframe - doom->lastframe) *
 	1000 / (double)SDL_GetPerformanceFrequency());
-	updateevent(doom, doom->delta);
+	updateevent(doom);
 }
 
-int				main(int agrc, char **argv)
+int				main(int argc, char **argv)
 {
-	char	*file[3];
 	t_doom	*doom;
 
+	(void)argc;
 	doom = initdoom(argv[0]);
 	doom->player = defaultplayerdata(doom);
 	switchlevel(doom, doom->level);

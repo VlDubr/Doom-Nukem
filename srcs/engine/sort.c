@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 11:59:11 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:06:29 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 17:59:41 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,13 @@ void	drawsort(t_list *list)
 {
 	size_t		len;
 	t_ivector	cord;
-	t_wall		tmp;
-	t_fvector2d	z;
 
 	len = ft_lstsize(&list);
 	cord.z = len / 2;
 	while (cord.z > 0)
 	{
 		cord.y = cord.z;
-		while (cord.y < len)
+		while ((size_t)cord.y < len)
 		{
 			cord.x = 0;
 			while (cord.x < cord.y)

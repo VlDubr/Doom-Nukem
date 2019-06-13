@@ -15,6 +15,7 @@ SRCS = main.c \
 		engine/utils/mat.c engine/utils/wallproj.c engine/utils/wallutils.c engine/utils/stringcount.c \
 		engine/utils/wallutils2.c engine/utils/setline.c \
 		engine/utils/getlistindex.c engine/utils/raycastfloor.c engine/utils/del.c \
+		engine/utils/drawutils.c \
 		engine/setting/initsetting.c engine/setting/sound.c engine/setting/music.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadobj.c \
@@ -23,8 +24,8 @@ SRCS = main.c \
 		engine/filesystem/loadsecontimage.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c engine/input/mousemove.c \
-		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawceil.c engine/draw/drawfloor.c engine/draw/drawpoint.c engine/draw/drawrect.c \
-		engine/draw/drawimage.c engine/draw/drawpistol.c engine/draw/anim.c engine/draw/drawammo.c engine/draw/drawportal.c engine/draw/drawskybox.c
+		engine/draw/drawwall.c engine/draw/drawline.c engine/draw/drawpoint.c engine/draw/drawrect.c \
+		engine/draw/drawimage.c engine/draw/drawpistol.c engine/draw/anim.c engine/draw/drawammo.c engine/draw/drawportal.c engine/draw/drawskybox.c engine/draw/brez.c
 SRCSFOLDER = ./srcs/
 OBJNAME = $(SRCS:.c=.o)
 OBJDIR = ./obj/
@@ -93,7 +94,7 @@ fclean: clean
 
 $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	$(MAKE) folder
-	gcc -g -I $(INCLUDES) -o $@ -c $<
+	gcc -g $(FLAG) -I $(INCLUDES) -o $@ -c $<
 
 folder:
 	@mkdir -p $(OBJDIR)engine/utils/

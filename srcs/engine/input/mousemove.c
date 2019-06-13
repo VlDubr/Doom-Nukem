@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 14:32:56 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/05/31 15:26:41 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:09:14 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	camerarotate(t_player *play, t_input *input)
 	play->rotate.x += input->deltapos.y;
 }
 
-void	mousemove(t_player *play, t_input *input, float delta)
+void	mousemove(t_player *play, t_input *input)
 {
 	input->deltapos.x = ((input->old.x - input->mousepos.x) * input->sensivety);
 	input->deltapos.y = ((input->old.y - input->mousepos.y) * input->sensivety);

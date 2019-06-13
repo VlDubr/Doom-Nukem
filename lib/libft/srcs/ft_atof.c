@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/18 12:18:04 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/03/18 12:18:05 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 17:14:46 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double	ft_atof(const char *str)
 	if (*str && *str == '.')
 		str++;
 	power = 1;
-	while((*str) && ft_isdigit(*str))
+	while ((*str) && ft_isdigit(*str))
 	{
 		result = 10 * result + *str++ - '0';
 		power *= 10;

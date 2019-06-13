@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 19:10:35 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/03 19:10:36 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 16:59:48 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,6 @@ void			stopanim(t_anim *anim)
 {
 	anim->state = 0;
 	anim->countframe = 0;
-}
-
-void			pauseanim(t_anim *anim)
-{
-	anim->state = 2;
-}
-
-void			unpauseanim(t_anim *anim)
-{
-	anim->state ^= 2;
 }
 
 void			nextframe(t_anim *anim)

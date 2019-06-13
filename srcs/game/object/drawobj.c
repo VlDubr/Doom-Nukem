@@ -6,13 +6,13 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/28 15:14:48 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:15:33 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:03:01 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 
-void	initwallobj(t_doom *doom, t_map map, t_wall *wa, size_t c)
+void	initwallobj(t_map map, t_wall *wa, size_t c)
 {
 	wa->p[0] = setfvector(map.obj[c].pos.x,
 	map.sectors[map.obj[c].sector].floor, map.obj[c].pos.z +
@@ -55,7 +55,7 @@ int		drawobjnorm(t_doom *doom, t_wall *wa, t_sermat mat, size_t c)
 
 	dir = subfvtofv(doom->player.pos, doom->thismap.obj[c].pos);
 	dir = normfvector(dir);
-	initwallobj(doom, doom->thismap, wa, c);
+	initwallobj(doom->thismap, wa, c);
 	multmatrixdrawwall(wa->p, matroty(atan2(dir.z, dir.x)));
 	adddrawwall(wa->p, doom->thismap.obj[c].pos.x, doom->thismap.obj[c].pos.y,
 	doom->thismap.obj[c].pos.z);
@@ -65,14 +65,13 @@ int		drawobjnorm(t_doom *doom, t_wall *wa, t_sermat mat, size_t c)
 	wa->offset[3] = 1;
 	wa->texture = doom->texture[doom->thismap.obj[c].texture];
 	multmatrixdrawwall(wa->p, mat.cammat);
-	return (clip(&doom->player, wa->p, wa->offset, c));
+	return (clip(wa->p, wa->offset));
 }
 
 void	drawobj(t_doom *doom, t_map map)
 {
 	t_wall		wa;
 	t_sermat	mat;
-	t_fvector	dir;
 	size_t		c;
 
 	mat.cammat = matcam(&doom->player);

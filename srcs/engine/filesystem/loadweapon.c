@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 18:48:16 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 17:30:35 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:04:15 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	loaddamagetype(char *str, t_weapon *weapon)
 	}
 }
 
-void	loadweapon(char *path, char **tmp, t_weapon **weapon, int y)
+void	loadweapon(char *path, t_weapon **weapon, int y)
 {
 	char *file;
 	char **str;
@@ -94,7 +94,7 @@ void	loadweapons(char *path, char **tmp, t_weapon **weapon, size_t *count)
 	(*weapon) = (t_weapon*)malloc(sizeof(t_weapon) * (*count));
 	while (y < len)
 	{
-		loadweapon(ft_strjoin(path, tmp[y]), tmp, weapon, y);
+		loadweapon(ft_strjoin(path, tmp[y]), weapon, y);
 		y++;
 	}
 	ft_strdel(&path);

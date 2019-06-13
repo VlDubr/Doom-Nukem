@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/13 14:12:39 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 18:10:37 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ typedef struct	s_bar
 	t_fvector2d	pos;
 	t_fvector2d	widthheight;
 }				t_bar;
-t_bar		setbar(t_rgba color, t_fvector2d pos, t_fvector2d wh);
-void		drawbar(uint32_t *p, t_bar bar);
+t_bar			setbar(t_rgba color, t_fvector2d pos, t_fvector2d wh);
+void			drawbar(uint32_t *p, t_bar bar);
 
 typedef struct	s_anim
 {
@@ -248,8 +248,8 @@ typedef struct	s_sound
 	Mix_Chunk	*shot;
 }				t_sound;
 
-void		agressionememy(t_player *player, t_object *obj);
-void		damageenemy(Mix_Chunk *s, t_player *player,
+void			agressionememy(t_player *player, t_object *obj);
+void			damageenemy(Mix_Chunk *s, t_player *player,
 t_object *obj, double delta);
 
 typedef struct	s_wall
@@ -301,8 +301,15 @@ typedef struct	s_drawwallservise
 	t_fvector2d	shag;
 	t_ivector2d	maxmindist;
 	int			start;
-}				t_drawwallservice;
+	int			xp;
 
+	t_fvector2d	deltaxy;
+	t_fvector2d	cord;
+	t_fvector	ddd;
+	t_fvector	keey;
+
+	t_wall		wall;
+}				t_drawwallservice;
 
 typedef struct	s_doom
 {
@@ -355,127 +362,133 @@ typedef struct	s_doom
 	t_map		thismap;
 }				t_doom;
 
-void		gamescene(t_doom *doom);
-void		menuscene(t_doom *doom);
-void		menuupdate(t_doom *doom);
+void			gamescene(t_doom *doom);
+void			menuscene(t_doom *doom);
+void			menuupdate(t_doom *doom);
 
-void		moveenemy(t_doom *doom, t_object *obj, float delta);
+void			moveenemy(t_doom *doom, t_object *obj, float delta);
 
-void		initsettingui(t_doom *doom);
-void		initsetting(t_setting *s);
-void		mousemove(t_player *play, t_input *input, float delta);
+void			initsettingui(t_doom *doom);
+void			initsetting(t_setting *s);
+void			mousemove(t_player *play, t_input *input);
 
-void		cleartexture(t_window *win);
+void			cleartexture(t_window *win);
 
-void		drawskubox(t_doom *doom);
-void		drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord,
+void			drawskubox(t_doom *doom);
+void			drawpoint(uint32_t *p, t_ivector2d size, t_ivector2d cord,
 t_rgba color);
-void		drawrect(t_doom *doom, t_irect rect, t_rgba color);
-void		drawline(uint32_t *p, t_fvector start, t_fvector end, t_rgb color);
-void		drawsector(uint32_t *p, t_player play, t_fvector *w, size_t count);
-void		drawfloor(t_doom *doom, t_wall wa, int b);
-void		drawcail(t_doom *doom, t_wall wa, int b);
-void		drawimage(t_doom *doom, t_irect rect, t_tga *image);
-void		drawwall(uint32_t *p, t_wall wall, t_tga image, float	*offset);
-void		drawwallv3(t_doom *doom, size_t sec);
-
-void		portal(t_doom *doom, t_list **wall, t_sector *sec,
-t_fvector old[3]);
-void		setwalls(t_doom *doom, t_list **wall, t_sector sec, t_ivector ci);
-
-void		objectupdate(t_doom *doom);
-void		rotate(t_doom *doom, double delta);
-void		playerrotate(t_player *p);
-void		gravity(t_player *p, float y, double delta);
-
-void		drawammo(t_doom *doom);
-void		drawweapon(t_doom *doom);
-
-void		drawobj(t_doom *doom, t_map map);
-
-void		drawminimap(uint32_t *p, t_doom *doom, size_t sector,
-t_ivector2d cord);
-void		drawoptionmenu(t_doom *doom);
-
-void		drawsort(t_list *list);
-void		addwallinlist(t_list **list, t_wall wa);
-
-void		addmusic(t_setting *s);
-void		submusic(t_setting *s);
-void		addsound(t_setting *s);
-void		subsound(t_setting *s);
-
-void		destrotwindow(t_doom *doom);
-
-void		updateevent(t_doom *doom, float delta);
-void		update(t_doom *doom, double delta);
-void		updateui(t_doom *doom);
-void		draw(t_doom *doom);
-void		drawui(t_doom *doom);
-void		quitprogram(t_doom *doom);
-
-t_player	defaultplayerdata(t_doom *doom);
-void		addstamina(t_player *p, float addvalue);
-void		minusstamina(t_player *p, float minusvalue);
-
-void		shot(t_doom *doom, Mix_Chunk *s);
-void		objpickup(t_input input, t_player *play, t_object *obj);
-void		lightmod(t_object *obj, t_map *map, t_input input);
-void		opendoor(t_object *obj, t_input input, t_map *map);
-
-void		addhealth(t_player *p, float addvalue);
-void		minushealth(t_player *p, float minusvalue);
-void		playerdeath(t_player *p, int *gamestate);
-
-void		playermove(t_doom *doom, double delta);
-void		playerjump(t_doom *doom, t_player *player);
-
-void		loadinput(char *path, t_input *input);
-
-int			collide(t_fvector2d pos, t_fvector2d newpos,
+void			drawrect(t_doom *doom, t_irect rect, t_rgba color);
+void			drawline(uint32_t *p, t_fvector start,
+t_fvector end, t_rgb color);
+void			drawsector(uint32_t *p, t_player play,
 t_fvector *w, size_t count);
-int			collides(t_line line, t_map *map, size_t sector, int *visit);
-int			collideobj(t_line line, t_player play, t_map *map);
-int			collideline(t_line line);
-int			collideobj(t_line line, t_player play, t_map *map);
-int			inside(t_fvector2d i, t_fvector *p, size_t size);
-size_t		isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
+void			drawfloor(t_doom *doom, t_wall wa, int b);
+void			drawcail(t_doom *doom, t_wall wa, int b);
+void			drawimage(t_doom *doom, t_irect rect, t_tga *image);
+void			drawwall(uint32_t *p, t_wall wall,
+t_tga image, float	*offset);
+void			brez(t_drawwallservice walls, int xc,
+t_wall wall, uint32_t *p);
+void			drawwallv3(t_doom *doom, size_t sec);
 
-void		loadassets(char *path, t_doom *doom);
-void		loadsounds(char *path, char **tmp, t_sound *s);
-void		loadfont(char *path, t_doom *doom);
-t_map		loadmap(char *path);
-void		loadobj(char **str, t_object **obj, size_t *count);
-void		loadsector(char **str, t_sector **sector, size_t *count);
-void		loadweapons(char *path, char **tmp,
+void			portal(t_doom *doom, t_list **wall, t_sector *sec,
+t_fvector old[3]);
+void			setwalls(t_doom *doom, t_list **wall,
+t_sector sec, t_ivector ci);
+
+void			objectupdate(t_doom *doom);
+void			rotate(t_doom *doom, double delta);
+void			playerrotate(t_player *p);
+void			gravity(t_player *p, float y, double delta);
+
+void			drawammo(t_doom *doom);
+void			drawweapon(t_doom *doom);
+
+void			drawobj(t_doom *doom, t_map map);
+
+void			drawminimap(uint32_t *p, t_doom *doom, size_t sector,
+t_ivector2d cord);
+void			drawoptionmenu(t_doom *doom);
+
+void			drawsort(t_list *list);
+void			addwallinlist(t_list **list, t_wall wa);
+
+void			addmusic(t_setting *s);
+void			submusic(t_setting *s);
+void			addsound(t_setting *s);
+void			subsound(t_setting *s);
+
+void			destrotwindow(t_doom *doom);
+
+void			updateevent(t_doom *doom);
+void			update(t_doom *doom, double delta);
+void			updateui(t_doom *doom);
+void			draw(t_doom *doom);
+void			drawui(t_doom *doom);
+void			quitprogram(t_doom *doom);
+
+t_player		defaultplayerdata(t_doom *doom);
+void			addstamina(t_player *p, float addvalue);
+void			minusstamina(t_player *p, float minusvalue);
+
+void			shot(t_doom *doom, Mix_Chunk *s);
+void			objpickup(t_input input, t_player *play, t_object *obj);
+void			lightmod(t_object *obj, t_map *map, t_input input);
+void			opendoor(t_object *obj, t_input input, t_map *map);
+
+void			addhealth(t_player *p, float addvalue);
+void			minushealth(t_player *p, float minusvalue);
+void			playerdeath(t_player *p, int *gamestate);
+
+void			playermove(t_doom *doom, double delta);
+void			playerjump(t_doom *doom, t_player *player);
+
+void			loadinput(char *path, t_input *input);
+
+int				collide(t_fvector2d pos, t_fvector2d newpos,
+t_fvector *w, size_t count);
+int				collides(t_line line, t_map *map, size_t sector, int *visit);
+int				collideobj(t_line line, t_player play, t_map *map);
+int				collideline(t_line line);
+int				collideobj(t_line line, t_player play, t_map *map);
+int				inside(t_fvector2d i, t_fvector *p, size_t size);
+size_t			isinside(t_fvector2d pos, t_map	map, size_t	lastsecid);
+
+void			loadassets(char *path, t_doom *doom);
+void			loadsounds(char *path, char **tmp, t_sound *s);
+void			loadfont(char *path, t_doom *doom);
+t_map			loadmap(char *path);
+void			loadobj(char **str, t_object **obj, size_t *count);
+void			loadsector(char **str, t_sector **sector, size_t *count);
+void			loadweapons(char *path, char **tmp,
 t_weapon **weapon, size_t *count);
-void		switchlevel(t_doom *doom, size_t level);
+void			switchlevel(t_doom *doom, size_t level);
 
-t_mat4x4	matcam(t_player *player);
-t_mat4x4	matprojection(t_camera cam);
-t_camera	initcam(t_ivector2d sizewin);
+t_mat4x4		matcam(t_player *player);
+t_mat4x4		matprojection(t_camera cam);
+t_camera		initcam(t_ivector2d sizewin);
 
-int			clip(t_player *player, t_fvector p[4], float offset[4], size_t c);
+int				clip(t_fvector p[4], float offset[4]);
 
-void		initdrawwall(t_fvector *view);
-void		multmatrixdrawwall(t_fvector *view, t_mat4x4 mat);
-void		wallproj(t_fvector *view, t_mat4x4 proj);
-void		divdrawwall(t_fvector *view, float x, float y, float z);
-void		adddrawwall(t_fvector *view, float x, float y, float z);
-void		subdrawwall(t_fvector *view, float x, float y, float z);
-void		multdrawwall(t_fvector *view, float x, float y, float z);
+void			initdrawwall(t_fvector *view);
+void			multmatrixdrawwall(t_fvector *view, t_mat4x4 mat);
+void			wallproj(t_fvector *view, t_mat4x4 proj);
+void			divdrawwall(t_fvector *view, float x, float y, float z);
+void			adddrawwall(t_fvector *view, float x, float y, float z);
+void			subdrawwall(t_fvector *view, float x, float y, float z);
+void			multdrawwall(t_fvector *view, float x, float y, float z);
 
-int			boxcollision(t_button button, t_ivector2d mousepos);
+int				boxcollision(t_button button, t_ivector2d mousepos);
 
-t_fvector	raycastfloor(t_fvector2d angle, t_fvector2d yse);
+t_fvector		raycastfloor(t_fvector2d angle, t_fvector2d yse);
 
-t_list		*getlistindex(t_list *list, size_t index);
-void		del(void *data, size_t size);
-void		free2dstring(char **str);
-size_t		stringcount(char **str);
-void		error(const char *str);
+t_list			*getlistindex(t_list *list, size_t index);
+void			del(void *data, size_t size);
+void			free2dstring(char **str);
+size_t			stringcount(char **str);
+void			error(const char *str);
 
-void		loadimagetype(char *str, t_weapon *weapon);
-void		loadnameweapon(char *str, t_weapon *weapon);
+void			loadimagetype(char *str, t_weapon *weapon);
+void			loadnameweapon(char *str, t_weapon *weapon);
 
 #endif

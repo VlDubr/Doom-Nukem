@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/12 18:55:45 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 14:12:39 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,18 @@ typedef struct	s_settingui
 	t_button	plusmusic;
 	t_button	minusmusic;
 }				t_settingui;
+
+typedef struct	s_drawwallservise
+{
+	t_irect		d1d4;
+	t_ivector2d	dist;
+	t_fvector2d	kefm;
+	float		*stena[4];
+	t_fvector2d	shag;
+	t_ivector2d	maxmindist;
+	int			start;
+}				t_drawwallservice;
+
 
 typedef struct	s_doom
 {

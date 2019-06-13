@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 14:52:17 by vmcclure          #+#    #+#             */
-/*   Updated: 2019/06/12 19:10:31 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/13 14:15:52 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,77 +111,105 @@ int *start, t_irect d1d4)
 	if (d1d4.width <= d1d4.start.x)
 	{
 		maxmindist->x = abs(d1d4.start.x);
-		start = 1;
+		*start = 1;
 		maxmindist->y = abs(d1d4.width);
 		shag->y = 1.0;
 		shag->x = (float)maxmindist->y / (float)maxmindist->x;
 	}
 }
 
-void	mallocstena(float *stena[4], t_ivector2d maxmindist)
+void	mallocstena(t_drawwallservice *walls, t_wall wall)
 {
-	stena[0] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
-	stena[1] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
-	stena[2] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
-	stena[3] = (float *)malloc((sizeof(float)) * (maxmindist.x + 1));
+	int	y;
+
+	walls->stena[0] = (float *)malloc((sizeof(float)) *
+	(walls->maxmindist.x + 1));
+	walls->stena[1] = (float *)malloc((sizeof(float)) *
+	(walls->maxmindist.x + 1));
+	walls->stena[2] = (float *)malloc((sizeof(float)) *
+	(walls->maxmindist.x + 1));
+	walls->stena[3] = (float *)malloc((sizeof(float)) *
+	(walls->maxmindist.x + 1));
+	y = 0;
+	while (y < walls->maxmindist.x)
+	{
+		walls->stena[0][y] = wall.p[0].x + (y * walls->shag.y);
+		walls->stena[1][y] = wall.p[0].y + (y * walls->shag.y *
+		((float)walls->dist.x / (float)walls->d1d4.start.x)) *
+		sin(atan((float)walls->d1d4.start.y / (float)walls->d1d4.start.x));
+		walls->stena[2][y] = wall.p[2].x + (y * walls->shag.x);
+		walls->stena[3][y] = wall.p[2].y + (y * walls->shag.x *
+		((float)walls->dist.y / (float)walls->d1d4.width)) *
+		sin(atan((float)walls->d1d4.height / (float)walls->d1d4.width));
+		y++;
+	}
 }
 
-void drawwall(uint32_t *p, t_wall wall, t_tga image, float	*offset)
+int		checkwallinwindowarea(t_wall wall)
 {
-	t_irect	d1d4;
-	t_ivector2d dist;
-	t_ivector2d	xy;
-	float kef;
-	float m;
-	float *stena[4];
-	t_fvector2d	shag;
-	t_ivector2d maxmindist;
-	int start;
-	if( wall.p[0].x > 810 || wall.p[1].x > 810 || wall.p[0].x < -2 || wall.p[1].x < -2)
-		return ;
-	d1d4 = setirect(setivector2d((wall.p[1].x - wall.p[0].x), (wall.p[1].y - wall.p[0].y)), (wall.p[3].x - wall.p[2].x), (wall.p[3].y - wall.p[2].y));
-	dist.x = pow(pow(wall.p[0].x - wall.p[1].x, 2) + pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
-	dist.y = pow(pow(wall.p[2].x - wall.p[3].x, 2) + pow(wall.p[2].y- wall.p[3].y, 2), 0.5);
+	return (wall.p[0].x > 810 || wall.p[1].x > 810
+	|| wall.p[0].x < -2 || wall.p[1].x < -2);
+}
 
-	initmmdshagstart(&maxmindist, &shag, &start, d1d4);
-	mallocstena(stena, maxmindist);
-	xy.y = 0;
-	while (xy.y < maxmindist.x)
-	{
-		stena[0][xy.y] = wall.p[0].x + (xy.y * shag.y);
-		stena[1][xy.y] = wall.p[0].y + (xy.y * shag.y * ((float)dist.x / (float)d1d4.start.x)) * sin(atan((float)d1d4.start.y / (float)d1d4.start.x));
-		stena[2][xy.y] = wall.p[2].x + (xy.y * shag.x);
-		stena[3][xy.y] = wall.p[2].y + (xy.y * shag.x * ((float)dist.y / (float)d1d4.width)) * sin(atan((float)d1d4.height / (float)d1d4.width));
-		xy.y++;
-	}
+void	setwallsdist(t_drawwallservice *walls, t_wall wall)
+{
+	walls->d1d4 = setirect(setivector2d((wall.p[1].x - wall.p[0].x),
+	(wall.p[1].y - wall.p[0].y)), (wall.p[3].x - wall.p[2].x),
+	(wall.p[3].y - wall.p[2].y));
+	walls->dist.x = pow(pow(wall.p[0].x - wall.p[1].x, 2) +
+	pow(wall.p[0].y - wall.p[1].y, 2), 0.5);
+	walls->dist.y = pow(pow(wall.p[2].x - wall.p[3].x, 2) +
+	pow(wall.p[2].y - wall.p[3].y, 2), 0.5);
+}
 
-	kef = 0;
-	m = ((float)maxmindist.x) / (float)(image.width);
-
+void	setwallskefm(t_drawwallservice *walls, t_tga image, float *offset)
+{
+	walls->kefm.x = 0;
+	walls->kefm.y = ((float)walls->maxmindist.x) / (float)(image.width);
 	if (offset[1] < 1)
 	{
-		kef = 0;
-		m = (((float)maxmindist.x / offset[1])) / (float)(image.width);
+		walls->kefm.x = 0;
+		walls->kefm.y = (((float)walls->maxmindist.x
+		/ offset[1])) / (float)(image.width);
 	}
 	if (offset[0] < 1)
 	{
-		kef = (float)maxmindist.x / offset[0] - (float)maxmindist.x;
-		m = (((float)maxmindist.x / offset[0])) / (float)(image.width);
+		walls->kefm.x = (float)walls->maxmindist.x
+		/ offset[0] - (float)walls->maxmindist.x;
+		walls->kefm.y = (((float)walls->maxmindist.x
+		/ offset[0])) / (float)(image.width);
 	}
 	if (offset[1] < 1 && offset[0] < 1)
 	{
-		m = (((float)maxmindist.x / (offset[0] * offset[1]))) / (float)(image.width);
-		kef = (float)maxmindist.x / (offset[0]* offset[1]) - ((float)maxmindist.x / offset[1]);
+		walls->kefm.y = (((float)walls->maxmindist.x
+		/ (offset[0] * offset[1]))) / (float)(image.width);
+		walls->kefm.x = (float)walls->maxmindist.x
+		/ (offset[0] * offset[1]) - ((float)walls->maxmindist.x / offset[1]);
 	}
-	xy.x = 0;
-	while (xy.x < maxmindist.x)
+}
+
+void	drawwall(uint32_t *p, t_wall wall, t_tga image, float *offset)
+{
+	t_drawwallservice	walls;
+	int					x;
+
+	if (checkwallinwindowarea(wall))
+		return ;
+	setwallsdist(&walls, wall);
+	initmmdshagstart(&walls.maxmindist, &walls.shag, &walls.start, walls.d1d4);
+	mallocstena(&walls, wall);
+	setwallskefm(&walls, image, offset);
+	x = 0;
+	while (x < walls.maxmindist.x)
 	{
-		brez (stena[0][xy.x], stena[2][xy.x], stena[1][xy.x], stena[3][xy.x], image,
-		(int)((float)((float)xy.x + kef) / m),  start, p, offset, wall.light);
-		xy.x++;
+		brez(walls.stena[0][x], walls.stena[2][x],
+		walls.stena[1][x], walls.stena[3][x], image,
+		(int)((float)((float)x + walls.kefm.x) /
+		walls.kefm.y), walls.start, p, offset, wall.light);
+		x++;
 	}
-	free(stena[0]);
-	free(stena[1]);
-	free(stena[2]);
-	free(stena[3]);
+	free(walls.stena[0]);
+	free(walls.stena[1]);
+	free(walls.stena[2]);
+	free(walls.stena[3]);
 }

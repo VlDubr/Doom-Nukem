@@ -20,7 +20,7 @@ SRCS = main.c \
 		engine/filesystem/fileexist.c engine/filesystem/readfile.c engine/filesystem/getpath.c \
 		engine/filesystem/loadassets.c engine/filesystem/loadmap.c engine/filesystem/loadobj.c \
 		engine/filesystem/loadweapon.c engine/filesystem/loadweapon2.c engine/filesystem/loadsector.c \
-		engine/filesystem/archive.c engine/filesystem/loadfont.c engine/filesystem/loadsounds.c \
+		engine/filesystem/archive.c engine/filesystem/loadfont.c engine/filesystem/loadsounds.c engine/filesystem/loadmusic.c \
 		engine/filesystem/loadsecontimage.c \
 		engine/serialize/serializeint.c engine/serialize/deserializeint.c \
 		engine/input/loadinput.c engine/input/mousemove.c \

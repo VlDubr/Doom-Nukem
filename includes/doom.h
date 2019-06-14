@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 19:40:29 by gdaniel           #+#    #+#             */
-/*   Updated: 2019/06/13 18:10:37 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/14 12:36:52 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,6 +320,7 @@ typedef struct	s_doom
 	t_list		*pipeline;
 	int			*visit;
 	int			*portalvisit;
+	Mix_Music	*music;
 	SDL_Event	event;
 
 	t_sound		sound;
@@ -490,5 +491,6 @@ void			error(const char *str);
 
 void			loadimagetype(char *str, t_weapon *weapon);
 void			loadnameweapon(char *str, t_weapon *weapon);
+Mix_Music		*loadmusic(char *path);
 
 #endif

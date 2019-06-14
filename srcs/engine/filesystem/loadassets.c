@@ -6,7 +6,7 @@
 /*   By: gdaniel <gdaniel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 13:39:23 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/12 17:27:04 by gdaniel          ###   ########.fr       */
+/*   Updated: 2019/06/14 12:41:59 by gdaniel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void		loadassets2(char *path, t_doom *doom, char *str)
 	doom->easytga = loadsecontimage(ft_strjoin(path, "easy.tga"));
 	doom->middletga = loadsecontimage(ft_strjoin(path, "middle.tga"));
 	doom->hardtga = loadsecontimage(ft_strjoin(path, "hard.tga"));
+	doom->music = loadmusic(ft_strjoin(path, "ost.mp3"));
 	ft_strdel(&path);
 	ft_strdel(&str);
 }

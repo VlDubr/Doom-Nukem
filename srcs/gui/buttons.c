@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:09:04 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 17:55:11 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 13:35:42 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	next_buttons(t_serv *s, t_sdl *sdl, t_map *map, char *temp)
 	temp = ret_str(2, map, s->sec_edit);
 	str_wr(s, sdl, "  roof vis:", temp);
 	s->text_c.y += 60;
-	temp = ret_str(3, map, s->sec_edit);
 	str_wr(s, sdl, "  roof tex:", "");
 }
 

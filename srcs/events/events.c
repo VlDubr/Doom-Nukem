@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 12:53:54 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 17:29:51 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 17:40:39 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,13 @@ static void	m_button_down(t_serv *s, t_sdl sdl, t_map *map)
 				button_events(s, map);
 			else if (s->mouse_xy[1] > 800)
 			{
-				s->fd = open(s->file, O_TRUNC | O_RDWR);
-				save_map(map, s);
-				close(s->fd);
+				if (map->sec_count > 0 && map->wall_count > 2)
+				{
+					s->fd = open(s->file, O_CREAT | O_RDWR
+						| O_TRUNC, S_IWRITE | S_IREAD);
+					save_map(map, s);
+					close(s->fd);
+				}
 			}
 		}
 		else

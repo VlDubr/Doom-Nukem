@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 13:55:06 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 15:43:55 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 14:26:08 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void		map_parser(t_serv *s, char *str, t_map *map)
 	while (str[s->i] != '\0')
 	{
 		if (str[s->i] > 96 && str[s->i] < 123 &&
-			str[s->i + 1] == ':' && str[s->i - 1] != '#')
+			str[s->i + 1] == ':' &&
+				(s->i == 0 || (s->i != 0 && str[s->i - 1] != '#')))
 		{
 			if (str[s->i] == 'w' && s->w_c < map->wall_count)
 				s->i = wall_p(map, str, s->i + 3, s->w_c++);

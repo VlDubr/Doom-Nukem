@@ -6,11 +6,20 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 19:02:07 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 17:02:31 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/editor.h"
+
+void	main2(t_serv *s, t_sdl sdl, t_map *map, char *str)
+{
+	event(s, sdl, map);
+	ft_strdel(&str);
+	unixcommand(ft_strjoin("rm -rf ", "assets.tar"));
+	compress(ft_strjoin(s->prog_path, "assets.tar assets"));
+	unixcommand(ft_strjoin("rm -rf ", "assets"));
+}
 
 int		main(int argc, char **argv)
 {
@@ -33,8 +42,7 @@ int		main(int argc, char **argv)
 			s->wh_screen[0] + 560, s->wh_screen[1], 0);
 		sdl.r = SDL_CreateRenderer(sdl.win, -1, 0);
 		writer(s, sdl, map);
-		event(s, sdl, map);
-		ft_strdel(&str);
+		main2(s, sdl, map, str);
 	}
 	else
 		ft_error("Need file path!");

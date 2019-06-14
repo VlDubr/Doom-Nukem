@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:26:53 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/10 14:04:44 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 16:07:55 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*file_read(int fd, char *file)
 	int		j;
 
 	fd = open(file, O_CREAT | O_RDWR, S_IWRITE | S_IREAD);
-	str = malloc(0);
+	str = ft_strnew(0);
 	if (fd == -1)
 		ft_error("Read file error!");
 	while ((j = read(fd, buf, 1000)) > 0)

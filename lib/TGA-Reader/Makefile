@@ -16,7 +16,7 @@ $(NAME): $(OBJ)
 
 $(OBJDIR)%.o:$(SRCSFOLDER)%.c
 	mkdir -p $(OBJDIR)
-	gcc -g $(FLAG) -I $(HEAD) -o $@ -c $<
+	gcc $(FLAG) -I $(HEAD) -o $@ -c $<
 
 clean:
 	rm -rf $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/14 13:10:40 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 16:45:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,11 @@ typedef struct		s_sector
 {
 	int				start_pos;
 	int				w_count;
-
 	int				floor_h;
 	int				floor_tex;
-
 	int				roof_h;
 	int				roof_tex;
 	int				r_visibility;
-
 	int				sec_type;
 	int				texture;
 }					t_sector;
@@ -219,4 +216,9 @@ void				obj_to_map(t_serv *s, t_map *map);
 void				obj_writer(t_serv *s, t_sdl sdl, t_map *map);
 int					obj_rot(t_serv *s, t_map *map, int num);
 void				rotation_ev(t_serv *s, t_map *map);
+char				*rot_return(t_serv *s, t_map *map, char *temp, int num);
+char				*rotation(t_serv *s, t_map *map, char *str);
+void				compress(char *path);
+void				decompress(char *path);
+void				unixcommand(char *command);
 #endif

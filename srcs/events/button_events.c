@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/12 18:18:24 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/14 13:11:03 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 14:31:22 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ static void	obj_e_p2(t_serv *s, t_map *map)
 			obj_num(s, map, map->obj[s->obj_edit].agr_area);
 	else if (s->mouse_xy[1] < 720)
 		obj_movable(s, map);
-	obj_e_p3(s, map);
+	else
+		obj_e_p3(s, map);
 }
 
 void		obj_events(t_serv *s, t_map *map)

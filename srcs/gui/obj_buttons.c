@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:58:57 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/14 13:12:18 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 16:20:55 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	obj_buttons3(t_serv *s, t_sdl *sdl, t_map *map)
 	temp = ft_itoa(map->obj[s->obj_edit].damage);
 	str_wr(s, sdl, "Damage:", temp);
 	s->text_c.y += 110;
-	temp = ret_str(4, map, s->sec_edit);
 	str_wr(s, sdl, "  RETURN TO MAIN", "");
 	s->text_c.y -= 890;
 }
@@ -86,45 +85,8 @@ void		no_obj_buttons(t_serv *s, t_sdl *sdl, t_map *map)
 	else
 		bitmap_write(sdl->r, s->text, s->text_c, "Del object");
 	s->text_c.y += 830;
-	temp = ret_str(4, map, s->sec_edit);
 	str_wr(s, sdl, "  RETURN TO MAIN", "");
 	s->text_c.y -= 890;
-}
-
-char	*rotation(t_serv *s, t_map *map, char *str)
-{
-	char	*temp;
-	char	*temp2;
-	char	*temp3;
-	char	*del;
-
-	temp = ft_itoa(map->obj[s->obj_edit].rot[0]);
-	temp2 = ft_itoa(map->obj[s->obj_edit].rot[1]);
-	temp3 = ft_itoa(map->obj[s->obj_edit].rot[2]);
-	if (map->obj[s->obj_edit].rot[0] > 99)
-		str = ft_strjoin(temp, " ");
-	else if (map->obj[s->obj_edit].rot[0] > 9)
-		str = ft_strjoin(temp, "  ");
-	else
-		str = ft_strjoin(temp, "   ");
-	del = str;
-	str = ft_strjoin(str, temp2);
-	ft_strdel(&del);
-	del = str;
-	if (map->obj[s->obj_edit].rot[1] > 99)
-		str = ft_strjoin(str, " ");
-	else if (map->obj[s->obj_edit].rot[1] > 9)
-		str = ft_strjoin(str, "  ");
-	else
-		str = ft_strjoin(str, "   ");
-	ft_strdel(&del);
-	del = str;
-	str = ft_strjoin(str, temp3);
-	ft_strdel(&del);
-	ft_strdel(&temp);
-	ft_strdel(&temp2);
-	ft_strdel(&temp3);
-	return (str);
 }
 
 void		obj_buttons(t_serv *s, t_sdl *sdl, t_map *map)

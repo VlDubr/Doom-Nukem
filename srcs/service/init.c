@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/29 14:59:05 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 14:44:27 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 17:40:24 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ static void	service_init2(t_serv *s)
 {
 	char *str;
 
+	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap.tga");
+	s->text_025 = bitmap(str, s->text_025_wh);
+	ft_strdel(&str);
+	str = ft_strjoin(s->prog_path, "assets/image/editor/char_rev.tga");
+	s->text_rev = bitmap(str, s->text_025_wh);
+	ft_strdel(&str);
 	str = ft_strjoin(s->prog_path, "assets/image/editor/man.tga");
 	s->player = tga_reader(str);
 	ft_strdel(&str);
@@ -49,10 +55,14 @@ static void	service_init2(t_serv *s)
 	s->text_c.y = 10;
 }
 
-static void	service_init(t_serv *s)
+static void	service_init(t_serv *s, char **argv)
 {
 	char *str;
 
+	free(s->prog_path);
+	s->prog_path = prog_path(argv[0]);
+	s->gui_flag = 0;
+	s->obj_edit = 0;
 	s->w_c = 0;
 	s->s_c = 0;
 	s->o_c = 0;
@@ -69,13 +79,20 @@ static void	service_init(t_serv *s)
 	ft_strdel(&str);
 	s->text_025_wh.x = 7;
 	s->text_025_wh.y = 9;
-	str = ft_strjoin(s->prog_path, "assets/image/editor/charmap.tga");
-	s->text_025 = bitmap(str, s->text_025_wh);
-	ft_strdel(&str);
-	str = ft_strjoin(s->prog_path, "assets/image/editor/char_rev.tga");
-	s->text_rev = bitmap(str, s->text_025_wh);
-	ft_strdel(&str);
 	service_init2(s);
+}
+
+int			fileexist(char *path)
+{
+	int fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd > -1)
+	{
+		close(fd);
+		return (1);
+	}
+	return (0);
 }
 
 char		*init(t_map *map, t_serv *s, char **argv)
@@ -94,13 +111,14 @@ char		*init(t_map *map, t_serv *s, char **argv)
 	s->prog_path = prog_path(argv[0]);
 	str1 = ft_strjoin(s->prog_path, "assets/assets.cfg");
 	str2 = ft_strjoin(s->prog_path, "assets/");
+	decompress(ft_strjoin(s->prog_path, "assets.tar"));
 	img_parse(str1, str2, map, s);
 	ft_strdel(&str1);
-	free(s->prog_path);
-	s->prog_path = prog_path(argv[0]);
-	s->gui_flag = 0;
-	s->obj_edit = 0;
-	service_init(s);
+	ft_strdel(&str2);
 	s->file = argv[1];
-	return (file_read(s->fd, argv[1]));
+	service_init(s, argv);
+	if (fileexist(argv[1]))
+		return (file_read(s->fd, argv[1]));
+	else
+		return (ft_strnew(0));
 }

@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 15:58:27 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 19:02:54 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 13:27:14 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,25 @@ static void	obj_col2(t_sdl *sdl, int y)
 		SDL_SetRenderDrawColor(sdl->r, 188, 143, 143, 255);
 }
 
-static void	obj_gui_colors(t_sdl *sdl, int y)
+static void	rot_col(t_sdl *sdl, int x, int y)
+{
+	SDL_SetRenderDrawColor(sdl->r, 139, 69, 19, 255);
+	if (x > 1248 && x < 1356)
+		SDL_SetRenderDrawColor(sdl->r, 0, 50, 50, 255);
+	else if (x > 1359 && x < 1456)
+		SDL_SetRenderDrawColor(sdl->r, 0, 0, 100, 255);
+	else if (x > 1459 && x < 1561)
+		SDL_SetRenderDrawColor(sdl->r, 0, 50, 0, 255);
+}
+
+static void	obj_gui_colors(t_sdl *sdl, int x, int y)
 {
 	if (y < 60)
 		SDL_SetRenderDrawColor(sdl->r, 92, 92, 92, 255);
 	else if (y < 120)
 		SDL_SetRenderDrawColor(sdl->r, 139, 0, 139, 255);
 	else if (y < 180)
-		SDL_SetRenderDrawColor(sdl->r, 139, 69, 19, 255);
+		rot_col(sdl, x, y);
 	else if (y < 240)
 		SDL_SetRenderDrawColor(sdl->r, 123, 2, 43, 255);
 	else if (y < 300)
@@ -96,7 +107,7 @@ void		gui(t_serv *s, t_sdl *sdl, t_map *map)
 			if (s->gui_flag == 0)
 				gui_colors(sdl, y);
 			else if (s->gui_flag == 1)
-				obj_gui_colors(sdl, y);
+				obj_gui_colors(sdl, x, y);
 			SDL_RenderDrawPoint(sdl->r, x, y);
 			x++;
 		}

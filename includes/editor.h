@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/14 15:28:03 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 14:35:57 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 13:10:40 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,4 +217,6 @@ void				obj_movable(t_serv *s, t_map *map);
 void				del_obj(t_map *map, t_serv *s);
 void				obj_to_map(t_serv *s, t_map *map);
 void				obj_writer(t_serv *s, t_sdl sdl, t_map *map);
+int					obj_rot(t_serv *s, t_map *map, int num);
+void				rotation_ev(t_serv *s, t_map *map);
 #endif

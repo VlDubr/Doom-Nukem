@@ -6,7 +6,7 @@
 /*   By: srafe <srafe@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:58:57 by srafe             #+#    #+#             */
-/*   Updated: 2019/06/13 18:59:59 by srafe            ###   ########.fr       */
+/*   Updated: 2019/06/14 13:12:18 by srafe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ char	*rotation(t_serv *s, t_map *map, char *str)
 	temp = ft_itoa(map->obj[s->obj_edit].rot[0]);
 	temp2 = ft_itoa(map->obj[s->obj_edit].rot[1]);
 	temp3 = ft_itoa(map->obj[s->obj_edit].rot[2]);
-	if (map->obj[s->obj_edit].rot[0] > 100)
+	if (map->obj[s->obj_edit].rot[0] > 99)
 		str = ft_strjoin(temp, " ");
-	else if (map->obj[s->obj_edit].rot[0] > 10)
+	else if (map->obj[s->obj_edit].rot[0] > 9)
 		str = ft_strjoin(temp, "  ");
 	else
 		str = ft_strjoin(temp, "   ");
@@ -111,9 +111,9 @@ char	*rotation(t_serv *s, t_map *map, char *str)
 	str = ft_strjoin(str, temp2);
 	ft_strdel(&del);
 	del = str;
-	if (map->obj[s->obj_edit].rot[1] > 100)
+	if (map->obj[s->obj_edit].rot[1] > 99)
 		str = ft_strjoin(str, " ");
-	else if (map->obj[s->obj_edit].rot[1] > 10)
+	else if (map->obj[s->obj_edit].rot[1] > 9)
 		str = ft_strjoin(str, "  ");
 	else
 		str = ft_strjoin(str, "   ");
